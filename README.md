@@ -1,6 +1,6 @@
 # Matecho
 Material Design typecho theme base on MDUI.
-
+![screenshot](https://media.githubusercontent.com/media/KawaiiZapic/Matecho/md3/public/screenshot.png)
 ## 构建
 ```
 pnpm i
