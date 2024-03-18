@@ -1,0 +1,22 @@
+import "mdui/components/card";
+import "mdui/components/navigation-drawer";
+import "mdui/components/top-app-bar";
+import "mdui/components/layout";
+import "mdui/components/layout-main";
+import "mdui/components/button-icon";
+import "mdui/components/top-app-bar-title";
+import "mdui/components/divider";
+import "mdui/components/chip";
+import "mdui/components/icon";
+import "mdui/components/button";
+import "mdui/components/avatar";
+
+import '@mdui/icons/person';
+import '@mdui/icons/calendar-month';
+import "@mdui/icons/apps";
+import '@mdui/icons/bookmark.js';
+import '@mdui/icons/mode-comment--outlined';
+import "@mdui/icons/menu";
+import '@mdui/icons/chevron-right';
+import '@mdui/icons/login';
+import '@mdui/icons/settings';

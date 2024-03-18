@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "web-types": [
+    "./node_modules/mdui/web-types.zh-cn.json"
+  ],
+  "dependencies": {
+    "@mdui/icons": "^1.0.2",
+    "@types/node": "^20.11.28",
+    "fast-glob": "^3.3.2",
+    "mdui": "^2.0.6",
+    "typescript": "^5.4.2",
+    "unocss": "^0.58.6",
+    "vite": "^5.1.6"
+  }
+}

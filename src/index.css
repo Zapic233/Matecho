@@ -1,0 +1,51 @@
+@import 'mdui/mdui.css';
+
+html, body {
+    padding: 0;
+    margin: 0;
+}
+
+[href] {
+    color: inherit;
+    text-decoration: none;
+}
+
+[href]:hover:not(.mdui-prose *) {
+    text-decoration: underline;
+}
+
+.matecho-info-button {
+    height: 1.5rem;
+    min-width: 0;
+}
+.matecho-info-button::part(button) {
+    padding: 0;
+    height: 1.5rem;
+}
+
+.matecho-info-button {
+    color: rgb(var(--mdui-color-on-background));
+}
+
+#matecho-app-bar:not([shrink]) {
+    height: 10.5rem;
+}
+
+.matecho-article-card .matecho-article-cover{
+    background-size: 100% auto;
+    transition: 500ms;
+}
+.matecho-article-card:hover .matecho-article-cover{
+    background-size: 120% auto;
+}
+#matecho-app-bar.matecho-app-bar__post:not([shrink]) {
+    height: 12em;
+}
+.matecho-app-bar__post #matecho-app-bar-large-label__inner {
+    max-width: 768px;
+    margin: auto;
+    padding: 0;
+}
+.matecho-app-bar__post #matecho-app-bar-large-label {
+    height: 4.5em;
+ }
