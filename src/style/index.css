@@ -1,0 +1,8 @@
+.matecho-article-card .matecho-article-cover{
+    transform: scale(1);
+    transform-origin: center;
+    transition: transform 500ms;
+}
+.matecho-article-card:hover .matecho-article-cover{
+    transform: scale(1.2);
+}

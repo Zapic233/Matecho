@@ -40,5 +40,8 @@ class Matecho {
         }
 
     }
+    static function pageIcon(string | null $template): string {
+        return "insert-drive-file";
+    }
 }
 

@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 import * as fs from "node:fs";
 import * as path from "path"
 import fg from "fast-glob"
+import { log } from "node:console";
 
 const codeTokens: Record<string, string> = {};
 function hash(str: string) {
@@ -19,7 +20,8 @@ function hash(str: string) {
     return `00000${(hval >>> 0).toString(36)}`.slice(-6);
 }
 
-export default defineConfig((async (mode) => {
+export default defineConfig((async (env) => {
+    const isProd = env.mode === "production";
     return {
         plugins: [
             unocss({
@@ -61,7 +63,7 @@ export default defineConfig((async (mode) => {
                         return token;
                     });
                 },
-                writeBundle(opt, bundle) {
+                writeBundle(opt: any, bundle: any) {
                     for (const key of Object.keys(bundle)) {
                         if (!key.endsWith('.php.html')) continue;
                         const nKey = key.replace(".html", "");
@@ -92,10 +94,11 @@ export default defineConfig((async (mode) => {
                     assetFileNames: "assets/assets-[hash].[ext]",
                     chunkFileNames: "assets/chunk-[hash].js",
                     entryFileNames: "assets/chuck-[hash].js"
-                },
+                }
             },
-            minify: false
+            minify: isProd,
+            cssMinify: isProd
         },
         base: "/__VIRTUAL_THEME_ROOT__"
     } as UserConfig;
-}) as any);
+}));

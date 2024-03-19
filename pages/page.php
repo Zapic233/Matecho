@@ -1,0 +1,5 @@
+<?php
+if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+
+/** @var \Widget\Archive $this */
+$this->need('post.php');

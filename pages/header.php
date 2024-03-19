@@ -1,4 +1,8 @@
-<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
+<?php 
+if (!defined('__TYPECHO_ROOT_DIR__')) exit; 
+
+/** @var \Widget\Archive $this */
+?>
 <!DOCTYPE html>
 <html lang="zh-CN" class="mdui-theme-auto">
 <head>
@@ -12,7 +16,7 @@
 		'author' => _t('%s 发布的文章')
 	),'',' - '); ?><?php $this->options->title(); ?></title>
 
-    <link rel="stylesheet" crossorigin href="src/index.css">
+    <link rel="stylesheet" href="src/style/header.css">
     <?php $this->header(); ?>
 </head>
 <body>
@@ -28,48 +32,23 @@
                     'tag' => _t('标签 %s 下的文章'),
                     'author' => _t('%s 发布的文章')
                 ),'','');?>
-                <div slot="label-large" id="matecho-app-bar-large-label">
-                    <div class="md:pl-8 flex flex-col" id="matecho-app-bar-large-label__inner">
-                        <?php if ($this->archiveType === "post") { ?>
-                        <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
-                            <?php $this->category(" | "); ?>
-                        </div>
-                        <?php } ?>
-                        <div class="truncate text-5xl line-height-[1.4]">
-                            <?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
-                                'category' => _t('分类 %s 下的文章'),
-                                'search' => _t('包含关键字 %s 的文章'),
-                                'tag' => _t('标签 %s 下的文章'),
-                                'author' => _t('%s 发布的文章')
-                            ),'','');?>
-                        </div>
-                        <div class="text-sm opacity-80 block mt-3">
-                            <?php
-                            if ($this->archiveType === 'index') {
-                                $this->options->description();
-                            } else if ($this->archiveType === 'post') {
-                                if (!$this->hidden && $this->fields->description) {
-                                    echo $this->fields->description;
-                                }
-                            } else if ($this->archiveType === "category") {
-                                printf("共 %d 篇文章", $this->getTotal());
-                            } else {
-                                echo $this->archiveType;
-                            }
-                            ?>
-                        </div>
-                    </div>
-                </div>
+                <span slot="label-large"></span>
             </mdui-top-app-bar-title>
 
-            <div style="flex-grow: 1"></div>
-                <mdui-button-icon href="<?php $this->options->adminUrl(); ?>" target="_blank">
-                    <?php if ($this->user->hasLogin()){ ?>
-                        <mdui-icon-settings></mdui-icon-settings>
-                    <?php } else { ?>
-                        <mdui-icon-login></mdui-icon-login>
-                    <?php } ?>
-                </mdui-button-icon>
+            <div class="flex flex-grow-1 justify-end">
+                <mdui-text-field placeholder="搜索" disabled variant="outlined" class="mt--4px" type="search" id="matecho-top-search-bar">
+                    <mdui-button-icon slot="icon" id="matecho-top-search-btn">
+                        <mdui-icon-search></mdui-icon-search>
+                    </mdui-button-icon>
+                </mdui-text-field>
+            </div>
+            <mdui-button-icon href="<?php $this->options->adminUrl(); ?>" target="_blank">
+                <?php if ($this->user->hasLogin()){ ?>
+                    <mdui-icon-settings></mdui-icon-settings>
+                <?php } else { ?>
+                    <mdui-icon-login></mdui-icon-login>
+                <?php } ?>
+            </mdui-button-icon>
         </mdui-top-app-bar>
         <?php $this->need('sidebar.php'); ?>
         <mdui-layout-main class="overflow-hidden min-h-100vh" id="matecho-main">

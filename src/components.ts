@@ -10,6 +10,10 @@ import "mdui/components/chip";
 import "mdui/components/icon";
 import "mdui/components/button";
 import "mdui/components/avatar";
+import "mdui/components/list";
+import "mdui/components/list-item";
+import "mdui/components/collapse";
+import "mdui/components/collapse-item";
 
 import '@mdui/icons/person';
 import '@mdui/icons/calendar-month';
@@ -20,3 +24,7 @@ import "@mdui/icons/menu";
 import '@mdui/icons/chevron-right';
 import '@mdui/icons/login';
 import '@mdui/icons/settings';
+import "@mdui/icons/home";
+import "@mdui/icons/category";
+import '@mdui/icons/insert-drive-file';
+import "@mdui/icons/search";

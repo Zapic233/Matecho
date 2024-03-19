@@ -11,5 +11,9 @@
     "typescript": "^5.4.2",
     "unocss": "^0.58.6",
     "vite": "^5.1.6"
+  },
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build"
   }
 }
