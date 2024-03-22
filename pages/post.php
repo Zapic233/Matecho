@@ -54,6 +54,65 @@ $this->need('header.php');
             <article class="mdui-prose mt-8 box-border">
                 <?php echo $this->content; ?>
             </article>
+            <?php
+                if (count($this->tags) > 0) { ?>
+                    <div class="flex flex-gap-2 items-center text-sm mt-8 overflow-hidden">
+                        <mdui-icon-label--outlined class="mr--1 opacity-80"></mdui-icon-label--outlined>
+                        <?php foreach($this->tags as $tag) {
+                            echo "<a href=\"" . $tag["permalink"] . "\">" . $tag["name"] . "</a>";
+                        }?>
+                    </div>
+                <?php }
+            ?>
+            
+            <mdui-divider class="mt-4 mb-4"></mdui-divider>
+            <div class="mt-2">
+                <?php $comments = $this->comments(); ?>
+                <div class="text-2xl mb-4">
+                    评论 
+                    <span class="text-sm ml-1 opacity-80"><?php $this->commentsNum('%d'); ?></span>
+                </div>
+                <div id="matecho-comment-list">
+                    <?php 
+                        while($comments->next()) {
+                            Matecho::toComment($comments);
+                        }
+                    ?>  
+                </div>
+                <?php if ($comments->___length() === 0) { ?>
+                    <div class="my-12 text-md text-center opacity-50">没有评论</div>
+                <?php } ?>
+                <div class="mt-4 matecho-comment-form" id="<?php $this->respondId(); ?>">
+                    <div class="mb-4 text-xl matecho-comment-form-title">发表评论</div>
+                    <form method="post" action="<?php $this->commentUrl() ?>" role="form">
+                        <?php if ($this->user->hasLogin()): ?>
+                            <p><?php _e('登录身份: '); ?><a
+                                href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a
+                                href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('退出'); ?> &raquo;</a>
+                            </p>
+                        <?php else: ?>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 grid-gap-2">
+                                <mdui-text-field label="称呼" variant="outlined" type="text" name="author" id="author"
+                                       value="<?php $this->remember('author'); ?>" required></mdui-text-field>
+                                <mdui-text-field label="邮箱" variant="outlined" type="email" name="mail" id="mail"
+                                       value="<?php $this->remember('mail'); ?>" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></mdui-text-field>
+                                <mdui-text-field label="网址" variant="outlined" type="url" name="url" id="url"
+                                       value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>></mdui-text-field>
+                            
+                            </div>
+                        <?php endif; ?>
+                        <div class="flex flex-gap-2 flex-row md:flex-col items-center mt-4">
+                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" id="textarea" required><?php $this->remember('text'); ?></mdui-text-field>
+                            <div class="mt-2">
+                                <mdui-button type="submit">评论</mdui-button>
+                                <mdui-button class="matecho-comment-cancel-btn" variant="outlined">取消回复</mdui-button>
+                            </div>
+                            
+                        </div>
+                    </form>
+                    <script src="src/comments.ts" type="module"></script>
+                </div>
+            </div>
         </div>
     </div>
 <?php $this->need('sidebar.php'); ?>

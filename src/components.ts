@@ -14,6 +14,9 @@ import "mdui/components/list";
 import "mdui/components/list-item";
 import "mdui/components/collapse";
 import "mdui/components/collapse-item";
+import "mdui/components/text-field";
+import "mdui/components/segmented-button-group";
+import "mdui/components/segmented-button";
 
 import '@mdui/icons/person';
 import '@mdui/icons/calendar-month';
@@ -28,3 +31,5 @@ import "@mdui/icons/home";
 import "@mdui/icons/category";
 import '@mdui/icons/insert-drive-file';
 import "@mdui/icons/search";
+import '@mdui/icons/inbox';
+import '@mdui/icons/label--outlined';

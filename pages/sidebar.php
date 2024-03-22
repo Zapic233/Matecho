@@ -7,7 +7,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <mdui-navigation-drawer class="fixed! z-10000 top-64px! md:w-240px" close-on-overlay-click id="matecho-drawer">
     <mdui-list id="matecho-sidebar-list">
         <a href="/">
-            <mdui-list-item>
+            <mdui-list-item <?php Matecho::activePage($this, "index"); ?> >
                 <mdui-icon-home slot="icon"></mdui-icon-home>
                 首页
             </mdui-list-item>
@@ -25,7 +25,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                         if ($category->parent != 0) continue;
                     ?>
                         <a href="<?php $category->permalink() ?>">
-                            <mdui-list-item class="pl-10">
+                            <mdui-list-item class="pl-10" <?php Matecho::activePage($this, "category", $category->mid); ?> >
                                 <?php echo $category->name ?>
                             </mdui-list-item>
                         </a>
@@ -39,7 +39,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		    while ($page->next()) {
         ?>
                 <a href="<?php $page->permalink() ?>">
-                    <mdui-list-item>
+                    <mdui-list-item <?php Matecho::activePage($this, "page", $page->cid); ?> >
                         <?php 
                             $icon = Matecho::pageIcon($page->template);
                             echo "<mdui-icon-$icon slot=\"icon\"></mdui-icon-$icon>" ;

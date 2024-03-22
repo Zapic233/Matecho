@@ -43,5 +43,95 @@ class Matecho {
     static function pageIcon(string | null $template): string {
         return "insert-drive-file";
     }
-}
 
+    static function activePage(Archive $archive, string $type, int $id = -1): void {
+        $thisType = $archive->getArchiveType();
+        if ($thisType == $type) {
+            if ($thisType === "category" && $archive->categories[0]["mid"] !== $id) return;
+            if ($thisType === "page" && $archive->cid !== $id) return;
+            echo "active";
+        }
+    }
+
+    static function toComment(\Widget\Comments\Archive &$comments): void {   
+        $isTopLevel = $comments->levels === 0;
+        if ($isTopLevel) {
+    ?>
+        <div class="w-full box-border matecho-comment-wrapper matecho-comment-parent" id="comment-<?php echo $comments->coid ?>">
+            <div class="flex items-center">
+                <mdui-avatar class="matecho-comment-avatar"><?php $comments->gravatar(40) ?></mdui-avatar>
+                <div class="ml-4 matecho-comment-author">
+                    <?php $comments->author(); ?>
+                </div>
+                <span class="flex-grow text-right text-sm opacity-60">#<?php echo $comments->coid; ?></span>
+            </div>
+            <div class="pl-56px">
+                <div class="mdui-prose mb-2">
+                    <?php $comments->content(); ?>
+                </div>
+                <div class="flex items-center">
+                    
+                <div class="opacity-60 text-sm">
+                    <?php $comments->date(); ?>
+                </div>
+                <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                    回复
+                </mdui-button>
+                </div>
+            </div>
+            <div>
+                
+            </div>
+            <?php if (count($comments->children) > 0) { ?>
+                <div class="w-full pl-56px box-border mt-4">
+                    <?php 
+                        $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
+                        $r = $row->getValue($comments);
+                        foreach($comments->children as $child) {
+                            $row->setValue($comments, $child);
+                            self::toComment($comments);
+                        }                
+                        $row->setValue($comments, $r);
+                    ?>
+                </div>
+            <?php } ?>
+            <mdui-divider class="ml-56px mt-2"></mdui-divider> 
+        </div>
+    <?php } else {?>
+        <div class="w-full box-border matecho-comment-wrapper matecho-comment-child" id="comment-<?php echo $comments->coid ?>">
+            <div class="flex items-center">
+                <mdui-avatar class="matecho-comment-avatar w-28px h-28px flex-shrink-0"><?php $comments->gravatar(28) ?></mdui-avatar>
+                <div class="ml-2 matecho-comment-author">
+                    <?php $comments->author(); ?>
+                </div>
+                <span class="flex-grow text-right text-sm opacity-60">#<?php echo $comments->coid; ?></span>
+            </div>
+            <div class="pl-35px">
+                <div class="mdui-prose mb-2">
+                    <?php if($comments->levels > 1) { ?>
+                        <a class="text-sm" href="#comment-<?php echo $comments->parent; ?>">回复 #<?php echo $comments->parent; ?>:</a>
+                    <?php } ?>
+                    <?php $comments->content(); ?>
+                </div>
+                <div class="flex items-center">
+                    <div class="opacity-60 text-sm">
+                        <?php $comments->date(); ?>
+                    </div>
+                    <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                        回复
+                    </mdui-button>
+                </div>
+            </div>
+            <?php if (count($comments->children) > 0) { 
+                $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
+                $r = $row->getValue($comments);
+                foreach($comments->children as $child) {
+                    $row->setValue($comments, $child);
+                    self::toComment($comments);
+                }                
+                $row->setValue($comments, $r); 
+            } ?>         
+        </div>
+    <?php }
+    }
+}

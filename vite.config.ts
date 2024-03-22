@@ -58,7 +58,6 @@ export default defineConfig((async (env) => {
                     if (!id.endsWith('.php.html')) return;
                     return code.replace(/<\?(?:php|).+?(\?>|$)/gis, (match) => {
                         let token = hash(match);
-                        token = `<!--${token}-->`;
                         codeTokens[token] = match;
                         return token;
                     });

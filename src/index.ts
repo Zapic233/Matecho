@@ -66,7 +66,14 @@ function handleLabelShrink(el: HTMLElement) {
         attributeFilter: [ "shrink" ]
     });
     const ro = observeResize(inner, () => {
-        el.style.height = inner.getBoundingClientRect().height + "px";
+        const h = inner.getBoundingClientRect().height;
+        const scroll = document.scrollingElement!;
+        el.style.height = h + "px";
+        if (h > (scroll.scrollHeight - window.screen.availHeight)) {
+            appBar.scrollBehavior = undefined;
+        } else {
+            appBar.scrollBehavior = "shrink";
+        }
     });
 }
 

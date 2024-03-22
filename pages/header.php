@@ -36,11 +36,13 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             </mdui-top-app-bar-title>
 
             <div class="flex flex-grow-1 justify-end">
-                <mdui-text-field placeholder="搜索" disabled variant="outlined" class="mt--4px" type="search" id="matecho-top-search-bar">
-                    <mdui-button-icon slot="icon" id="matecho-top-search-btn">
-                        <mdui-icon-search></mdui-icon-search>
-                    </mdui-button-icon>
-                </mdui-text-field>
+                <form action="/" role="search">
+                    <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" class="mt--4px" type="search" id="matecho-top-search-bar">
+                        <mdui-button-icon slot="icon" id="matecho-top-search-btn">
+                            <mdui-icon-search></mdui-icon-search>
+                        </mdui-button-icon>
+                    </mdui-text-field>
+                </form>
             </div>
             <mdui-button-icon href="<?php $this->options->adminUrl(); ?>" target="_blank">
                 <?php if ($this->user->hasLogin()){ ?>

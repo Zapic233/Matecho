@@ -1,4 +1,24 @@
-
 .mdui-prose pre code {
     display: block;
- }
+}
+
+.matecho-comment-parent {
+    margin-bottom: 0.5rem;
+}
+
+.matecho-comment-parent:last-child {
+    margin-bottom: 0;
+}
+
+.matecho-comment-wrapper .mdui-prose p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.matecho-comment-form .matecho-comment-cancel-btn {
+    display: none;
+}
+
+.matecho-comment-form.matecho-comment-form__reply .matecho-comment-cancel-btn {
+    display: inline-block;
+}

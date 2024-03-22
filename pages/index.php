@@ -28,7 +28,7 @@ $this->need('header.php');Typecho\Plugin::export();
                 <?php
                 if ($this->archiveType === 'index') {
                     $this->options->description();
-                } else if ($this->archiveType === "category") {
+                } else if ($this->archiveType === "category" || $this->archiveType == "tag" || $this->archiveType === "search") {
                     printf("共 %d 篇文章", $this->getTotal());
                 } else {
                     echo $this->archiveType;
@@ -80,9 +80,15 @@ $this->need('header.php');Typecho\Plugin::export();
             <?php } ?>
 
         </div>
+        <?php if($this->getTotal() == 0) { ?>
+            <div class="pt-8 w-full flex items-center flex-col justify-center text-3xl opacity-50">
+                <mdui-icon-inbox class="w-24 h-24 mb-4"></mdui-icon-inbox>
+                没有文章
+            </div>
+        <?php } ?>
         <?php $TotalPage=ceil($this->getTotal()/$this->parameter->pageSize); ?>
         <?php if ($TotalPage > 1){ ?>
-            <div class="flex justify-center my-3">
+            <div class="flex justify-center mt-6 mb-3">
                 <mdui-segmented-button-group>
                     <?php if ($this->_currentPage > 1) {
                         $this->pageLink('<mdui-segmented-button>上一页</mdui-segmented-button>');
