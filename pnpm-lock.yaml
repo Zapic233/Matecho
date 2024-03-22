@@ -11,12 +11,21 @@ dependencies:
   '@types/node':
     specifier: ^20.11.28
     version: 20.11.28
+  '@types/nprogress':
+    specifier: ^0.2.3
+    version: 0.2.3
   fast-glob:
     specifier: ^3.3.2
     version: 3.3.2
   mdui:
     specifier: ^2.0.6
     version: 2.0.6
+  nprogress:
+    specifier: ^0.2.0
+    version: 0.2.0
+  pjax:
+    specifier: ^0.2.8
+    version: 0.2.8
   typescript:
     specifier: ^5.4.2
     version: 5.4.2
@@ -822,6 +831,10 @@ packages:
       undici-types: 5.26.5
     dev: false
 
+  /@types/nprogress@0.2.3:
+    resolution: {integrity: sha512-k7kRA033QNtC+gLc4VPlfnue58CM1iQLgn1IMAU8VPHGOj7oIHPp9UlhedEnD/Gl8evoCjwkZjlBORtZ3JByUA==}
+    dev: false
+
   /@types/trusted-types@2.0.7:
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
     dev: false
@@ -1530,6 +1543,10 @@ packages:
       path-key: 3.1.1
     dev: false
 
+  /nprogress@0.2.0:
+    resolution: {integrity: sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==}
+    dev: false
+
   /ofetch@1.3.3:
     resolution: {integrity: sha512-s1ZCMmQWXy4b5K/TW9i/DtiN8Ku+xCiHcjQ6/J/nDdssirrQNOoB165Zu8EqLMA2lln1JUth9a0aW9Ap2ctrUg==}
     dependencies:
@@ -1584,6 +1601,10 @@ packages:
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
+    dev: false
+
+  /pjax@0.2.8:
+    resolution: {integrity: sha512-IeVXXIZJzxVDYzV2Td5MZkWJcny8JRCz2dQ1xxhIUbIFgP+08ymV7WXVtbF8NlUd2MZKH1cNvhuTOd2QAOGcOg==}
     dev: false
 
   /pkg-types@1.0.3:

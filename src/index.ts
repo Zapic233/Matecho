@@ -1,11 +1,19 @@
-import type { NavigationDrawer, Button, ButtonIcon, TextField, LayoutMain, TopAppBar } from "mdui";
+import { type NavigationDrawer, type Button, type ButtonIcon, type TextField, type LayoutMain, type TopAppBar, Switch } from "mdui";
 import "virtual:uno.css";
 import { setColorScheme } from "mdui/functions/setColorScheme";
 import { observeResize } from "mdui/functions/observeResize";
+import Pjax from "pjax";
+import np from "nprogress";
 
-import "./components";
+import '@mdui/icons/insert-drive-file';
 
-function init() {
+import "virtual:components/header";
+import "virtual:components/functions";
+import "virtual:components/sidebar";
+import "virtual:components/footer";
+
+function initOnce() {
+
     // Drawer
     const drawer = document.querySelector("#matecho-drawer") as NavigationDrawer;
     const topBtn = document.querySelector("#matecho-drawer-btn") as Button;
@@ -18,20 +26,21 @@ function init() {
     // Search bar
     const searchBtn = document.querySelector("#matecho-top-search-btn") as ButtonIcon;
     const searchInput = document.querySelector("#matecho-top-search-bar") as TextField;
+    const searchInputHidden = document.querySelector("#matecho-top-search-bar__hidden") as HTMLInputElement;
     searchBtn.addEventListener("click", () => {
         searchInput.disabled = false;
         setTimeout(() => searchInput.focus(), 0);
+    });
+    searchInput.addEventListener("change", () => {
+        searchInputHidden.value = searchInput.value;
     });
 
     searchInput.addEventListener("blur", () => {
         searchInput.disabled = true;
     });
 
-    // whatever
-    setColorScheme('#e91e63');
-
-    handleLabelShrink(document.getElementById("matecho-app-bar-large-label")!);
-    
+    const themeColor = (document.querySelector("meta[name=theme-color]") as HTMLMetaElement).content || "#e91e63";
+    setColorScheme(themeColor);
 
     const mainWrapperPaddingWorkaround = new MutationObserver(() => {
         if (!drawer.open) {
@@ -42,6 +51,19 @@ function init() {
         attributes: true,
         attributeFilter: [ "style" ]
     });
+
+    new Pjax({
+        selectors: [
+          "title",
+          "#matecho-pjax-main",
+          "#matecho-app-bar-title",
+          "#matecho-sidebar-list",
+          "meta[name=matecho-template]"
+        ],
+        cacheBust: false
+    });
+
+    init();
 };
 
 function handleLabelShrink(el: HTMLElement) {
@@ -75,6 +97,38 @@ function handleLabelShrink(el: HTMLElement) {
             appBar.scrollBehavior = "shrink";
         }
     });
+    np.configure({
+        showSpinner: false
+    });
 }
 
-init();
+async function init() {
+    const header = document.getElementById("matecho-app-bar-large-label");
+    header && handleLabelShrink(header);
+
+    const CurrentModule = document.querySelector("meta[name=matecho-template]") as HTMLMetaElement;
+    switch (CurrentModule.content) {
+        case "post":
+        case "page":
+            (await import("./page/post")).init();
+            break;
+        default:
+            import("./page/index");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => initOnce());
+document.addEventListener("pjax:complete", () => {
+    np.done();
+    const wrapper = document.querySelector("#matecho-pjax-main");
+    if (wrapper) {
+        wrapper.addEventListener("animationend", () => {
+            wrapper.classList.remove("slide-in");
+        }, { once: true })
+        wrapper.classList.add("slide-in");
+    }
+    init();
+});
+document.addEventListener("pjax:send", () => {
+    np.start();
+});

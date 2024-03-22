@@ -11,9 +11,9 @@
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 /** @var \Widget\Archive $this */
-$this->need('header.php');Typecho\Plugin::export();
+$this->need('header.php');
+Typecho\Plugin::export();
 ?>
-    <link rel="stylesheet" href="src/style/index.css">
     <div id="matecho-app-bar-large-label">
         <div class="pl-4 md:pl-12 flex flex-col" id="matecho-app-bar-large-label__inner">
             <div class="truncate text-4xl md:text-5xl line-height-[1.4]!">
@@ -105,4 +105,6 @@ $this->need('header.php');Typecho\Plugin::export();
             </div>
         <?php } ?>
     </div>
+    <!--matecho-assets-injection-->
+    <link rel="stylesheet" href="@/style/index.css">
 <?php $this->need('footer.php'); ?>

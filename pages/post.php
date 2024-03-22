@@ -4,11 +4,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /** @var \Widget\Archive $this */
 $this->need('header.php');
 ?>
-
-    <link rel="stylesheet" href="src/style/post.css">
     <div class="mx-auto md:px-0 box-border max-w-768px">
-    
-    <div id="matecho-app-bar-large-label">    
+        <div id="matecho-app-bar-large-label">    
         <div class="box-border px-2 md:pl-0 " id="matecho-app-bar-large-label__inner">
             <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
                 <?php $this->category(" | "); ?>
@@ -31,7 +28,7 @@ $this->need('header.php');
                 ?>
             </div>
         </div>
-    </div>
+        </div>
         <div class="mb-8 md:rounded-xl transition block h-240px w-full overflow-hidden bg-center bg-cover" style="background-image: url('<?php Matecho::cover($this);?>')">
         </div>
         <div class="w-full px-2 box-border">
@@ -110,10 +107,10 @@ $this->need('header.php');
                             
                         </div>
                     </form>
-                    <script src="src/comments.ts" type="module"></script>
                 </div>
             </div>
         </div>
     </div>
-<?php $this->need('sidebar.php'); ?>
+    <!--matecho-assets-injection-->
+    <link rel="stylesheet" href="@/style/post.css">
 <?php $this->need('footer.php'); ?>

@@ -1,6 +1,7 @@
 import type { Button } from "mdui";
+import "virtual:components/post";
 
-function init() {
+export function init() {
     const list = document.querySelector("#matecho-comment-list")!;
     const formWrapper = document.querySelector(".matecho-comment-form")! as HTMLDivElement;
     const form = formWrapper.querySelector("form")! as HTMLFormElement;
@@ -34,5 +35,3 @@ function init() {
         formWrapper.classList.add("matecho-comment-form__reply");
     });
 }
-
-document.addEventListener("DOMContentLoaded", () => init());

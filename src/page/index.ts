@@ -1,0 +1,1 @@
+import "virtual:components/index";
