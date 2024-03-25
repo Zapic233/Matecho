@@ -22,3 +22,11 @@
 .matecho-comment-form.matecho-comment-form__reply .matecho-comment-cancel-btn {
     display: inline-block;
 }
+.matecho-comment-form__loading .matecho-comment-loading-mask {
+    opacity: 1;
+    pointer-events: initial;
+} 
+.matecho-comment-form__loading form {
+    opacity: 0.3;
+    pointer-events: none;
+}

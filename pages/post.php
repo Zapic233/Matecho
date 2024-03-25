@@ -79,29 +79,33 @@ $this->need('header.php');
                 <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50">没有评论</div>
                 <?php } ?>
-                <div class="mt-4 matecho-comment-form" id="<?php $this->respondId(); ?>">
+                <div class="pa-4 matecho-comment-form relative w-full box-border" id="<?php $this->respondId(); ?>">
+                    <div class="matecho-comment-loading-mask opacity-0 transition pointer-events-none absolute top-0 left-0 w-full h-full flex items-center justify-center z-10000">
+                        <mdui-circular-progress></mdui-circular-progress>
+                    </div>
                     <div class="mb-4 text-xl matecho-comment-form-title">发表评论</div>
-                    <form method="post" action="<?php $this->commentUrl() ?>" role="form">
+                    <!-- "data-pjax-state" prevent Pjax handle this form. -->
+                    <form class="transition" method="post" action="<?php $this->commentUrl() ?>" role="form" data-pjax-state>
                         <?php if ($this->user->hasLogin()): ?>
                             <p><?php _e('登录身份: '); ?><a
                                 href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>. <a
                                 href="<?php $this->options->logoutUrl(); ?>" title="Logout"><?php _e('退出'); ?> &raquo;</a>
                             </p>
                         <?php else: ?>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 grid-gap-2">
-                                <mdui-text-field label="称呼" variant="outlined" type="text" name="author" id="author"
+                            <div class="flex flex-wrap">
+                                <mdui-text-field class="w-1/2 sm:w-1/3 pr-1" label="称呼" variant="outlined" type="text" name="author"
                                        value="<?php $this->remember('author'); ?>" required></mdui-text-field>
-                                <mdui-text-field label="邮箱" variant="outlined" type="email" name="mail" id="mail"
+                                <mdui-text-field class="w-1/2 sm:w-1/3 pl-1 sm:pr-1" label="邮箱" variant="outlined" type="email" name="mail"
                                        value="<?php $this->remember('mail'); ?>" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></mdui-text-field>
-                                <mdui-text-field label="网址" variant="outlined" type="url" name="url" id="url"
+                                <mdui-text-field class="w-full sm:w-1/3 pt-2 sm:pt-0 sm:pl-1" label="网址" variant="outlined" type="url" name="url"
                                        value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>></mdui-text-field>
                             
                             </div>
                         <?php endif; ?>
-                        <div class="flex flex-gap-2 flex-row md:flex-col items-center mt-4">
-                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" id="textarea" required><?php $this->remember('text'); ?></mdui-text-field>
+                        <div class="flex flex-gap-2 flex-col items-center mt-4">
+                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" required><?php $this->remember('text'); ?></mdui-text-field>
                             <div class="mt-2">
-                                <mdui-button type="submit">评论</mdui-button>
+                                <mdui-button class="matecho-comment-submit-btn" type="submit">评论</mdui-button>
                                 <mdui-button class="matecho-comment-cancel-btn" variant="outlined">取消回复</mdui-button>
                             </div>
                             
@@ -113,4 +117,13 @@ $this->need('header.php');
     </div>
     <!--matecho-assets-injection-->
     <link rel="stylesheet" href="@/style/post.css">
+    <script type="text/javascript">
+        (function () {
+            ['scroll', 'mousemove', 'keyup', 'touchstart'].map(v => 
+                document.addEventListener(v, function () {
+                    window.__MATECHO_ANTI_SPAM__ = <?php echo \Typecho\Common::shuffleScriptVar($this->security->getToken($this->request->getRequestUrl()));?>
+                }, { once: true, passive: true})
+            );
+        })();
+    </script>
 <?php $this->need('footer.php'); ?>

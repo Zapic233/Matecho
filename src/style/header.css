@@ -114,13 +114,28 @@ body ::-webkit-scrollbar-thumb {
 }
 
 .slide-in {
-    animation: slide-in 0.5s cubic-bezier(0.2, 0, 0, 1);
+    animation: slide-in .5s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.slide-out {
+    animation: slide-out .5s cubic-bezier(0.2, 0, 0, 1);
 }
 
 @keyframes slide-in {
     from {
         opacity: 0;
         transform: translateX(75px)
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    from {
+        opacity: 0;
+        transform: translateX(-75px)
     }
     to {
         opacity: 1;

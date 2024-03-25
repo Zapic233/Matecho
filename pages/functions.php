@@ -83,7 +83,7 @@ class Matecho {
                 
             </div>
             <?php if (count($comments->children) > 0) { ?>
-                <div class="w-full pl-56px box-border mt-4">
+                <div class="w-full pl-56px box-border mt-4 matecho-comment-children-list">
                     <?php 
                         $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
                         $r = $row->getValue($comments);
@@ -121,8 +121,9 @@ class Matecho {
                         回复
                     </mdui-button>
                 </div>
-            </div>
-            <?php if (count($comments->children) > 0) { 
+            </div>      
+        </div>
+        <?php if (count($comments->children) > 0) { 
                 $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
                 $r = $row->getValue($comments);
                 foreach($comments->children as $child) {
@@ -130,8 +131,7 @@ class Matecho {
                     self::toComment($comments);
                 }                
                 $row->setValue($comments, $r); 
-            } ?>         
-        </div>
+            } ?>   
     <?php }
     }
 }

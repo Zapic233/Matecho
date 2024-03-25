@@ -26,13 +26,9 @@ function initOnce() {
     // Search bar
     const searchBtn = document.querySelector("#matecho-top-search-btn") as ButtonIcon;
     const searchInput = document.querySelector("#matecho-top-search-bar") as TextField;
-    const searchInputHidden = document.querySelector("#matecho-top-search-bar__hidden") as HTMLInputElement;
     searchBtn.addEventListener("click", () => {
         searchInput.disabled = false;
         setTimeout(() => searchInput.focus(), 0);
-    });
-    searchInput.addEventListener("change", () => {
-        searchInputHidden.value = searchInput.value;
     });
 
     searchInput.addEventListener("blur", () => {
@@ -62,6 +58,25 @@ function initOnce() {
         ],
         cacheBust: false
     });
+    
+    document.addEventListener("pjax:success", (e: any) => {
+        const wrapper = document.querySelector("#matecho-pjax-main");
+        if (wrapper) {
+            const className = e.backward ? "slide-out" : "slide-in";
+            wrapper.addEventListener("animationend", () => {
+                wrapper.classList.remove(className);
+            }, { once: true })
+            wrapper.classList.add(className);
+        }
+        init();
+    });
+    
+    document.addEventListener("pjax:complete", () => {
+        np.done();
+    });
+    document.addEventListener("pjax:send", () => {
+        np.start();
+    });
 
     init();
 };
@@ -79,7 +94,12 @@ function handleLabelShrink(el: HTMLElement) {
         if (appBar.shrink) {
             el.classList.add("shrink") ;
         } else {
+            const o = appBar.scrollBehavior;
+            el.addEventListener("transitionend", () => {
+                appBar.scrollBehavior = o;
+            }, { once: true });
             el.classList.remove("shrink");
+            appBar.scrollBehavior = undefined;
             document.scrollingElement!.scrollTop = 0;
         }
     });
@@ -87,8 +107,8 @@ function handleLabelShrink(el: HTMLElement) {
         attributes: true,
         attributeFilter: [ "shrink" ]
     });
-    const ro = observeResize(inner, () => {
-        const h = inner.getBoundingClientRect().height;
+    const ro = observeResize(inner, (e) => {
+        const h = e.contentRect.height;
         const scroll = document.scrollingElement!;
         el.style.height = h + "px";
         if (h > (scroll.scrollHeight - window.screen.availHeight)) {
@@ -118,17 +138,3 @@ async function init() {
 }
 
 document.addEventListener("DOMContentLoaded", () => initOnce());
-document.addEventListener("pjax:complete", () => {
-    np.done();
-    const wrapper = document.querySelector("#matecho-pjax-main");
-    if (wrapper) {
-        wrapper.addEventListener("animationend", () => {
-            wrapper.classList.remove("slide-in");
-        }, { once: true })
-        wrapper.classList.add("slide-in");
-    }
-    init();
-});
-document.addEventListener("pjax:send", () => {
-    np.start();
-});

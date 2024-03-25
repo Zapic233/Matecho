@@ -41,11 +41,7 @@ Typecho\Plugin::export();
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4 grid-gap-4">
             <?php while ($this->next()){ ?>
                 <mdui-card clickable="false" class="flex flex-col matecho-article-card">
-                        <a href="<?php $this->permalink(); ?>" class="overflow-hidden h-240px rounded-xl">
-                            <div class="matecho-article-cover block w-full h-full bg-center bg-cover h-full" style="background-image: url('<?php Matecho::cover($this);?>')">
-                                
-                            </div>
-                        </a>
+                        <a href="<?php $this->permalink(); ?>" class="h-240px rounded-xl block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
                         <div class="pa-4 flex-grow-1">
                             <div class="text-sm mb-1 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
                                 <?php $this->category(" | "); ?>
