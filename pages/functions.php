@@ -132,7 +132,9 @@ class Matecho {
                     <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
                         回复
                     </mdui-button>
-                    <?php echo $comments->status; ?>
+                    <?php if ($comments->status === "waiting") { ?>
+                        <span class="ml-2 text-sm">等待审核</span>
+                    <?php } ?>
                 </div>
             </div>      
         </div>
