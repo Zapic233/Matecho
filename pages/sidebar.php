@@ -6,32 +6,26 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 <mdui-navigation-drawer class="fixed! z-10000 top-64px! md:w-240px" close-on-overlay-click id="matecho-drawer">
     <mdui-list id="matecho-sidebar-list">
+        
+        <mdui-list-subheader>分类</mdui-list-subheader>
         <a href="/">
             <mdui-list-item <?php Matecho::activePage($this, "index"); ?> >
-                <mdui-icon-home slot="icon"></mdui-icon-home>
                 首页
             </mdui-list-item>
         </a>
-        <mdui-collapse accordion value="categories"> 
-            <mdui-collapse-item value="categories">
-                <mdui-list-item slot="header">
-                    <mdui-icon-category slot="icon"></mdui-icon-category>
-                    分类
-                </mdui-list-item>
-                <?php 
-                    $this->widget('Widget_Metas_Category_List')->to($category);
-                    /** @var \Widget\Metas\Category\Rows $category */
-		            while ($category->next()) {
-                        if ($category->parent != 0) continue;
-                    ?>
-                        <a href="<?php $category->permalink() ?>">
-                            <mdui-list-item class="pl-10" <?php Matecho::activePage($this, "category", $category->mid); ?> >
-                                <?php echo $category->name ?>
-                            </mdui-list-item>
-                        </a>
-		        <?php } ?>
-            </mdui-collapse-item>
-        </mdui-collapse>
+        <?php 
+            $this->widget('Widget_Metas_Category_List')->to($category);
+            /** @var \Widget\Metas\Category\Rows $category */
+		    while ($category->next()) {
+                if ($category->parent != 0) continue;
+            ?>
+                <a href="<?php $category->permalink() ?>">
+                    <mdui-list-item <?php Matecho::activePage($this, "category", $category->mid); ?> >
+                        <?php echo $category->name ?>
+                        <span class="text-xs opacity-60" slot="description"><?php echo $category->description ?></span>
+                    </mdui-list-item>
+                </a>
+		<?php } ?>
         <mdui-divider></mdui-divider>
         <?php 
             $this->widget('Widget_Contents_Page_List')->to($page);

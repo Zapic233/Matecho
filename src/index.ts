@@ -1,4 +1,4 @@
-import { type NavigationDrawer, type Button, type ButtonIcon, type TextField, type LayoutMain, type TopAppBar, Switch } from "mdui";
+import { type NavigationDrawer, type Button, type ButtonIcon, type TextField, type LayoutMain, type TopAppBar } from "mdui";
 import "virtual:uno.css";
 import { setColorScheme } from "mdui/functions/setColorScheme";
 import { observeResize } from "mdui/functions/observeResize";
@@ -6,6 +6,7 @@ import Pjax from "pjax";
 import np from "nprogress";
 
 import '@mdui/icons/insert-drive-file';
+import '@mdui/icons/link';
 
 import "virtual:components/header";
 import "virtual:components/functions";
@@ -76,6 +77,15 @@ function initOnce() {
     });
     document.addEventListener("pjax:send", () => {
         np.start();
+    });
+
+    document.addEventListener("pjax:error", (e) => {
+        const newUrl = (e as any)?.request?.responseURL;
+        if (newUrl) {
+            location.href = newUrl;
+        } else {
+            location.reload();
+        }
     });
 
     init();

@@ -3,6 +3,7 @@ use Typecho\Widget\Helper\Form\Element\Text;
 use Typecho\Widget\Helper\Form;
 use Utils\Helper;
 use Widget\Archive;
+use Exception;
 
 function ThemeConfig(Form $form): void {
     $form->addInput(new Text("ThemeColor", null, "#E91E63", "主题色", "十六进制的主题色"));
@@ -41,7 +42,14 @@ class Matecho {
 
     }
     static function pageIcon(string | null $template): string {
-        return "insert-drive-file";
+        switch ($template) {
+            case "page-links.php":
+                return "link";
+            case "page-board.php":
+                return "mode-comment--outlined";
+            default:
+                return "insert-drive-file";
+        }
     }
 
     static function activePage(Archive $archive, string $type, int $id = -1): void {
@@ -143,7 +151,7 @@ class Matecho {
     static function links(): array {
         $options = \Typecho\Widget::widget('Widget_Options');
 		if (!isset($options->plugins['activated']['Links'])) {
-			throw Exception("请先激活友链插件.");
+			throw new Exception("请先激活友链插件");
 		}
         $db = \Typecho\Db::get();
 		$prefix = $db->getPrefix();

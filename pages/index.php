@@ -29,7 +29,11 @@ Typecho\Plugin::export();
                 if ($this->archiveType === 'index') {
                     $this->options->description();
                 } else if ($this->archiveType === "category" || $this->archiveType == "tag" || $this->archiveType === "search") {
-                    printf("共 %d 篇文章", $this->getTotal());
+                    if ($this->description) {
+                        echo $this->description;
+                    } else {
+                        printf("共 %d 篇文章", $this->getTotal());
+                    }
                 } else {
                     echo $this->archiveType;
                 }
