@@ -1,5 +1,6 @@
 import type { TextField, Button } from "mdui";
 import {Snackbar} from "mdui/components/snackbar";
+
 import "virtual:components/post";
 
 function openSnackbar(msg: string) {
@@ -96,6 +97,7 @@ export function init() {
                     });
                     
                     (formWrapper.querySelector("[name=text]") as TextField).value = "";
+                    document.getElementById("matecho-no-comment-placeholder")?.remove();
                     clearFormReplyState();
                 } else {
                     const errMsg = (root.querySelector(".container") as HTMLDivElement)?.innerText;
@@ -107,5 +109,8 @@ export function init() {
                 formWrapper.classList.remove("matecho-comment-form__loading")
             });
         }
+    });
+    import("virtual:prismjs").then(async ({ default: Prism }) => {
+        Prism.highlightAll();
     });
 }

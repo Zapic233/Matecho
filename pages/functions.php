@@ -73,7 +73,11 @@ class Matecho {
                     
                 <div class="opacity-60 text-sm">
                     <?php $comments->date(); ?>
+                    <?php if ($comments->status === "waiting") { ?>
+                        <span class="ml-2 text-sm">等待审核</span>
+                    <?php } ?>
                 </div>
+                
                 <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
                     回复
                 </mdui-button>
@@ -120,6 +124,7 @@ class Matecho {
                     <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
                         回复
                     </mdui-button>
+                    <?php echo $comments->status; ?>
                 </div>
             </div>      
         </div>
@@ -133,5 +138,19 @@ class Matecho {
                 $row->setValue($comments, $r); 
             } ?>   
     <?php }
+    }
+
+    static function links(): array {
+        $options = \Typecho\Widget::widget('Widget_Options');
+		if (!isset($options->plugins['activated']['Links'])) {
+			throw Exception("请先激活友链插件.");
+		}
+        $db = \Typecho\Db::get();
+		$prefix = $db->getPrefix();
+		$options = \Typecho\Widget::widget('Widget_Options');
+		$sql = $db->select()->from($prefix.'links');
+		$sql = $sql->order($prefix.'links.order', \Typecho\Db::SORT_ASC);
+		$links = $db->fetchAll($sql);
+        return $links;
     }
 }

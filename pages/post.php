@@ -48,7 +48,7 @@ $this->need('header.php');
                     </div>
                 </div>
             </div>
-            <article class="mdui-prose mt-8 box-border">
+            <article class="mdui-prose mt-8 box-border line-numbers">
                 <?php echo $this->content; ?>
             </article>
             <?php
@@ -77,7 +77,7 @@ $this->need('header.php');
                     ?>  
                 </div>
                 <?php if ($comments->___length() === 0) { ?>
-                    <div class="my-12 text-md text-center opacity-50">没有评论</div>
+                    <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
                 <div class="pa-4 matecho-comment-form relative w-full box-border" id="<?php $this->respondId(); ?>">
                     <div class="matecho-comment-loading-mask opacity-0 transition pointer-events-none absolute top-0 left-0 w-full h-full flex items-center justify-center z-10000">
