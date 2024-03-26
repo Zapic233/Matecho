@@ -1,7 +1,9 @@
 import { type NavigationDrawer, type Button, type ButtonIcon, type TextField, type LayoutMain, type TopAppBar } from "mdui";
+
 import "virtual:uno.css";
 import { setColorScheme } from "mdui/functions/setColorScheme";
 import { observeResize } from "mdui/functions/observeResize";
+import { breakpoint } from "mdui/functions/breakpoint";
 import Pjax from "pjax";
 import np from "nprogress";
 
@@ -77,6 +79,9 @@ function initOnce() {
     });
     document.addEventListener("pjax:send", () => {
         np.start();
+        if (breakpoint().down("md")) {
+            drawer.open = false;
+        }
     });
 
     document.addEventListener("pjax:error", (e) => {
