@@ -3,22 +3,10 @@ import {readFile} from "node:fs/promises";
 import * as fs from "node:fs";
 import * as path from "path"
 import fg from "fast-glob"
+import { hash } from "./UnoCSSClassMangle";
 
 export default (): Plugin => {
     const codeTokens: Record<string, string> = {};
-
-    function hash(str: string) {
-        let i;
-        let l;
-        let hval = 0x811c9dc5;
-
-        for (i = 0, l = str.length; i < l; i++) {
-            hval ^= str.charCodeAt(i);
-            hval +=
-                (hval << 1) + (hval << 4) + (hval << 7) + (hval << 8) + (hval << 24);
-        }
-        return `00000${(hval >>> 0).toString(36)}`.slice(-6);
-    }
     const AutoComponents = {
         preloaded: [] as string[],
         from: ["header", "sidebar", "footer", "functions"]

@@ -3,6 +3,7 @@ import unocss from "unocss/vite";
 import fg from "fast-glob";
 import Matecho from "./plugins/Matecho";
 import PrismJS from "./plugins/Prism";
+import UnoCSSClassMangle from "./plugins/UnoCSSClassMangle";
 
 export default defineConfig((async (env) => {
     const isProd = env.mode === "production";
@@ -19,7 +20,12 @@ export default defineConfig((async (env) => {
                         "xl": "1440px",
                         "xxl": "1920px"
                     }
-                }
+                },
+                transformers: [
+                    UnoCSSClassMangle({
+                        classPrefix: "m-"
+                    })
+                ]
             }),
             Matecho(),
             PrismJS({

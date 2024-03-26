@@ -9,6 +9,7 @@
     "@types/node": "^20.11.28",
     "@types/nprogress": "^0.2.3",
     "@types/prismjs": "^1.26.3",
+    "@unocss/core": "^0.58.6",
     "fast-glob": "^3.3.2",
     "mdui": "^2.0.6",
     "nprogress": "^0.2.0",

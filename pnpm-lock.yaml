@@ -20,6 +20,9 @@ dependencies:
   '@types/prismjs':
     specifier: ^1.26.3
     version: 1.26.3
+  '@unocss/core':
+    specifier: ^0.58.6
+    version: 0.58.6
   fast-glob:
     specifier: ^3.3.2
     version: 3.3.2
