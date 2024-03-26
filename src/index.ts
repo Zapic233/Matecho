@@ -133,7 +133,8 @@ function handleLabelShrink(el: HTMLElement) {
         }
     });
     np.configure({
-        showSpinner: false
+        showSpinner: false,
+        trickle: true
     });
 }
 
