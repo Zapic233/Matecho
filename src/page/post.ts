@@ -113,4 +113,15 @@ export function init() {
     import("virtual:prismjs").then(async ({ default: Prism }) => {
         Prism.highlightAll();
     });
+    import("@fancyapps/ui").then(({ Fancybox: fb }) => {
+        document.querySelectorAll<HTMLImageElement>("article.mdui-prose img").forEach((v) => {
+            v.setAttribute("data-fancybox", "article");
+            if (v.alt ?? v.title) {
+                v.setAttribute("data-caption", v.alt ?? v.title)
+            }
+        });
+        fb.defaults.Hash = false;
+        fb.bind("[data-fancybox]");
+    });
+    import("@fancyapps/ui/dist/fancybox/fancybox.css");
 }

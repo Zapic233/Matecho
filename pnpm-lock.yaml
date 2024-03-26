@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@fancyapps/ui':
+    specifier: ^5.0.35
+    version: 5.0.35
   '@mdui/icons':
     specifier: ^1.0.2
     version: 1.0.2
@@ -582,6 +585,10 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@fancyapps/ui@5.0.35:
+    resolution: {integrity: sha512-2aTAksmugIDmadEEgK41i3RyNGE2zK7liOSXC41Oh7Lh1RBHpNyz97vbzKfuik9Pwx5B8hGGd8DEPcjyXbS3NQ==}
+    dev: false
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}

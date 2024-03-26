@@ -4,6 +4,7 @@
     "./node_modules/mdui/web-types.zh-cn.json"
   ],
   "dependencies": {
+    "@fancyapps/ui": "^5.0.35",
     "@mdui/icons": "^1.0.2",
     "@types/node": "^20.11.28",
     "@types/nprogress": "^0.2.3",
