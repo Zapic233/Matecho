@@ -1,5 +1,5 @@
 import type { TextField, Button } from "mdui";
-import {Snackbar} from "mdui/components/snackbar";
+import { Snackbar } from "mdui/components/snackbar";
 
 import "virtual:components/post";
 

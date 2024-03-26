@@ -33,7 +33,7 @@ $this->need('header.php');
         </div>
         <div class="w-full px-2 box-border">
             <div class="flex gap-2">
-                <mdui-avatar src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
+                <mdui-avatar aria-label="<?php $this->author() ?>" src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
                 <div class="flex flex-col">
                     <div><?php $this->author(); ?></div>
                     <div class="flex flex-wrap flex-grow-1 opacity-60">

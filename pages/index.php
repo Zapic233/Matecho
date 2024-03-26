@@ -45,12 +45,12 @@ Typecho\Plugin::export();
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4 grid-gap-4">
             <?php while ($this->next()){ ?>
                 <mdui-card clickable="false" class="flex flex-col matecho-article-card">
-                        <a href="<?php $this->permalink(); ?>" class="h-240px rounded-xl block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
+                        <a href="<?php $this->permalink(); ?>" title="<?php $this->title(); ?>" class="h-240px rounded-xl block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
                         <div class="pa-4 flex-grow-1">
                             <div class="text-sm mb-1 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
                                 <?php $this->category(" | "); ?>
                             </div>
-                            <a class="text-3xl block line-height-10 matecho-article-link" href="<?php $this->permalink(); ?>">
+                            <a title="<?php $this->title(); ?>" class="text-3xl block line-height-10 matecho-article-link" href="<?php $this->permalink(); ?>">
                                 <?php $this->title(); ?>
                             </a>
                             <div class="mt-4 text-sm font-300 opacity-80 line-clamp-2">
@@ -68,7 +68,7 @@ Typecho\Plugin::export();
                                     <?php $this->commentsNum('%d'); ?>
                                 </mdui-button>
                             </div>
-                            <a href="<?php $this->permalink(); ?>">
+                            <a title="<?php $this->title(); ?>" href="<?php $this->permalink(); ?>">
                                 <mdui-button class="matecho-article-enter" variant="text">
                                     阅读全文
                                     <mdui-icon-chevron-right slot="end-icon"></mdui-icon-chevron-right>

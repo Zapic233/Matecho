@@ -25,7 +25,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <body>
     <mdui-layout>
         <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="fixed! matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
-            <mdui-button-icon id="matecho-drawer-btn">
+            <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
                 <mdui-icon-menu></mdui-icon-menu>
             </mdui-button-icon>
             <mdui-top-app-bar-title class="matecho-app-bar-title">
@@ -41,13 +41,13 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <div class="flex flex-grow-1 justify-end">
                 <form action="/" method="post" role="search" enctype="multipart/form-data">
                     <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" class="mt--4px" type="search" id="matecho-top-search-bar">
-                        <mdui-button-icon slot="icon" id="matecho-top-search-btn">
+                        <mdui-button-icon name="搜索" slot="icon" id="matecho-top-search-btn">
                             <mdui-icon-search></mdui-icon-search>
                         </mdui-button-icon>
                     </mdui-text-field>
                 </form>
             </div>
-            <mdui-button-icon href="<?php $this->options->adminUrl(); ?>" target="_blank">
+            <mdui-button-icon name="管理面板" href="<?php $this->options->adminUrl(); ?>" target="_blank" nofollow>
                 <?php if ($this->user->hasLogin()){ ?>
                     <mdui-icon-settings></mdui-icon-settings>
                 <?php } else { ?>

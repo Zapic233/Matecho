@@ -41,7 +41,7 @@ $linksCount = count($links);
                             <mdui-avatar class="mr-2 flex-shrink-0" src="<?php echo $link["image"] ?>"></mdui-avatar>
                             <span class="text-xl truncate"><?php echo $link["name"] ?></span>
                         </div>
-                        <div class="opacity-80 pl-48px"><?php echo $link["description"] ?></div>
+                        <div class="opacity-80 pl-48px text-xs"><?php echo $link["description"] ?></div>
                     </mdui-card>
                 </a>
             <?php } ?>

@@ -5,7 +5,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 ?>
 
 <mdui-navigation-drawer class="fixed! z-10000 top-64px! md:w-240px" close-on-overlay-click id="matecho-drawer">
-    <mdui-list id="matecho-sidebar-list">
+    <nav>
+        <mdui-list id="matecho-sidebar-list">
         <a href="/">
             <mdui-list-item <?php Matecho::activePage($this, "index"); ?> >
                 <mdui-icon-home slot="icon"></mdui-icon-home>
@@ -43,5 +44,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                     </mdui-list-item>
                 </a>
 		<?php } ?>
-    </mdui-list>
+        </mdui-list>
+    </nav>
 </mdui-navigation-drawer>
