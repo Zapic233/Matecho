@@ -77,16 +77,14 @@ export default (): Plugin => {
       if (!isWrite) return;
       for (const key of Object.keys(bundle)) {
         const OutputBundle = bundle[key];
-        if (!("code" in OutputBundle)) continue;
-        if (
-          key.endsWith(".js") &&
-          OutputBundle.code?.includes("/__VIRTUAL_THEME_ROOT__/")
-        ) {
-          OutputBundle.code = OutputBundle.code.replaceAll(
+        if (!("code" in OutputBundle) || !key.endsWith(".js")) continue;
+        OutputBundle.code = OutputBundle.code
+          .replaceAll(
             '"/__VIRTUAL_THEME_ROOT__/"',
             " window.__MATECHO_THEME_ROOT__"
-          );
-        }
+          )
+          // Some CDN will compress this space, that will cause syntax error, fill with dot to prevent this
+          .replaceAll("1 .toString", "1..toString");
       }
     },
     writeBundle(opt, bundle) {
