@@ -57,23 +57,6 @@ body {
   pointer-events: initial;
 }
 
-@media (width >= 1024px) {
-  body ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-}
-
-body ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-  background: 0 0;
-}
-
-body ::-webkit-scrollbar-thumb {
-  background: rgb(0 0 0 / 20%);
-}
-
 #matecho-app-bar {
   height: 4em;
 }
@@ -153,4 +136,31 @@ body ::-webkit-scrollbar-thumb {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+@media (width >= 1024px) {
+  body ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+body ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background: 0 0;
+}
+
+body ::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 20%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .mdui-theme-auto body ::-webkit-scrollbar-thumb {
+    background: rgb(255 255 255 / 20%);
+  }
+}
+
+.mdui-theme-dark body ::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 20%);
 }
