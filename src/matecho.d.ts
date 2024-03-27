@@ -32,3 +32,6 @@ declare global {
 declare interface Window {
   __MATECHO_ANTI_SPAM__: string;
 }
+
+declare const __BUILD_DATE__: string;
+declare const __BUILD_COMMIT_ID__: string;
