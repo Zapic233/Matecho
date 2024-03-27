@@ -157,6 +157,5 @@ export function init() {
       fb.defaults.Hash = false;
       fb.bind("[data-fancybox]");
     });
-    void import("@fancyapps/ui/dist/fancybox/fancybox.css");
   }
 }
