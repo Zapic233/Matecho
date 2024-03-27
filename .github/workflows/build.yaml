@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.sha }}
           lfs: true
 
       - uses: pnpm/action-setup@v3
@@ -37,5 +38,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Matecho
+          name: Matecho-${{ github.sha }}
           path: Matecho
