@@ -127,8 +127,8 @@ export default function transformerCompileClass(
 }
 
 export function hash(str: string) {
-  let i;
-  let l;
+  let i: number;
+  let l: number;
   let hval = 0x811c9dc5;
 
   for (i = 0, l = str.length; i < l; i++) {
