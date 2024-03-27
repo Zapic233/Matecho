@@ -186,6 +186,6 @@ document.addEventListener("DOMContentLoaded", () => initOnce());
 console.log(
   `%c Matecho %c By Zapic \n`,
   "color: #fff; background: #E91E63; padding:5px 0;",
-  "background: #efefef; padding:5px 0;",
+  "color: #000;background: #efefef; padding:5px 0;",
   `${__BUILD_COMMIT_ID__} @ ${__BUILD_DATE__} `
 );
