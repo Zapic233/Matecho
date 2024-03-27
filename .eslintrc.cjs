@@ -17,5 +17,5 @@ module.exports = {
     project: ["tsconfig.json", "tsconfig.node.json"],
     tsconfigRootDir: __dirname
   },
-  ignorePatterns: [".eslintrc.cjs"]
+  ignorePatterns: [".eslintrc.cjs", "postcss.config.cjs"]
 };

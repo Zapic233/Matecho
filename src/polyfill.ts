@@ -14,3 +14,17 @@ if (!Element.prototype.toggleAttribute) {
     return true;
   };
 }
+
+if (!HTMLSlotElement.prototype.assignedElements) {
+  HTMLSlotElement.prototype.assignedElements = function (...args) {
+    return HTMLSlotElement.prototype.assignedNodes
+      .apply(this, args)
+      .filter(n => n instanceof Element) as Element[];
+  };
+}
+
+if (!Element.prototype.getAnimations) {
+  Element.prototype.getAnimations = function () {
+    return [];
+  };
+}
