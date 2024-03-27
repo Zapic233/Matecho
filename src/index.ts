@@ -14,6 +14,7 @@ import { breakpoint } from "mdui/functions/breakpoint";
 import Pjax from "pjax";
 import np from "nprogress";
 
+import "./polyfill";
 import "@mdui/icons/insert-drive-file";
 import "@mdui/icons/link";
 

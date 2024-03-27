@@ -11,6 +11,8 @@
     "@types/prismjs": "^1.26.3",
     "@unocss/core": "^0.58.6",
     "@unocss/eslint-config": "^0.58.7",
+    "@vitejs/plugin-legacy": "^5.3.2",
+    "browserslist-useragent-regexp": "^4.1.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",

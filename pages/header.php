@@ -16,7 +16,16 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		'tag' => _t('标签 %s 下的文章'),
 		'author' => _t('%s 发布的文章')
 	),'',' - '); ?><?php $this->options->title(); ?></title>
-
+    <noscript>
+        <div class='un-br'>
+		    <div>
+				<h1 class='un-br_sf'>{ X_X }</h1> 
+				<h1>必须启用Javascript</h1>
+				<p>您禁止了JavaScript，本站依赖于JavaScript正常工作。</p>
+			</div>
+        </div>
+		<style>html,body{overflow:hidden;}.un-br{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#eee;text-align:center;z-index: 99999;}.un-br_sf{font-size: 5em; color:#999;}@media(prefers-color-scheme:dark){.un-br{color:white;background-color:#1f1f1f;}.un-br_sf{color: #ccc;}}</style>
+	</noscript>
     <link rel="stylesheet" href="@/style/header.css">
     <script type="module" src="@/index.ts"></script>
     <script>window.__MATECHO_THEME_ROOT__="/__VIRTUAL_THEME_ROOT__/";</script>

@@ -4,6 +4,7 @@ import * as fs from "node:fs";
 import * as path from "path";
 import fg from "fast-glob";
 import { hash } from "./UnoCSSClassMangle";
+import { getUserAgentRegex } from "browserslist-useragent-regexp";
 
 export default (): Plugin => {
   const codeTokens: Record<string, string> = {};
@@ -124,10 +125,17 @@ export default (): Plugin => {
           );
         }
 
-        source = source.replaceAll(
-          "/__VIRTUAL_THEME_ROOT__/",
-          "<?php Matecho::assets(); ?>"
-        );
+        source = source
+          .replaceAll("/__VIRTUAL_THEME_ROOT__/", "<?php Matecho::assets(); ?>")
+          .replaceAll(
+            "<%= CompatibilityUserAgentRegex %>",
+            JSON.stringify(
+              getUserAgentRegex({
+                ignoreMinor: true,
+                allowHigherVersions: true
+              }).toString()
+            ).slice(1, -1)
+          );
         fs.unlinkSync(path.join(opt.dir, key));
         fs.writeFileSync(path.join(opt.dir, nKey), source);
         AutoComponents.preloaded = [];
