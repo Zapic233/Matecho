@@ -13,12 +13,11 @@
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "types": ["vite/client"],
     "paths": {
       "@/*": ["src/*"]
     },
-    "lib": ["esnext", "dom", "dom.iterable"]
+    "lib": ["esnext"]
   },
-  "include": ["src/**/*.ts"],
+  "include": ["vite.config.ts", "plugins/**/*.ts"],
   "exclude": ["node_modules"]
 }
