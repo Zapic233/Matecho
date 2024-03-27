@@ -15,7 +15,7 @@ jobs:
         with:
           version: 8
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: 'pnpm'
@@ -32,5 +32,5 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Matecho
-          path: Matecho/
+          name: Matecho.zip
+          path: Matecho
