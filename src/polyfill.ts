@@ -1,3 +1,6 @@
+import "core-js/modules/es.global-this";
+import "core-js/modules/es.array.flat";
+
 if (!Element.prototype.toggleAttribute) {
   Element.prototype.toggleAttribute = function (name, force) {
     if (force !== void 0) force = !!force;

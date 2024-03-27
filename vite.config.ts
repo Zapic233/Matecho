@@ -4,7 +4,6 @@ import fg from "fast-glob";
 import Matecho from "./plugins/Matecho";
 import PrismJS from "./plugins/Prism";
 import UnoCSSClassMangle from "./plugins/UnoCSSClassMangle";
-import legacy from "@vitejs/plugin-legacy";
 import fs from "node:fs";
 
 export default defineConfig(async env => {
@@ -23,10 +22,6 @@ export default defineConfig(async env => {
 
   return {
     plugins: [
-      legacy({
-        renderLegacyChunks: false,
-        modernPolyfills: ["es/global-this", "proposals/array-flat-map"]
-      }),
       unocss({
         theme: {
           breakpoints: {
