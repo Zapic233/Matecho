@@ -29,8 +29,9 @@ Typecho\Plugin::export();
                 if ($this->archiveType === 'index') {
                     $this->options->description();
                 } else if ($this->archiveType === "category" || $this->archiveType == "tag" || $this->archiveType === "search") {
-                    if ($this->description) {
-                        echo $this->description;
+                    $description = Matecho::tpVersion("1.2.1") > 0 ? $this->archiveDescription : $this->description;
+                    if ($description) {
+                        echo $description;
                     } else {
                         printf("共 %d 篇文章", $this->getTotal());
                     }

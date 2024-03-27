@@ -150,6 +150,26 @@ class Matecho {
     <?php }
     }
 
+    static function tpVersion($version) {
+        $version1Parts = explode('.', \Typecho\Common::VERSION);
+        $version2Parts = explode('.', $version);
+    
+        $length = max(count($version1Parts), count($version2Parts));
+    
+        for ($i = 0; $i < $length; $i++) {
+            $part1 = isset($version1Parts[$i]) ? intval($version1Parts[$i]) : 0;
+            $part2 = isset($version2Parts[$i]) ? intval($version2Parts[$i]) : 0;
+    
+            if ($part1 < $part2) {
+                return -1;
+            } elseif ($part1 > $part2) {
+                return 1;
+            }
+        }
+    
+        return 0;
+    }
+
     static function links(): array {
         $options = \Typecho\Widget::widget('Widget_Options');
 		if (!isset($options->plugins['activated']['Links'])) {
