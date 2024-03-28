@@ -43,12 +43,18 @@ function initOnce() {
     "#matecho-top-search-bar"
   ) as TextField;
   searchBtn.addEventListener("click", () => {
-    searchInput.disabled = false;
-    setTimeout(() => searchInput.focus(), 0);
+    if (searchInput.disabled) {
+      searchInput.disabled = false;
+      setTimeout(() => searchInput.focus(), 0);
+    } else {
+      (searchInput.parentElement as HTMLFormElement).requestSubmit();
+    }
   });
 
   searchInput.addEventListener("blur", () => {
-    searchInput.disabled = true;
+    if (!searchInput.value) {
+      searchInput.disabled = true;
+    }
   });
 
   const mainWrapperPaddingWorkaround = new MutationObserver(() => {
