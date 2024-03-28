@@ -54,5 +54,10 @@
       "stylelint --fix --max-warnings 0",
       "prettier --ignore-unknown --write"
     ]
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "pjax@0.2.8": "patches/pjax@0.2.8.patch"
+    }
   }
 }

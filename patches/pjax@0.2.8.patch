@@ -1,0 +1,15 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index 97a639b8bf70a1b8f3fb52bc282991c6c8d31ff6..0000000000000000000000000000000000000000
+diff --git a/index.js b/index.js
+index 307c3997d1f6b758d8a747ef3a820977b7620861..a8dc95fbf1e1a38455b7df91fcd8935c076bcf69 100644
+--- a/index.js
++++ b/index.js
+@@ -36,6 +36,7 @@ var Pjax = function(options) {
+     "popstate",
+     function(st) {
+       if (st.state) {
++        if (st.state.uid === this.lastUid) return;
+         var opt = clone(this.options);
+         opt.url = st.state.url;
+         opt.title = st.state.title;

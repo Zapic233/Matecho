@@ -146,7 +146,6 @@ export function init() {
           v.setAttribute("data-caption", v.alt ?? v.title);
         }
       });
-    fb.defaults.Hash = false;
     fb.bind("[data-fancybox]");
   });
 }

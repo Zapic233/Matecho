@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  pjax@0.2.8:
+    hash: rqw3on2luaayva7nhfyifevc7u
+    path: patches/pjax@0.2.8.patch
+
 dependencies:
   '@fancyapps/ui':
     specifier: ^5.0.35
@@ -61,7 +66,7 @@ dependencies:
     version: 0.2.0
   pjax:
     specifier: ^0.2.8
-    version: 0.2.8
+    version: 0.2.8(patch_hash=rqw3on2luaayva7nhfyifevc7u)
   postcss:
     specifier: ^8.4.38
     version: 8.4.38
@@ -2829,9 +2834,10 @@ packages:
     hasBin: true
     dev: false
 
-  /pjax@0.2.8:
+  /pjax@0.2.8(patch_hash=rqw3on2luaayva7nhfyifevc7u):
     resolution: {integrity: sha512-IeVXXIZJzxVDYzV2Td5MZkWJcny8JRCz2dQ1xxhIUbIFgP+08ymV7WXVtbF8NlUd2MZKH1cNvhuTOd2QAOGcOg==}
     dev: false
+    patched: true
 
   /pkg-types@1.0.3:
     resolution: {integrity: sha512-nN7pYi0AQqJnoLPC9eHFQ8AcyaixBUOwvqc5TDnIKCMEE6I0y8P7OKA7fPexsXGCGxQDl/cmrLAp26LhcwxZ4A==}
