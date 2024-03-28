@@ -38,7 +38,7 @@
   "scripts": {
     "dev": "vite build --watch --mode development",
     "build": "vite build",
-    "prepare": "husky install",
+    "prepare": "husky",
     "type-check": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 . && stylelint --max-warnings 0 **/*.css",
     "lint:fix": "eslint --max-warnings 0 --fix . && stylelint --max-warnings 0 --fix **/*.css && prettier --write -u --log-level silent ."
