@@ -1,28 +1,42 @@
 <?php
+use Typecho\Widget\Helper\Form\Element\Radio;
+use Typecho\Widget\Helper\Form\Element\Hidden;
 use Typecho\Widget\Helper\Form\Element\Text;
 use Typecho\Widget\Helper\Form;
 use Utils\Helper;
 use Widget\Archive;
 use Exception;
-
-function ThemeConfig(Form $form): void {
-    $form->addInput(new Text("ThemeColor", null, "#E91E63", "主题色", "十六进制的主题色"));
+function themeConfig(Form $form): void {
+    Matecho::generateThemeCSS();
+    $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
+    if (!is_writable(__DIR__."/assets/color-scheme.css")) {
+        $form->addInput(new Radio("ColorSchemeCache", [false => "禁用"], false, "颜色主题样式缓存", "(无法写入缓存, 检查主题目录权限) 缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度."));
+    } else {
+        $form->addInput(new Radio("ColorSchemeCache", [true => "启用", false => "禁用"], false, "颜色主题样式缓存", "缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度, 需要主题目录可写, 不需要持久化, 在文件不存在时自动生成."));
+    }
+    $form->addInput(new Hidden("ColorSchemeCSS"));
+    require("settings-header.php");
 }
 
-function ThemeInit(Archive $context): void {
-    Matecho::$ThemeColor = Helper::options()->ThemeColor ?? "#E91E63";
-    Matecho::$GravatarURL = Helper::options()->GravatarURL ?? "https://gravatar.loli.net/avatar/";
+function themeInit(Archive $context): void {
+    Matecho::$ColorScheme = Helper::options()->ColorScheme;
+    Matecho::$GravatarURL = Helper::options()->GravatarURL;
+    Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache;
+    if (Matecho::$ColorSchemeCache && Matecho::$ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
+        Matecho::generateThemeCSS();
+    }
 }
 
-function ThemeFields($layout){
+function themeFields($layout){
     $layout->addItem(new Text("cover", null, null, "文章封面", "替代文章默认的封面"));
     $layout->addItem(new Text("description", null, null, "文章描述", "替代文章内容显示在文章列表中文章标题的下方"));
 }
 
 class Matecho {
-    static string $ThemeColor;
+    static string $ColorScheme;
     static string $GravatarURL;
+    static bool $ColorSchemeCache;
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
@@ -41,6 +55,23 @@ class Matecho {
         }
 
     }
+
+    static function generateThemeCSS(): void {
+        $css = Helper::options()->ColorSchemeCSS;
+        file_put_contents(__DIR__."/assets/color-scheme.css", $css);
+    }
+
+    static function themeCSS(): void {
+        if (!self::$ColorScheme) return;
+        if (self::$ColorSchemeCache) {
+            echo "<link rel=\"stylesheet\" href=\"". Helper::options()->themeUrl ."/assets/color-scheme.css?" . substr(Matecho::$ColorScheme, 1) . "\">";
+        } else {
+            $css = Helper::options()->ColorSchemeCSS;
+            if (!$css) return;
+            echo "<style>".$css."</style>";
+        }
+    }
+
     static function pageIcon(string | null $template): string {
         switch ($template) {
             case "page-links.php":

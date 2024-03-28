@@ -8,7 +8,6 @@ import type {
 } from "mdui";
 
 import "virtual:uno.css";
-import { setColorScheme } from "mdui/functions/setColorScheme";
 import { observeResize } from "mdui/functions/observeResize";
 import { breakpoint } from "mdui/functions/breakpoint";
 import Pjax from "pjax";
@@ -51,11 +50,6 @@ function initOnce() {
   searchInput.addEventListener("blur", () => {
     searchInput.disabled = true;
   });
-
-  const themeColor =
-    (document.querySelector("meta[name=theme-color]") as HTMLMetaElement)
-      .content || "#e91e63";
-  setColorScheme(themeColor);
 
   const mainWrapperPaddingWorkaround = new MutationObserver(() => {
     if (!drawer.open) {
