@@ -20,8 +20,7 @@ export default (_options?: PrismOptions): Plugin => {
     load(id) {
       if (id === "virtual:prismjs") {
         return (
-          `import Prism from "prismjs";
-                        export default Prism;` +
+          `import Prism from "prismjs";export default Prism;` +
           options.languages
             .map(v => `import "prismjs/components/prism-${v}";`)
             .join("") +

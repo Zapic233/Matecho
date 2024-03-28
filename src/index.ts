@@ -1,10 +1,10 @@
-import {
-  type NavigationDrawer,
-  type Button,
-  type ButtonIcon,
-  type TextField,
-  type LayoutMain,
-  type TopAppBar
+import type {
+  NavigationDrawer,
+  Button,
+  ButtonIcon,
+  TextField,
+  LayoutMain,
+  TopAppBar
 } from "mdui";
 
 import "virtual:uno.css";
