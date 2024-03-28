@@ -1,4 +1,5 @@
 @import url("@fancyapps/ui/dist/fancybox/fancybox.css");
+@import url("katex/dist/katex.css");
 
 .mdui-prose pre code {
   display: block;

@@ -148,4 +148,15 @@ export function init() {
       });
     fb.bind("[data-fancybox]");
   });
+
+  void import("katex/contrib/auto-render").then(
+    ({ default: renderMathInElement }) => {
+      renderMathInElement(document.querySelector("article.mdui-prose")!, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$", right: "$", display: false }
+        ]
+      });
+    }
+  );
 }
