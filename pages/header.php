@@ -27,7 +27,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 	</noscript>
     <link rel="stylesheet" href="@/style/header.css">
     <script type="module" src="@/index.ts"></script>
-    <script>window.__MATECHO_THEME_ROOT__="/__VIRTUAL_THEME_ROOT__/";</script>
     <?php $this->header("commentReply=&antiSpam="); ?>
 </head>
 <body>

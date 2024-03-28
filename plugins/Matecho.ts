@@ -79,10 +79,6 @@ export default (): Plugin => {
         const OutputBundle = bundle[key];
         if (!("code" in OutputBundle) || !key.endsWith(".js")) continue;
         OutputBundle.code = OutputBundle.code
-          .replaceAll(
-            '"/__VIRTUAL_THEME_ROOT__/"',
-            " window.__MATECHO_THEME_ROOT__"
-          )
           // Some CDN will compress this space, that will cause syntax error, fill with dot to prevent this
           .replaceAll("1 .toString", "1..toString");
       }
@@ -104,14 +100,14 @@ export default (): Plugin => {
         if (source.includes("<!--matecho-assets-injection-->")) {
           const assets: string[] = [];
           source = source.replaceAll(
-            /<script[^<>]+\/__VIRTUAL_THEME_ROOT__\/[^<>]+><\/script>\n?/g,
+            /<script[^<>]+\/Matecho\/[^<>]+><\/script>\n?/g,
             match => {
               assets.push(match);
               return "";
             }
           );
           source = source.replaceAll(
-            /<link[^<>]+\/__VIRTUAL_THEME_ROOT__\/[^<>]+>\n?/g,
+            /<link[^<>]+\/Matecho\/[^<>]+>\n?/g,
             match => {
               assets.push(match);
               return "";
@@ -123,17 +119,15 @@ export default (): Plugin => {
           );
         }
 
-        source = source
-          .replaceAll("/__VIRTUAL_THEME_ROOT__/", "<?php Matecho::assets(); ?>")
-          .replaceAll(
-            "<%= CompatibilityUserAgentRegex %>",
-            JSON.stringify(
-              getUserAgentRegex({
-                ignoreMinor: true,
-                allowHigherVersions: true
-              }).toString()
-            ).slice(1, -1)
-          );
+        source = source.replaceAll(
+          "<%= CompatibilityUserAgentRegex %>",
+          JSON.stringify(
+            getUserAgentRegex({
+              ignoreMinor: true,
+              allowHigherVersions: true
+            }).toString()
+          ).slice(1, -1)
+        );
         fs.unlinkSync(path.join(opt.dir, key));
         fs.writeFileSync(path.join(opt.dir, nKey), source);
         AutoComponents.preloaded = [];

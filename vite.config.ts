@@ -69,6 +69,6 @@ export default defineConfig(async env => {
       __BUILD_DATE__: JSON.stringify(new Date().toString()),
       __BUILD_COMMIT_ID__: JSON.stringify(COMMIT_ID)
     },
-    base: "/__VIRTUAL_THEME_ROOT__"
+    base: "/usr/themes/Matecho"
   } as UserConfig;
 });
