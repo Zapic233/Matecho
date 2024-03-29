@@ -14,7 +14,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $this->need('header.php');
 Typecho\Plugin::export();
 ?>
-    <div id="matecho-app-bar-large-label">
+<div id="matecho-app-bar-large-label">
         <div class="pl-4 md:pl-12 flex flex-col" id="matecho-app-bar-large-label__inner">
             <div class="truncate text-4xl md:text-5xl line-height-[1.4]!">
                 <?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
@@ -41,8 +41,8 @@ Typecho\Plugin::export();
                 ?>
             </div>
         </div>
-    </div>
-    <div class="px-4 md:px-12 w-full box-border">
+</div>
+<div class="px-4 md:px-12 w-full box-border">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4 grid-gap-4">
             <?php while ($this->next()){ ?>
                 <mdui-card clickable="false" class="flex flex-col matecho-article-card">
@@ -105,7 +105,7 @@ Typecho\Plugin::export();
                 </mdui-segmented-button-group>
             </div>
         <?php } ?>
-    </div>
-    <!--matecho-assets-injection-->
-    <link rel="stylesheet" href="@/style/index.css">
+</div>
+<!--matecho-assets-injection-->
+<link rel="stylesheet" href="@/style/index.css">
 <?php $this->need('footer.php'); ?>

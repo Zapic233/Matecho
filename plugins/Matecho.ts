@@ -16,14 +16,14 @@ export default (): Plugin => {
   return {
     name: "Matecho",
     async buildStart() {
-      const files = await fg(["pages/**/*.php"]);
+      const files = await fg(["src/**/*.php"]);
       for (const file of files) {
         this.addWatchFile(file);
       }
     },
     resolveId(id) {
       if (id.endsWith(".php")) {
-        return id.replace(".php", ".php.html").replace("pages/", "");
+        return id.replace(".php", ".php.html").replace("src/", "");
       }
       if (id.startsWith("virtual:components")) {
         return id;
@@ -33,7 +33,7 @@ export default (): Plugin => {
       if (id.startsWith("virtual:components")) {
         const src = (
           await readFile(
-            "pages/" + id.replace("virtual:components/", "") + ".php"
+            "src/" + id.replace("virtual:components/", "") + ".php"
           )
         ).toString();
         const isFromPreloaded = AutoComponents.from.includes(
@@ -55,7 +55,7 @@ export default (): Plugin => {
           .join("\n");
       }
       if (id.endsWith(".php.html")) {
-        return (await readFile("pages/" + id.replace(".html", ""))).toString();
+        return (await readFile("src/" + id.replace(".html", ""))).toString();
       }
     },
     transform(code, id) {

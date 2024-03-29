@@ -174,10 +174,10 @@ async function init() {
   switch (CurrentModule.content) {
     case "post":
     case "page":
-      (await import("./page/post")).init();
+      (await import("./pages/post")).init();
       break;
     default:
-      import("./page/index");
+      import("./pages/index");
   }
 }
 

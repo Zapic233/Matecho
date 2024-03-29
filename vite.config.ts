@@ -53,7 +53,7 @@ export default defineConfig(async env => {
     },
     build: {
       rollupOptions: {
-        input: [...(await fg("pages/**/*.php"))],
+        input: [...(await fg("src/**/*.php"))],
         output: {
           assetFileNames: "assets/assets-[hash].[ext]",
           chunkFileNames: "assets/chunk-[hash].js",
