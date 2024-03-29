@@ -19,8 +19,7 @@ function openSnackbar(msg: string) {
     sb.open = true;
   });
 }
-
-export function init() {
+function initComments() {
   const list = document.querySelector("#matecho-comment-list")!;
   if (!list) return;
   const formWrapper = document.querySelector<HTMLDivElement>(
@@ -134,24 +133,30 @@ export function init() {
         });
     }
   });
+}
+
+function initPrism(container: HTMLElement) {
   void import("virtual:prismjs").then(({ default: Prism }) => {
-    Prism.highlightAll();
+    Prism.highlightAllUnder(container);
   });
+}
+
+function initFancybox(container: HTMLElement) {
   void import("@fancyapps/ui").then(({ Fancybox: fb }) => {
-    document
-      .querySelectorAll<HTMLImageElement>("article.mdui-prose img")
-      .forEach(v => {
-        v.setAttribute("data-fancybox", "article");
-        if (v.alt ?? v.title) {
-          v.setAttribute("data-caption", v.alt ?? v.title);
-        }
-      });
+    container.querySelectorAll<HTMLImageElement>("img").forEach(v => {
+      v.setAttribute("data-fancybox", "article");
+      if (v.alt ?? v.title) {
+        v.setAttribute("data-caption", v.alt ?? v.title);
+      }
+    });
     fb.bind("[data-fancybox]");
   });
+}
 
+function initKaTeX(container: HTMLElement) {
   void import("katex/contrib/auto-render").then(
     ({ default: renderMathInElement }) => {
-      renderMathInElement(document.querySelector("article.mdui-prose")!, {
+      renderMathInElement(container, {
         delimiters: [
           { left: "$$", right: "$$", display: true },
           { left: "$", right: "$", display: false }
@@ -159,4 +164,37 @@ export function init() {
       });
     }
   );
+}
+
+function countMoney(str: string) {
+  let count = -1;
+  let index = -2;
+  for (; index != -1; count++, index = str.indexOf("$", index + 1));
+  return count;
+}
+export function init() {
+  initComments();
+  const article = document.querySelector<HTMLElement>("article.mdui-prose");
+  if (article) {
+    if (article.querySelector("pre > code[class*=lang-]")) {
+      initPrism(article);
+    }
+    if (article.querySelector("img")) {
+      initFancybox(article);
+    }
+    const count$ = countMoney(article.innerText);
+    if (article.innerText.includes("$")) {
+      const excludeText = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          "script,noscript, style, textarea, pre, code, option"
+        )
+      )
+        .map(v => v.innerText)
+        .join("");
+      const excluded$ = countMoney(excludeText);
+      if (excluded$ < count$) {
+        initKaTeX(article);
+      }
+    }
+  }
 }
