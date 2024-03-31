@@ -4,7 +4,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /** @var \Widget\Archive $this */
 $this->need('header.php');
 ?>
-    <div class="mx-auto md:px-0 box-border max-w-768px">
+    <div class="matecho-article-wrapper mx-auto px-0 md:px-2 box-border max-w-840px">
         <div id="matecho-app-bar-large-label">    
         <div class="box-border px-2 md:pl-0 " id="matecho-app-bar-large-label__inner">
             <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
@@ -61,7 +61,6 @@ $this->need('header.php');
                     </div>
                 <?php }
             ?>
-            
             <mdui-divider class="mt-4 mb-4"></mdui-divider>
             <div class="mt-2">
                 <?php $comments = $this->comments(); ?>
@@ -114,6 +113,11 @@ $this->need('header.php');
                 </div>
             </div>
         </div>
+        
+        <nav class="fixed hidden top-72px w-240px px-2 matecho-article-nav">
+            <mdui-list-subheader class="h-26px line-height-26px">文章目录</mdui-list-subheader>
+            <mdui-list></mdui-list>
+        </nav>
     </div>
     <!--matecho-assets-injection-->
     <link rel="stylesheet" href="@/style/post.css">
