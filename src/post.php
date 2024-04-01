@@ -119,13 +119,15 @@ $this->need('header.php');
             <mdui-list></mdui-list>
         </nav>
     </div>
-    <script type="text/javascript">
-        (function () {
-            ['scroll', 'mousemove', 'keyup', 'touchstart'].map(v => 
-                document.addEventListener(v, function () {
-                    window.__MATECHO_ANTI_SPAM__ = <?php echo \Typecho\Common::shuffleScriptVar($this->security->getToken($this->request->getRequestUrl()));?>
-                }, { once: true, passive: true})
-            );
-        })();
-    </script>
+    <?php if ($this->options->commentsAntiSpam) { ?>
+        <script type="text/javascript">
+            (function () {
+                ['scroll', 'mousemove', 'keyup', 'touchstart'].map(v => 
+                    document.addEventListener(v, function () {
+                        window.__MATECHO_ANTI_SPAM__ = <?php echo \Typecho\Common::shuffleScriptVar($this->security->getToken($this->request->getRequestUrl()));?>
+                    }, { once: true, passive: true})
+                );
+            })();
+        </script>
+    <?php } ?>
 <?php $this->need('footer.php'); ?>
