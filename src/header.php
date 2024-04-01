@@ -32,8 +32,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
         <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
             <mdui-icon-menu></mdui-icon-menu>
         </mdui-button-icon>
-        <mdui-top-app-bar-title class="matecho-app-bar-title">
-            <span id="matecho-app-bar-title"><?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
+        <mdui-top-app-bar-title id="matecho-app-bar-title" style="display: none;">
+            <span id="matecho-app-bar-title__inner"><?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
                 'category' => _t('分类 %s 下的文章'),
                 'search' => _t('包含关键字 %s 的文章'),
                 'tag' => _t('标签 %s 下的文章'),

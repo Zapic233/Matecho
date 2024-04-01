@@ -73,7 +73,6 @@ body {
 }
 
 #matecho-app-bar-large-label__inner {
-  position: absolute;
   bottom: 0;
   width: 100%;
   overflow: hidden;
@@ -176,4 +175,8 @@ body ::-webkit-scrollbar-thumb {
 
 .mdui-theme-dark body ::-webkit-scrollbar-thumb {
   background: rgb(255 255 255 / 20%);
+}
+
+mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
+  visibility: hidden;
 }

@@ -23,6 +23,12 @@ import "virtual:components/sidebar";
 import "virtual:components/footer";
 
 function initOnce() {
+  // app bar title will have animation in first time loaded
+  setTimeout(() => {
+    document
+      .getElementById("matecho-app-bar-title")
+      ?.style.setProperty("display", "");
+  }, 300);
   // Drawer
   const drawer = document.querySelector<NavigationDrawer>("#matecho-drawer");
   const topBtn = document.querySelector<Button>("#matecho-drawer-btn");
@@ -61,7 +67,7 @@ function initOnce() {
     selectors: [
       "title",
       "#matecho-pjax-main",
-      "#matecho-app-bar-title",
+      "#matecho-app-bar-title__inner",
       "#matecho-sidebar-list",
       "meta[name=matecho-template]"
     ],
@@ -112,6 +118,8 @@ function handleLabelShrink(el: HTMLElement) {
     "#matecho-app-bar-large-label__inner"
   ) as HTMLElement;
   if (!inner) return;
+  // if put this in css, large title will cause big layout shift before js loaded
+  inner.style.position = "absolute";
   const labelShrinkOb = new MutationObserver(() => {
     if (!document.body.contains(el)) {
       labelShrinkOb.disconnect();
