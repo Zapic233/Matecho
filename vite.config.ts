@@ -34,11 +34,10 @@ export default defineConfig(async env => {
             xxl: "1920px"
           }
         },
-        transformers: [
-          isBuild &&
-            UnoCSSClassMangle({
-              classPrefix: "m-"
-            })
+        transformers: isBuild && [
+          UnoCSSClassMangle({
+            classPrefix: "m-"
+          })
         ]
       }),
       Matecho(),
