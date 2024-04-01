@@ -33,7 +33,7 @@ jobs:
         run: pnpm build
 
       - name: Rename dist
-        run: mv dist Matecho
+        run: mkdir Matecho && mv dist Matecho/Matecho
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
