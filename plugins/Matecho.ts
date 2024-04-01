@@ -157,7 +157,7 @@ export default (): Plugin => {
         ).slice(1, -1)
       );
       ctx.filename = ctx.filename.replace("_actual_php.html", ".php");
-      if (env.command === "serve") {
+      if (env.command !== "serve") {
         Object.entries(codeTokens).forEach(([token, code]) => {
           r = r.replaceAll(token, code);
         });
