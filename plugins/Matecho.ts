@@ -21,6 +21,15 @@ export default (): Plugin => {
     },
     handleHotUpdate(ctx) {
       if (ctx.file.endsWith(".php")) {
+        const filename = ctx.file
+          .substring(ctx.file.indexOf("/src/") + 5)
+          .replace(".php", "");
+        const module = ctx.server.moduleGraph.getModuleById(
+          `virtual:components/${filename}`
+        );
+        if (module) {
+          ctx.server.moduleGraph.invalidateModule(module);
+        }
         ctx.server.hot.send({ type: "full-reload" });
       }
     },
