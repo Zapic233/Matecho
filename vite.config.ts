@@ -8,6 +8,7 @@ import fs from "node:fs";
 
 export default defineConfig(async env => {
   const isProd = env.mode === "production";
+  const isBuild = env.command === "build";
   let COMMIT_ID = "unknown";
   try {
     const id = fs
@@ -34,9 +35,10 @@ export default defineConfig(async env => {
           }
         },
         transformers: [
-          UnoCSSClassMangle({
-            classPrefix: "m-"
-          })
+          isBuild &&
+            UnoCSSClassMangle({
+              classPrefix: "m-"
+            })
         ]
       }),
       Matecho(),
@@ -62,13 +64,13 @@ export default defineConfig(async env => {
       },
       target: isProd ? "es2018" : "esnext",
       minify: isProd,
-      sourcemap: false,
+      sourcemap: !isProd,
       cssMinify: isProd
     },
     define: {
       __BUILD_DATE__: JSON.stringify(new Date().toString()),
       __BUILD_COMMIT_ID__: JSON.stringify(COMMIT_ID)
     },
-    base: isProd ? "/usr/themes/Matecho" : "/"
+    base: isBuild ? "/usr/themes/Matecho" : "/"
   } as UserConfig;
 });
