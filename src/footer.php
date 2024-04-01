@@ -11,7 +11,7 @@ Typecho\Plugin::export();
         </mdui-layout-main>
     </mdui-layout>
     <script type="text/javascript">
-		!new RegExp("<%= CompatibilityUserAgentRegex %>").test(navigator.userAgent)&&(document.body.innerHTML+="<div class='un-br'><div><h1 class='un-br_sf'>X_X</h1> <h1>浏览器不受支持</h1><p>您当前使用的浏览器不受支持，请更新你的浏览器。</p></div></div>")
+		!new RegExp("<%= CompatibilityUserAgentRegex %>").test(navigator.userAgent)&&(document.body.innerHTML+='<div class="un-br"><h1 class="un-br_sf">{ ᗜ˰ᗜ }</h1> <h1>浏览器不受支持</h1><p>您当前使用的浏览器不受支持，请更新你的浏览器。</p></div>')
 	</script>
     <?php Matecho::themeCSS(); ?>
 </body>

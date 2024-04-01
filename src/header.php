@@ -23,11 +23,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <body>
     <noscript>
         <div class="un-br">
-		    <div>
-				<h1 class="un-br_sf">{ X_X }</h1> 
-				<h1>必须启用Javascript</h1>
-				<p>您禁止了JavaScript，本站依赖于JavaScript正常工作。</p>
-			</div>
+			<h1 class="un-br_sf">{ >_ ; }</h1> 
+			<h1>必须启用Javascript</h1>
+			<p>您禁止了JavaScript，本站依赖于JavaScript正常工作。</p>
         </div>
 	</noscript>
     <mdui-layout>
