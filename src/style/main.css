@@ -89,6 +89,19 @@ body {
   margin-bottom: 0;
 }
 
+@media (width >= 840px) {
+  #matecho-drawer {
+    height: calc(100vh - 64px);
+    top: 64px;
+  }
+}
+
+@media (width < 840px) {
+  #matecho-main {
+    padding-left: 0 !important;
+  }
+}
+
 #nprogress {
   z-index: 9999;
   position: fixed;

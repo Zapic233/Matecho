@@ -4,7 +4,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /** @var \Widget\Archive $this */
 ?>
 
-<mdui-navigation-drawer class="fixed! z-10000 top-64px! md:w-240px" close-on-overlay-click id="matecho-drawer">
+<mdui-navigation-drawer contained class="md:w-240px fixed!" close-on-overlay-click id="matecho-drawer">
     <nav>
         <mdui-list id="matecho-sidebar-list">
         <a href="/">

@@ -57,16 +57,6 @@ function initOnce() {
     }
   });
 
-  const mainWrapperPaddingWorkaround = new MutationObserver(() => {
-    if (!drawer.open) {
-      mainWrapper.style.padding = "64px 0 0";
-    }
-  });
-  mainWrapperPaddingWorkaround.observe(mainWrapper, {
-    attributes: true,
-    attributeFilter: ["style"]
-  });
-
   new Pjax({
     selectors: [
       "title",

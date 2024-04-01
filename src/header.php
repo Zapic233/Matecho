@@ -28,38 +28,37 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 			<p>您禁止了JavaScript，本站依赖于JavaScript正常工作。</p>
         </div>
 	</noscript>
-    <mdui-layout>
-        <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="fixed! matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
-            <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
-                <mdui-icon-menu></mdui-icon-menu>
-            </mdui-button-icon>
-            <mdui-top-app-bar-title class="matecho-app-bar-title">
-                <span id="matecho-app-bar-title"><?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
-                    'category' => _t('分类 %s 下的文章'),
-                    'search' => _t('包含关键字 %s 的文章'),
-                    'tag' => _t('标签 %s 下的文章'),
-                    'author' => _t('%s 发布的文章')
-                ),'','');?></span>
-                <span slot="label-large"></span>
-            </mdui-top-app-bar-title>
+    <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
+        <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
+            <mdui-icon-menu></mdui-icon-menu>
+        </mdui-button-icon>
+        <mdui-top-app-bar-title class="matecho-app-bar-title">
+            <span id="matecho-app-bar-title"><?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(array(
+                'category' => _t('分类 %s 下的文章'),
+                'search' => _t('包含关键字 %s 的文章'),
+                'tag' => _t('标签 %s 下的文章'),
+                'author' => _t('%s 发布的文章')
+            ),'','');?></span>
+            <span slot="label-large"></span>
+        </mdui-top-app-bar-title>
 
-            <div class="flex flex-grow-1 justify-end">
-                <form action="/" method="post" role="search" enctype="multipart/form-data">
-                    <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" clearable class="mt--4px" type="search" id="matecho-top-search-bar">
-                        <mdui-button-icon name="搜索" slot="icon" id="matecho-top-search-btn">
-                            <mdui-icon-search></mdui-icon-search>
-                        </mdui-button-icon>
-                    </mdui-text-field>
-                </form>
-            </div>
-            <mdui-button-icon name="管理面板" href="<?php $this->options->adminUrl(); ?>" target="_blank" nofollow>
-                <?php if ($this->user->hasLogin()){ ?>
-                    <mdui-icon-settings></mdui-icon-settings>
-                <?php } else { ?>
-                    <mdui-icon-login></mdui-icon-login>
-                <?php } ?>
-            </mdui-button-icon>
-        </mdui-top-app-bar>
+        <div class="flex flex-grow-1 justify-end">
+            <form action="/" method="post" role="search" enctype="multipart/form-data">
+                <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" clearable class="mt--4px" type="search" id="matecho-top-search-bar">
+                    <mdui-button-icon name="搜索" slot="icon" id="matecho-top-search-btn">
+                        <mdui-icon-search></mdui-icon-search>
+                    </mdui-button-icon>
+                </mdui-text-field>
+            </form>
+        </div>
+        <mdui-button-icon name="管理面板" href="<?php $this->options->adminUrl(); ?>" target="_blank" nofollow>
+            <?php if ($this->user->hasLogin()){ ?>
+                <mdui-icon-settings></mdui-icon-settings>
+            <?php } else { ?>
+                <mdui-icon-login></mdui-icon-login>
+            <?php } ?>
+        </mdui-button-icon>
+    </mdui-top-app-bar>
+    <main class="overflow-hidden min-h-100vh" id="matecho-main">
         <?php $this->need('sidebar.php'); ?>
-        <mdui-layout-main class="overflow-hidden min-h-100vh" id="matecho-main">
-            <div id="matecho-pjax-main">
+        <div id="matecho-pjax-main">
