@@ -92,15 +92,15 @@ Typecho\Plugin::export();
             <div class="flex justify-center mt-6 mb-3">
                 <mdui-segmented-button-group>
                     <?php if ($this->_currentPage > 1) {
-                        $this->pageLink('<mdui-segmented-button>上一页</mdui-segmented-button>');
+                        $this->pageLink('<mdui-segmented-button><mdui-icon-arrow-back slot="icon"></mdui-icon-arrow-back>上一页</mdui-segmented-button>');
                     } else { ?>
-                        <mdui-segmented-button disabled>上一页</mdui-segmented-button>
+                        <mdui-segmented-button disabled><mdui-icon-arrow-back slot="icon"></mdui-icon-arrow-back>上一页</mdui-segmented-button>
                     <?php } ?>
                     <mdui-segmented-button><?php echo $this->_currentPage; ?> / <?php echo $TotalPage; ?></mdui-segmented-button>
                     <?php if ($this->_currentPage < $TotalPage) {
-                        $this->pageLink('<mdui-segmented-button>下一页</mdui-segmented-button>','next');
+                        $this->pageLink('<mdui-segmented-button><mdui-icon-arrow-forward slot="end-icon"></mdui-icon-arrow-forward>下一页</mdui-segmented-button>','next');
                     } else { ?>
-                        <mdui-segmented-button disabled>下一页</mdui-segmented-button>
+                        <mdui-segmented-button disabled><mdui-icon-arrow-forward slot="end-icon"></mdui-icon-arrow-forward>下一页</mdui-segmented-button>
                     <?php } ?>
                 </mdui-segmented-button-group>
             </div>
