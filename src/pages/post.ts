@@ -1,6 +1,5 @@
-import type { TextField, Button, ListItem } from "mdui";
+import type { TextField, Button } from "mdui";
 import { Snackbar } from "mdui/components/snackbar";
-import { observeResize } from "mdui/functions/observeResize";
 
 import "/src/style/post.css";
 import "virtual:components/post";
@@ -178,104 +177,9 @@ function countMoney(str: string) {
   return count;
 }
 
-function initSideNav() {
-  const nav = document.querySelector<HTMLDivElement>(".matecho-article-nav")!;
-  const navInner = nav.querySelector<HTMLDivElement>("mdui-list")!;
-  const main = document.querySelector<HTMLDivElement>(
-    ".matecho-article-wrapper"
-  )!;
-  const headlines = Array.from(
-    document.querySelectorAll<HTMLElement>("article.mdui-prose h1,h2,h3,h4")
-  );
-  const ro = observeResize("#matecho-pjax-main", () => {
-    nav.style.left = main.getBoundingClientRect().right + "px";
-  });
-
-  const headlineSort = Array.from(
-    new Set(headlines.map(v => v.tagName).sort())
-  );
-
-  const largeLabel = document.getElementById(
-    "matecho-app-bar-large-label"
-  )! as HTMLDivElement;
-
-  const headlinesMap = new Map<HTMLElement, ListItem>();
-
-  headlines
-    .filter(v => {
-      return v.tagName == headlineSort[0] || v.tagName == headlineSort[1];
-    })
-    .forEach(el => {
-      const isTopLevel = el.tagName == headlineSort[0];
-      const item = Object.assign(
-        document.createElement<never>("mdui-list-item" as never), // WTF
-        {
-          innerText: el.innerText,
-          className: isTopLevel ? "matecho-nav-top" : "matecho-nav-sub"
-        }
-      ) as ListItem;
-
-      item.addEventListener("click", () => {
-        let offset = window.scrollY - 72;
-        if (!largeLabel.classList.contains("shrink")) {
-          offset -= parseFloat(largeLabel.style.height) + 32;
-        }
-        document.scrollingElement?.scrollTo({
-          top: el.getBoundingClientRect().top + offset,
-          behavior: "smooth"
-        });
-      });
-      navInner.appendChild(item as never);
-      headlinesMap.set(el, item);
-    });
-
-  if (headlines.length == 0) return;
-  let throttler = 0;
-  const scrollHandler = () => {
-    if (throttler > 0) return;
-    throttler = setTimeout(() => {
-      let activeTarget = null;
-      for (const head of Array.from(headlinesMap.keys())) {
-        headlinesMap.get(head)!.active = false;
-        if (head.getBoundingClientRect().top < window.innerHeight / 3) {
-          activeTarget = headlinesMap.get(head)!;
-        }
-      }
-      if (activeTarget) {
-        activeTarget.active = true;
-      }
-      throttler = 0;
-    }, 50) as unknown as number;
-  };
-  main.classList.add("matecho-article-wrapper-with-nav");
-  document.addEventListener("scroll", scrollHandler, { passive: true });
-  document.body.appendChild(nav);
-  nav.classList.add("matecho-nav-visible");
-  let count = 0;
-  const rafCb = () => {
-    const l = main.getBoundingClientRect().right + "px";
-    if (l == nav.style.left) {
-      count += 1;
-    }
-    nav.style.left = l;
-    count < 60 && requestAnimationFrame(rafCb);
-  };
-  rafCb();
-
-  document.addEventListener(
-    "pjax:complete",
-    () => {
-      ro.unobserve();
-      document.removeEventListener("scroll", scrollHandler);
-      nav.remove();
-    },
-    { once: true }
-  );
-}
 export function init() {
   initComments();
   const article = document.querySelector<HTMLElement>("article.mdui-prose");
-  initSideNav();
   if (article) {
     if (article.querySelector("pre > code[class*=lang-]")) {
       initPrism(article);

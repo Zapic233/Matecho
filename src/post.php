@@ -113,11 +113,6 @@ $this->need('header.php');
                 </div>
             </div>
         </div>
-        
-        <nav class="fixed hidden top-72px w-240px px-2 matecho-article-nav">
-            <mdui-list-subheader class="h-26px line-height-26px">文章目录</mdui-list-subheader>
-            <mdui-list></mdui-list>
-        </nav>
     </div>
     <?php if ($this->options->commentsAntiSpam) { ?>
         <script type="text/javascript">
