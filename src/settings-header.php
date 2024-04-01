@@ -1,2 +1,2 @@
-<script type="module" src="@/pages/settings.ts"></script>
+<script type="module" src="/src/pages/settings.ts"></script>
 <div id="matecho-theme-handler"></div>

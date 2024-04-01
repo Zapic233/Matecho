@@ -45,7 +45,7 @@ export default defineConfig(async env => {
         plugins: ["line-numbers"]
       })
     ],
-    appType: "custom",
+    appType: "mpa",
     resolve: {
       alias: {
         "@/": "src/"
@@ -69,6 +69,6 @@ export default defineConfig(async env => {
       __BUILD_DATE__: JSON.stringify(new Date().toString()),
       __BUILD_COMMIT_ID__: JSON.stringify(COMMIT_ID)
     },
-    base: "/usr/themes/Matecho"
+    base: isProd ? "/usr/themes/Matecho" : "/"
   } as UserConfig;
 });

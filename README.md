@@ -20,13 +20,17 @@ Material Design typecho theme base on MDUI.
 
 ## 开发
 
+使用`localhost`作为域名安装Typecho, 并暴露在`80`, 安装Typecho后, 将`dist`文件夹软链接到Typecho目录中`/usr/themes/Matecho/`  
+Vite被配置为从PHP服务器拉取HTML再处理, 故Vite需要能够访问到PHP服务器.  
+同时需要配置Typecho的`站点地址`为Vite暴露的开发服务器地址, 否则某些静态资源可能会出现跨域问题.  
+如果需要使用其他域名, 需要修改Vite设置`server.host`为相同域名.  
+使用其他域名时, 由于浏览器安全限制, 除`localhost`外的域名在不启用SSL的情况下无法使用某些特性.  
+如果需要启用SSL, 需要同时为PHP服务器和Vite都配置SSL, 否则会导致请求来源不匹配, 无法在`dev`环境里使用评论等功能.
+
 ```
 pnpm i
 pnpm dev
 ```
-
-这将自动检测文件修改并重新构建项目, 将`dist`文件夹软链接到`/usr/themes/Matecho`, 启用主题即可.  
-这会禁用代码压缩, 不建议用于最终上线环境.
 
 **注意**
 

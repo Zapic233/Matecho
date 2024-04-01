@@ -181,8 +181,11 @@ async function init() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => initOnce());
-
+if (document.readyState !== "loading") {
+  initOnce();
+} else {
+  document.addEventListener("DOMContentLoaded", () => initOnce());
+}
 console.log(
   `%c Matecho %c By Zapic \n`,
   "color: #fff; background: #E91E63; padding:5px 0;",

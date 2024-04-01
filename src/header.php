@@ -16,20 +16,20 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		'author' => _t('%s 发布的文章')
 	),'',' - '); ?><?php $this->options->title(); ?></title>
     <style>.un-br{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#eee;text-align:center;z-index: 99999;}.un-br_sf{font-size: 5em; color:#999;}@media(prefers-color-scheme:dark){.un-br{color:white;background-color:#1f1f1f;}.un-br_sf{color: #ccc;}}</style>
+    <link rel="stylesheet" href="/src/style/main.css">
+    <script type="module" src="/src/main.ts"></script>
+    <?php $this->header("commentReply=&antiSpam="); ?>
+</head>
+<body>
     <noscript>
-        <div class='un-br'>
+        <div class="un-br">
 		    <div>
-				<h1 class='un-br_sf'>{ X_X }</h1> 
+				<h1 class="un-br_sf">{ X_X }</h1> 
 				<h1>必须启用Javascript</h1>
 				<p>您禁止了JavaScript，本站依赖于JavaScript正常工作。</p>
 			</div>
         </div>
 	</noscript>
-    <link rel="stylesheet" href="@/style/main.css">
-    <script type="module" src="@/main.ts"></script>
-    <?php $this->header("commentReply=&antiSpam="); ?>
-</head>
-<body>
     <mdui-layout>
         <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="fixed! matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
             <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">

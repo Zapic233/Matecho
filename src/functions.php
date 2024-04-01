@@ -5,7 +5,6 @@ use Typecho\Widget\Helper\Form\Element\Text;
 use Typecho\Widget\Helper\Form;
 use Utils\Helper;
 use Widget\Archive;
-use Exception;
 function themeConfig(Form $form): void {
     Matecho::generateThemeCSS();
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
@@ -204,7 +203,7 @@ class Matecho {
     static function links(): array {
         $options = \Typecho\Widget::widget('Widget_Options');
 		if (!isset($options->plugins['activated']['Links'])) {
-			throw new Exception("请先激活友链插件");
+			throw new ErrorException("请先激活友链插件");
 		}
         $db = \Typecho\Db::get();
 		$prefix = $db->getPrefix();

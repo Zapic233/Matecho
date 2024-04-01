@@ -120,7 +120,7 @@ $this->need('header.php');
         </nav>
     </div>
     <!--matecho-assets-injection-->
-    <link rel="stylesheet" href="@/style/post.css">
+    <link rel="stylesheet" href="/src/style/post.css">
     <script type="text/javascript">
         (function () {
             ['scroll', 'mousemove', 'keyup', 'touchstart'].map(v => 
