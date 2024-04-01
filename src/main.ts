@@ -167,7 +167,6 @@ function handleLabelShrink(el: HTMLElement) {
 async function init() {
   const header = document.getElementById("matecho-app-bar-large-label");
   header && handleLabelShrink(header);
-
   const CurrentModule = document.querySelector(
     "meta[name=matecho-template]"
   ) as HTMLMetaElement;

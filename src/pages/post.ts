@@ -2,6 +2,7 @@ import type { TextField, Button, ListItem } from "mdui";
 import { Snackbar } from "mdui/components/snackbar";
 import { observeResize } from "mdui/functions/observeResize";
 
+import "/src/style/post.css";
 import "virtual:components/post";
 
 function openSnackbar(msg: string) {
@@ -137,12 +138,14 @@ function initComments() {
 }
 
 function initPrism(container: HTMLElement) {
+  void import("/src/style/prism.css");
   void import("virtual:prismjs").then(({ default: Prism }) => {
     Prism.highlightAllUnder(container);
   });
 }
 
 function initFancybox(container: HTMLElement) {
+  void import("@fancyapps/ui/dist/fancybox/fancybox.css");
   void import("@fancyapps/ui").then(({ Fancybox: fb }) => {
     container.querySelectorAll<HTMLImageElement>("img").forEach(v => {
       v.setAttribute("data-fancybox", "article");
@@ -155,6 +158,7 @@ function initFancybox(container: HTMLElement) {
 }
 
 function initKaTeX(container: HTMLElement) {
+  void import("katex/dist/katex.css");
   void import("katex/contrib/auto-render").then(
     ({ default: renderMathInElement }) => {
       renderMathInElement(container, {

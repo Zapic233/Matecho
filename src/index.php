@@ -106,6 +106,4 @@ Typecho\Plugin::export();
             </div>
         <?php } ?>
 </div>
-<!--matecho-assets-injection-->
-<link rel="stylesheet" href="/src/style/index.css">
 <?php $this->need('footer.php'); ?>
