@@ -63,29 +63,19 @@ body {
 
 #matecho-app-bar-large-label {
   transition:
-    height 200ms cubic-bezier(0.2, 0, 0, 1),
-    margin-bottom 200ms cubic-bezier(0.2, 0, 0, 1),
+    transform 150ms cubic-bezier(0.2, 0, 0, 1),
     opacity 200ms 50ms;
   overflow: hidden;
-  position: relative;
   opacity: 1;
   margin-bottom: 2rem;
 }
 
-#matecho-app-bar-large-label__inner {
-  bottom: 0;
-  width: 100%;
-  overflow: hidden;
-}
-
 #matecho-app-bar-large-label.shrink {
   transition:
-    height 300ms cubic-bezier(0.2, 0, 0, 1),
-    margin-bottom 300ms cubic-bezier(0.2, 0, 0, 1),
+    transform 300ms cubic-bezier(0.2, 0, 0, 1),
     opacity 200ms;
-  height: 0 !important;
   opacity: 0;
-  margin-bottom: 0;
+  transform: translateY(-50%);
 }
 
 @media (width >= 840px) {

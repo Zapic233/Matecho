@@ -4,6 +4,7 @@ declare module "virtual:prismjs" {
 }
 
 declare interface PjaxSuccessEvent extends Event {
+  scrollPos: [number, number];
   backward: boolean;
 }
 

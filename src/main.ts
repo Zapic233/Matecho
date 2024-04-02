@@ -90,7 +90,16 @@ function initOnce() {
     void init();
   }) as EventListener);
 
-  document.addEventListener("pjax:complete", () => {
+  document.addEventListener("pjax:complete", e => {
+    const scrollPos = (e as PjaxSuccessEvent).scrollPos;
+    if (scrollPos) {
+      setTimeout(() => {
+        document.scrollingElement?.scrollTo({
+          left: scrollPos[0],
+          top: scrollPos[1]
+        });
+      }, 0);
+    }
     np.done();
   });
   document.addEventListener("pjax:send", () => {
@@ -118,8 +127,6 @@ function handleLabelShrink(el: HTMLElement) {
     "#matecho-app-bar-large-label__inner"
   ) as HTMLElement;
   if (!inner) return;
-  // if put this in css, large title will cause big layout shift before js loaded
-  inner.style.position = "absolute";
   const labelShrinkOb = new MutationObserver(() => {
     if (!document.body.contains(el)) {
       labelShrinkOb.disconnect();
@@ -129,17 +136,7 @@ function handleLabelShrink(el: HTMLElement) {
     if (appBar.shrink) {
       el.classList.add("shrink");
     } else {
-      const o = appBar.scrollBehavior;
-      el.addEventListener(
-        "transitionend",
-        () => {
-          appBar.scrollBehavior = o;
-        },
-        { once: true }
-      );
       el.classList.remove("shrink");
-      appBar.scrollBehavior = undefined;
-      document.scrollingElement!.scrollTop = 0;
     }
   });
   labelShrinkOb.observe(appBar, {
@@ -149,7 +146,7 @@ function handleLabelShrink(el: HTMLElement) {
   const ro = observeResize(inner, e => {
     const h = e.contentRect.height;
     const scroll = document.scrollingElement!;
-    el.style.height = h + "px";
+    appBar.scrollThreshold = h / 2;
     if (h > scroll.scrollHeight - window.screen.availHeight) {
       appBar.scrollBehavior = undefined;
     } else {
