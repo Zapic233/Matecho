@@ -59,6 +59,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
             <?php } ?>
         </mdui-button-icon>
     </mdui-top-app-bar>
-    <main class="overflow-hidden min-h-100vh" id="matecho-main">
+    <main class="overflow-hidden" id="matecho-main">
         <?php $this->need('sidebar.php'); ?>
         <div id="matecho-pjax-main">

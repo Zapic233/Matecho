@@ -70,6 +70,10 @@ body {
   margin-bottom: 2rem;
 }
 
+#matecho-pjax-main {
+  min-height: calc(100vh - 184px);
+}
+
 #matecho-app-bar-large-label.shrink {
   transition:
     transform 300ms cubic-bezier(0.2, 0, 0, 1),
