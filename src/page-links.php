@@ -12,7 +12,7 @@ $this->need('header.php');
 $links = Matecho::links();
 $linksCount = count($links);
 ?>
-<div class="mx-auto md:px-0 box-border">
+<div class="mx-auto px-4 md:px-8 box-border w-full max-w-1440px">
     <div id="matecho-app-bar-large-label">    
         <div class="box-border pl-4 md:pl-12 " id="matecho-app-bar-large-label__inner">
             <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
