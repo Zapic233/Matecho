@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   pjax@0.2.8:
-    hash: rqw3on2luaayva7nhfyifevc7u
+    hash: iuixa4ml5tqviea274csqnnr7a
     path: patches/pjax@0.2.8.patch
 
 dependencies:
@@ -78,7 +78,7 @@ dependencies:
     version: 0.2.0
   pjax:
     specifier: ^0.2.8
-    version: 0.2.8(patch_hash=rqw3on2luaayva7nhfyifevc7u)
+    version: 0.2.8(patch_hash=iuixa4ml5tqviea274csqnnr7a)
   postcss:
     specifier: ^8.4.38
     version: 8.4.38
@@ -2893,7 +2893,7 @@ packages:
     hasBin: true
     dev: false
 
-  /pjax@0.2.8(patch_hash=rqw3on2luaayva7nhfyifevc7u):
+  /pjax@0.2.8(patch_hash=iuixa4ml5tqviea274csqnnr7a):
     resolution: {integrity: sha512-IeVXXIZJzxVDYzV2Td5MZkWJcny8JRCz2dQ1xxhIUbIFgP+08ymV7WXVtbF8NlUd2MZKH1cNvhuTOd2QAOGcOg==}
     dev: false
     patched: true

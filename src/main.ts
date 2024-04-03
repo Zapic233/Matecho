@@ -22,6 +22,13 @@ import "virtual:components/functions";
 import "virtual:components/sidebar";
 import "virtual:components/footer";
 
+let pjax: Pjax;
+
+export function getPjaxInst() {
+  if (!pjax) throw Error("Pjax not initialized");
+  return pjax;
+}
+
 function initOnce() {
   // app bar title will have animation in first time loaded
   setTimeout(() => {
@@ -63,7 +70,7 @@ function initOnce() {
     }
   });
 
-  new Pjax({
+  pjax = new Pjax({
     selectors: [
       "title",
       "#matecho-pjax-main",
