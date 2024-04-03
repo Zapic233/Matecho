@@ -90,7 +90,11 @@ $this->need('header.php');
                 <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
-                <div class="pa-4 matecho-comment-form w-full box-border relative" id="<?php $this->respondId(); ?>">
+                <div class="pa-4 matecho-comment-form w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>" id="<?php $this->respondId(); ?>">
+                    <div class="matecho-form-lock-mask text-xl">
+                        <mdui-icon-lock class="mr-2 opacity-90"></mdui-icon-lock>
+                        评论已关闭
+                    </div>    
                     <div class="matecho-form-loading-mask">
                         <mdui-circular-progress></mdui-circular-progress>
                     </div>
@@ -133,7 +137,8 @@ $this->need('header.php');
         </div>
     <?php } else { ?>
         <div id="matecho-app-bar-large-label">
-            <div class="box-border mt-24 px-2 md:pl-0 flex justify-center flex-gap-4 items-center" id="matecho-app-bar-large-label__inner">
+            <div class="box-border mt-24 px-2 md:pl-0 flex justify-center flex-gap-4 items-center"
+                id="matecho-app-bar-large-label__inner">
                 <mdui-icon-lock class="text-3xl"></mdui-icon-lock>
                 <div class="truncate text-3xl">
                     <?php $this->archiveTitle(
@@ -144,16 +149,18 @@ $this->need('header.php');
                 </div>
             </div>
         </div>
-        <form class="max-w-420px pa-2 box-border md:pa-0 w-full mx-auto relative" id="matecho-password-form" method="post" action="<?php echo $this->security->getTokenUrl($this->permalink); ?>" data-pjax-state>
+        <form class="max-w-420px pa-2 box-border md:pa-0 w-full mx-auto relative" id="matecho-password-form" method="post"
+            action="<?php echo $this->security->getTokenUrl($this->permalink); ?>" data-pjax-state>
             <div class="matecho-form-loading-mask">
                 <mdui-circular-progress></mdui-circular-progress>
             </div>
-            <mdui-text-field enterkeyhint="done" toggle-password required label="密码" variant="outlined" type="password" name="protectPassword">
+            <mdui-text-field enterkeyhint="done" toggle-password required label="密码" variant="outlined" type="password"
+                name="protectPassword">
                 <span slot="helper" class="invisible">密码</span>
             </mdui-text-field>
-			<input type="hidden" name="protectCID" value="<?php $this->cid(); ?>" />
-			<mdui-button type="submit" class="w-full mt-2">解锁</mdui-button>
-		</form>
+            <input type="hidden" name="protectCID" value="<?php $this->cid(); ?>" />
+            <mdui-button type="submit" class="w-full mt-2">解锁</mdui-button>
+        </form>
     <?php } ?>
 </div>
 <?php if ($this->options->commentsAntiSpam) { ?>

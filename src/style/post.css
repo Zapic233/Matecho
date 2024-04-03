@@ -23,7 +23,8 @@
   display: inline-block;
 }
 
-.matecho-form-loading-mask {
+.matecho-form-loading-mask,
+.matecho-form-lock-mask {
   opacity: 0;
   transition: 0.2s;
   pointer-events: none;
@@ -38,12 +39,16 @@
   z-index: 10000;
 }
 
+.matecho-comment-form__lock .matecho-form-lock-mask,
 .matecho-form__loading .matecho-form-loading-mask {
   opacity: 1;
   pointer-events: initial;
 }
 
-.matecho-form__loading > :not(.matecho-form-loading-mask) {
+.matecho-comment-form__lock
+  > :not(.matecho-form-loading-mask, .matecho-form-lock-mask),
+.matecho-form__loading
+  > :not(.matecho-form-loading-mask, .matecho-form-lock-mask) {
   opacity: 0.3;
   pointer-events: none;
 }
