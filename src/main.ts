@@ -10,10 +10,11 @@ import type {
 import "virtual:uno.css";
 import { observeResize } from "mdui/functions/observeResize";
 import { breakpoint } from "mdui/functions/breakpoint";
+import { mGlobal } from "./utils/global";
 import Pjax from "pjax";
 import np from "nprogress";
 
-import "./polyfill";
+import "./utils/polyfill";
 import "@mdui/icons/insert-drive-file";
 import "@mdui/icons/link";
 
@@ -21,13 +22,6 @@ import "virtual:components/header";
 import "virtual:components/functions";
 import "virtual:components/sidebar";
 import "virtual:components/footer";
-
-let pjax: Pjax;
-
-export function getPjaxInst() {
-  if (!pjax) throw Error("Pjax not initialized");
-  return pjax;
-}
 
 function initOnce() {
   // app bar title will have animation in first time loaded
@@ -70,7 +64,7 @@ function initOnce() {
     }
   });
 
-  pjax = new Pjax({
+  mGlobal.pjax = new Pjax({
     selectors: [
       "title",
       "#matecho-pjax-main",

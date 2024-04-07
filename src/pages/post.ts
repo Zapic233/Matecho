@@ -3,7 +3,7 @@ import { Snackbar } from "mdui/components/snackbar";
 
 import "/src/style/post.css";
 import "virtual:components/post";
-import { getPjaxInst } from "../main";
+import { mGlobal } from "../utils/global";
 import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
@@ -198,7 +198,7 @@ function handlePasswordForm(form: HTMLFormElement) {
     })
       .then(async resp => {
         if (resp.status === 200) {
-          const pjax = getPjaxInst();
+          const pjax = mGlobal.pjax!;
           pjax.handleResponse(
             await resp.text(),
             new XMLHttpRequest(), // dummy XHR
