@@ -3,6 +3,7 @@ use Typecho\Widget\Helper\Form\Element\Radio;
 use Typecho\Widget\Helper\Form\Element\Hidden;
 use Typecho\Widget\Helper\Form\Element\Text;
 use Typecho\Widget\Helper\Form;
+use Typecho\Widget\Helper\Form\Element\Textarea;
 use Utils\Helper;
 use Widget\Archive;
 function themeConfig(Form $form): void {
@@ -14,14 +15,18 @@ function themeConfig(Form $form): void {
     } else {
         $form->addInput(new Radio("ColorSchemeCache", [true => "启用", false => "禁用"], false, "颜色主题样式缓存", "缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度, 需要主题目录可写, 不需要持久化, 在文件不存在时自动生成."));
     }
+    $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
+    $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
     $form->addInput(new Hidden("ColorSchemeCSS"));
     require("settings-header.php");
 }
 
 function themeInit(Archive $context): void {
-    Matecho::$ColorScheme = Helper::options()->ColorScheme;
-    Matecho::$GravatarURL = Helper::options()->GravatarURL;
-    Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache;
+    Matecho::$ColorScheme = Helper::options()->ColorScheme ?? "";
+    Matecho::$GravatarURL = Helper::options()->GravatarURL ?? "";
+    Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache ?? false;
+    Matecho::$BeianText = Helper::options()->BeianText ?? "";
+    Matecho::$ExtraCode = Helper::options()->ExtraCode ?? "";
     if (Matecho::$ColorSchemeCache && Matecho::$ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
         Matecho::generateThemeCSS();
     }
@@ -36,6 +41,8 @@ class Matecho {
     static string $ColorScheme;
     static string $GravatarURL;
     static bool $ColorSchemeCache;
+    static string $BeianText;
+    static string $ExtraCode;
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
