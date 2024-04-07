@@ -4,6 +4,10 @@ import { Snackbar } from "mdui/components/snackbar";
 import "/src/style/post.css";
 import "virtual:components/post";
 import { getPjaxInst } from "../main";
+import ClipboardJS from "clipboard";
+
+import "mdui/components/button-icon";
+import "@mdui/icons/copy-all";
 
 function openSnackbar(msg: string) {
   const sb = new Snackbar();
@@ -218,6 +222,21 @@ export function init() {
   initComments();
   const article = document.querySelector<HTMLElement>("article.mdui-prose");
   if (article) {
+    article.querySelectorAll("pre").forEach(el => {
+      const codeEl = el.querySelector("code");
+      if (!codeEl) return;
+      const wrapper = Object.assign(document.createElement("div"), {
+        className: "matecho-code-action-wrapper"
+      } as Partial<HTMLDivElement>);
+      const copyBtn = document.createElement("mdui-button-icon");
+      copyBtn.addEventListener("click", () => {
+        ClipboardJS.copy(codeEl.innerText);
+        openSnackbar("已复制到剪切板");
+      });
+      copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
+      wrapper.appendChild(copyBtn);
+      el.appendChild(wrapper);
+    });
     if (
       window.__MATECHO_OPTIONS__.Prism &&
       article.querySelector("pre > code[class*=lang-]")

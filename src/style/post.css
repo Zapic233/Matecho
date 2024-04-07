@@ -52,3 +52,10 @@
   opacity: 0.3;
   pointer-events: none;
 }
+
+.matecho-code-action-wrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  opacity: 0.8;
+}
