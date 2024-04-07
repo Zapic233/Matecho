@@ -1,4 +1,5 @@
-import { defineConfig, UserConfig } from "vite";
+import type { UserConfig } from "vite";
+import { defineConfig } from "vite";
 import unocss from "unocss/vite";
 import fg from "fast-glob";
 import Matecho from "./plugins/Matecho";

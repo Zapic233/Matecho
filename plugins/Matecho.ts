@@ -1,4 +1,4 @@
-import { ConfigEnv, Plugin } from "vite";
+import type { ConfigEnv, Plugin } from "vite";
 import { hash } from "./UnoCSSClassMangle";
 import { getUserAgentRegex } from "browserslist-useragent-regexp";
 import { copyFile, cp, readFile, rm, mkdir } from "node:fs/promises";
