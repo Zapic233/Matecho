@@ -218,24 +218,29 @@ export function init() {
   initComments();
   const article = document.querySelector<HTMLElement>("article.mdui-prose");
   if (article) {
-    if (article.querySelector("pre > code[class*=lang-]")) {
+    if (
+      window.__MATECHO_OPTIONS__.Prism &&
+      article.querySelector("pre > code[class*=lang-]")
+    ) {
       initPrism(article);
     }
-    if (article.querySelector("img")) {
+    if (window.__MATECHO_OPTIONS__.FancyBox && article.querySelector("img")) {
       initFancybox(article);
     }
-    const count$ = countMoney(article.innerText);
-    if (article.innerText.includes("$")) {
-      const excludeText = Array.from(
-        document.querySelectorAll<HTMLElement>(
-          "script,noscript, style, textarea, pre, code, option"
+    if (window.__MATECHO_OPTIONS__.KaTeX) {
+      const count$ = countMoney(article.innerText);
+      if (article.innerText.includes("$")) {
+        const excludeText = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            "script,noscript, style, textarea, pre, code, option"
+          )
         )
-      )
-        .map(v => v.innerText)
-        .join("");
-      const excluded$ = countMoney(excludeText);
-      if (excluded$ < count$) {
-        initKaTeX(article);
+          .map(v => v.innerText)
+          .join("");
+        const excluded$ = countMoney(excludeText);
+        if (excluded$ < count$) {
+          initKaTeX(article);
+        }
       }
     }
   }

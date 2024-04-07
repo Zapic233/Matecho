@@ -33,6 +33,11 @@ declare global {
 
 declare interface Window {
   __MATECHO_ANTI_SPAM__: string;
+  __MATECHO_OPTIONS__: {
+    FancyBox: boolean;
+    Prism: boolean;
+    KaTeX: boolean;
+  };
 }
 
 declare const __BUILD_DATE__: string;

@@ -11,10 +11,13 @@ function themeConfig(Form $form): void {
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
     if (!is_writable(__DIR__."/assets/color-scheme.css")) {
-        $form->addInput(new Radio("ColorSchemeCache", [false => "禁用"], false, "颜色主题样式缓存", "(无法写入缓存, 检查主题目录权限) 缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度."));
+        $form->addInput(new Radio("ColorSchemeCache", [0 => "禁用"], 0, "颜色主题样式缓存", "(无法写入缓存, 检查主题目录权限) 缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度."));
     } else {
-        $form->addInput(new Radio("ColorSchemeCache", [true => "启用", false => "禁用"], false, "颜色主题样式缓存", "缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度, 需要主题目录可写, 不需要持久化, 在文件不存在时自动生成."));
+        $form->addInput(new Radio("ColorSchemeCache", [1 => "启用", 0 => "禁用"], 0, "颜色主题样式缓存", "缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度, 需要主题目录可写, 不需要持久化, 在文件不存在时自动生成."));
     }
+    $form->addInput(new Radio("EnableFancyBox", [1 => "自动", 0 => "禁用"], 1, "FancyBox", "允许用户放大查看文章内的图片"));
+    $form->addInput(new Radio("EnablePrism", [1 => "自动", 0 => "禁用"], 1, "Prism", "高亮页面上的代码, 默认支持的语言有限, 可以按需自行编译主题."));
+    $form->addInput(new Radio("EnableKaTeX", [1 => "自动", 0 => "禁用"], 1, "KaTeX", "渲染LaTeX公式, 在使用\$或者\$\$包裹LaTeX公式即可自动渲染."));
     $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
     $form->addInput(new Hidden("ColorSchemeCSS"));
@@ -60,6 +63,15 @@ class Matecho {
             echo $archive->fields->cover;
         }
 
+    }
+
+    static function generateJSOptions(): void {
+        $options = Helper::options();
+        echo "<script>window.__MATECHO_OPTIONS__=" . json_encode([
+            "KaTeX" => $options->EnableKaTeX ? true : false,
+            "FancyBox" => $options->EnableFancyBox ? true : false,
+            "Prism" => $options->EnablePrism ? true : false
+        ]) . ";</script>";
     }
 
     static function generateThemeCSS(): void {
