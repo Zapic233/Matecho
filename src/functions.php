@@ -147,12 +147,14 @@ class Matecho {
                 <div class="w-full pl-56px box-border mt-4 matecho-comment-children-list">
                     <?php 
                         $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
+                        $row->setAccessible(true);
                         $r = $row->getValue($comments);
                         foreach($comments->children as $child) {
                             $row->setValue($comments, $child);
                             self::toComment($comments);
                         }                
                         $row->setValue($comments, $r);
+                        $row->setAccessible(false);
                     ?>
                 </div>
             <?php } ?>
@@ -189,12 +191,14 @@ class Matecho {
         </div>
         <?php if (count($comments->children) > 0) { 
                 $row = (new ReflectionClass(\Widget\Comments\Archive::class))->getProperty("row");
+                $row->setAccessible(true);
                 $r = $row->getValue($comments);
                 foreach($comments->children as $child) {
                     $row->setValue($comments, $child);
                     self::toComment($comments);
                 }                
                 $row->setValue($comments, $r); 
+                $row->setAccessible(false);
             } ?>   
     <?php }
     }
