@@ -1,9 +1,9 @@
 import type { TextField, Button } from "mdui";
 import { Snackbar } from "mdui/components/snackbar";
 
-import "/src/style/post.css";
+import "@/style/post.css";
 import "virtual:components/post";
-import { mGlobal } from "../utils/global";
+import { mGlobal } from "@/utils/global";
 import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
@@ -142,7 +142,7 @@ function initComments(el: HTMLElement) {
 }
 
 function initPrism(container: HTMLElement) {
-  void import("/src/style/prism.css");
+  void import("@/style/prism.css");
   void import("virtual:prismjs").then(({ default: Prism }) => {
     Prism.highlightAllUnder(container);
   });

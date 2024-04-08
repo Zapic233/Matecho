@@ -50,7 +50,7 @@ export default defineConfig(async env => {
     appType: "mpa",
     resolve: {
       alias: {
-        "@/": "src/"
+        "@/": "/src/"
       }
     },
     build: {

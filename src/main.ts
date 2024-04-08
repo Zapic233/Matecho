@@ -10,11 +10,11 @@ import type {
 import "virtual:uno.css";
 import { observeResize } from "mdui/functions/observeResize";
 import { breakpoint } from "mdui/functions/breakpoint";
-import { mGlobal } from "./utils/global";
+import { mGlobal } from "@/utils/global";
 import Pjax from "pjax";
 import np from "nprogress";
 
-import "./utils/polyfill";
+import "@/utils/polyfill";
 import "@mdui/icons/insert-drive-file";
 import "@mdui/icons/link";
 
@@ -31,9 +31,9 @@ function loadPageScript(type: string): Promise<IInit> {
   switch (type) {
     case "post":
     case "page":
-      return import("./pages/post");
+      return import("@/pages/post");
     default:
-      return import("./pages/index");
+      return import("@/pages/index");
   }
 }
 

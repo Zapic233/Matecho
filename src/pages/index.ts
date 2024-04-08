@@ -1,2 +1,2 @@
 import "virtual:components/index";
-import "/src/style/index.css";
+import "@/style/index.css";
