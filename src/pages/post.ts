@@ -219,54 +219,56 @@ function handlePasswordForm(form: HTMLFormElement) {
   });
 }
 
+function initCodeBlockAction(wrapper: HTMLElement) {
+  wrapper.querySelectorAll("pre").forEach(el => {
+    const codeEl = el.querySelector("code");
+    if (!codeEl) return;
+    const wrapper = Object.assign(document.createElement("div"), {
+      className: "matecho-code-action-wrapper"
+    } as Partial<HTMLDivElement>);
+    // ! the languages class name render by Typecho is lang-xxx, but it will be changed to language-xxx after Prism highlighted it.
+    const codeLang = Array.from(codeEl.classList).filter(c =>
+      c.startsWith("lang-")
+    )[0];
+    if (codeLang) {
+      const lang = PrismLangs[codeLang.substring(5)] ?? PrismLangs.none;
+      wrapper.appendChild(
+        Object.assign(document.createElement("div"), {
+          innerText: lang,
+          className: "prism-code-lang"
+        } as Partial<HTMLDivElement>)
+      );
+    }
+    const copyBtn = document.createElement("mdui-button-icon");
+    copyBtn.addEventListener("click", () => {
+      ClipboardJS.copy(codeEl.innerText);
+      openSnackbar("已复制到剪切板");
+    });
+    copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
+    wrapper.appendChild(copyBtn);
+
+    el.appendChild(wrapper);
+  });
+}
+
 export function init(el: HTMLElement) {
   initComments(el);
   const article = el.querySelector<HTMLElement>("article.mdui-prose");
+  const { Prism, FancyBox, KaTeX } = window.__MATECHO_OPTIONS__;
   if (article) {
-    article.querySelectorAll("pre").forEach(el => {
-      const codeEl = el.querySelector("code");
-      if (!codeEl) return;
-      const wrapper = Object.assign(document.createElement("div"), {
-        className: "matecho-code-action-wrapper"
-      } as Partial<HTMLDivElement>);
-      // ! the languages class name render by Typecho is lang-xxx, but it will be changed to language-xxx after Prism highlighted it.
-      const codeLang = Array.from(codeEl.classList).filter(c =>
-        c.startsWith("lang-")
-      )[0];
-      if (codeLang) {
-        const lang = PrismLangs[codeLang.substring(5)] ?? PrismLangs.none;
-        wrapper.appendChild(
-          Object.assign(document.createElement("div"), {
-            innerText: lang,
-            className: "prism-code-lang"
-          } as Partial<HTMLDivElement>)
-        );
-      }
-      const copyBtn = document.createElement("mdui-button-icon");
-      copyBtn.addEventListener("click", () => {
-        ClipboardJS.copy(codeEl.innerText);
-        openSnackbar("已复制到剪切板");
-      });
-      copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
-      wrapper.appendChild(copyBtn);
-
-      el.appendChild(wrapper);
-    });
-    if (
-      window.__MATECHO_OPTIONS__.Prism &&
-      article.querySelector("pre > code[class*=lang-]")
-    ) {
+    initCodeBlockAction(article);
+    if (Prism && article.querySelector("pre > code[class*=lang-]")) {
       initPrism(article);
     }
-    if (window.__MATECHO_OPTIONS__.FancyBox && article.querySelector("img")) {
+    if (FancyBox && article.querySelector("img")) {
       initFancybox(article);
     }
-    if (window.__MATECHO_OPTIONS__.KaTeX) {
+    if (KaTeX) {
       const count$ = countMoney(article.innerText);
       if (article.innerText.includes("$")) {
         const excludeText = Array.from(
           article.querySelectorAll<HTMLElement>(
-            "script,noscript, style, textarea, pre, code, option"
+            "script, noscript, style, textarea, pre, code, option"
           )
         )
           .map(v => v.innerText)
