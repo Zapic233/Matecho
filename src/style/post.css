@@ -55,7 +55,24 @@
 
 .matecho-code-action-wrapper {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 5px;
+  right: 5px;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  gap: 0.25rem;
+}
+
+.matecho-code-action-wrapper mdui-button-icon {
+  opacity: 0.3;
+  transition: opacity 0.2s;
+}
+
+.matecho-code-action-wrapper mdui-button-icon:hover {
   opacity: 0.8;
+}
+
+.prism-code-lang {
+  opacity: 0.3;
+  font-size: 0.75rem;
 }

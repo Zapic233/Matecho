@@ -4,6 +4,7 @@ import { Snackbar } from "mdui/components/snackbar";
 import "@/style/post.css";
 import "virtual:components/post";
 import { mGlobal } from "@/utils/global";
+import { PrismLangs } from "@/utils/prism";
 import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
@@ -228,6 +229,19 @@ export function init(el: HTMLElement) {
       const wrapper = Object.assign(document.createElement("div"), {
         className: "matecho-code-action-wrapper"
       } as Partial<HTMLDivElement>);
+      // ! the languages class name render by Typecho is lang-xxx, but it will be changed to language-xxx after Prism highlighted it.
+      const codeLang = Array.from(codeEl.classList).filter(c =>
+        c.startsWith("lang-")
+      )[0];
+      if (codeLang) {
+        const lang = PrismLangs[codeLang.substring(5)] ?? PrismLangs.none;
+        wrapper.appendChild(
+          Object.assign(document.createElement("div"), {
+            innerText: lang,
+            className: "prism-code-lang"
+          } as Partial<HTMLDivElement>)
+        );
+      }
       const copyBtn = document.createElement("mdui-button-icon");
       copyBtn.addEventListener("click", () => {
         ClipboardJS.copy(codeEl.innerText);
@@ -235,6 +249,7 @@ export function init(el: HTMLElement) {
       });
       copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
       wrapper.appendChild(copyBtn);
+
       el.appendChild(wrapper);
     });
     if (
