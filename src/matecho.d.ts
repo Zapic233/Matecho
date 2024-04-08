@@ -2,12 +2,9 @@ declare module "virtual:prismjs" {
   export default await import("prismjs");
 }
 
-declare interface PjaxSuccessEvent extends Event {
+declare interface PjaxEvent extends Event {
   scrollPos: [number, number];
   backward: boolean;
-}
-
-declare interface PjaxErrorEvent extends Event {
   request?: XMLHttpRequest;
 }
 

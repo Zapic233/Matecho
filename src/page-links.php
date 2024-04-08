@@ -47,6 +47,4 @@ $linksCount = count($links);
         <?php } ?>
     </div>
 </div>
-<!--matecho-assets-injection-->
-<link rel="stylesheet" href="@/style/post.css">
 <?php $this->need('footer.php'); ?>

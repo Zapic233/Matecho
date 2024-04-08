@@ -25,20 +25,20 @@ function openSnackbar(msg: string) {
     sb.open = true;
   });
 }
-function initComments() {
-  const list = document.querySelector("#matecho-comment-list")!;
+function initComments(el: HTMLElement) {
+  const list = el.querySelector("#matecho-comment-list")!;
   if (!list) return;
-  const formWrapper = document.querySelector<HTMLDivElement>(
+  const formWrapper = el.querySelector<HTMLDivElement>(
     ".matecho-comment-form"
   )!;
   const form = formWrapper.querySelector<HTMLFormElement>("form")!;
-  const cancelReplyBtn = document.querySelector<Button>(
+  const cancelReplyBtn = el.querySelector<Button>(
     ".matecho-comment-form .matecho-comment-cancel-btn"
   )!;
-  const submitBtn = document.querySelector<Button>(
+  const submitBtn = el.querySelector<Button>(
     ".matecho-comment-form .matecho-comment-submit-btn"
   )!;
-  const CommentHeader = document.querySelector<HTMLDivElement>(
+  const CommentHeader = el.querySelector<HTMLDivElement>(
     ".matecho-comment-form-title"
   )!;
 
@@ -94,14 +94,14 @@ function initComments() {
             innerHTML: resp
           }) as HTMLHtmlElement;
           if (e.status === 200) {
-            const currentRoot = document.getElementById("matecho-comment-list");
+            const currentRoot = el.querySelector("#matecho-comment-list");
             if (!currentRoot) return location.reload();
             root
               .querySelectorAll(
                 "#matecho-comment-list .matecho-comment-wrapper"
               )
               .forEach(v => {
-                if (!document.getElementById(v.id)) {
+                if (!el.querySelector("#" + v.id)) {
                   if (v.classList.contains("matecho-comment-child")) {
                     const parentId = v.parentElement?.parentElement?.id || "";
                     const parent = document.getElementById(parentId);
@@ -123,7 +123,7 @@ function initComments() {
               });
 
             (formWrapper.querySelector("[name=text]") as TextField).value = "";
-            document.getElementById("matecho-no-comment-placeholder")?.remove();
+            el.querySelector("#matecho-no-comment-placeholder")?.remove();
             clearFormReplyState();
           } else {
             const errMsg = (root.querySelector(".container") as HTMLDivElement)
@@ -218,9 +218,9 @@ function handlePasswordForm(form: HTMLFormElement) {
   });
 }
 
-export function init() {
-  initComments();
-  const article = document.querySelector<HTMLElement>("article.mdui-prose");
+export function init(el: HTMLElement) {
+  initComments(el);
+  const article = el.querySelector<HTMLElement>("article.mdui-prose");
   if (article) {
     article.querySelectorAll("pre").forEach(el => {
       const codeEl = el.querySelector("code");
@@ -250,7 +250,7 @@ export function init() {
       const count$ = countMoney(article.innerText);
       if (article.innerText.includes("$")) {
         const excludeText = Array.from(
-          document.querySelectorAll<HTMLElement>(
+          article.querySelectorAll<HTMLElement>(
             "script,noscript, style, textarea, pre, code, option"
           )
         )

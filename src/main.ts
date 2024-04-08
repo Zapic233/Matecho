@@ -23,6 +23,20 @@ import "virtual:components/functions";
 import "virtual:components/sidebar";
 import "virtual:components/footer";
 
+interface IInit {
+  init?: (el: HTMLElement) => void | Promise<void>;
+}
+
+function loadPageScript(type: string): Promise<IInit> {
+  switch (type) {
+    case "post":
+    case "page":
+      return import("./pages/post");
+    default:
+      return import("./pages/index");
+  }
+}
+
 function initOnce() {
   // app bar title will have animation in first time loaded
   setTimeout(() => {
@@ -64,6 +78,13 @@ function initOnce() {
     }
   });
 
+  const signal = {
+    resolve: undefined as unknown as (value: string) => void,
+    promise: undefined as unknown as Promise<string>
+  };
+
+  let PjaxBackward = false;
+
   mGlobal.pjax = new Pjax({
     selectors: [
       "title",
@@ -72,27 +93,42 @@ function initOnce() {
       "#matecho-sidebar-list",
       "meta[name=matecho-template]"
     ],
-    cacheBust: false
+    cacheBust: false,
+    switches: {
+      "meta[name=matecho-template]": function (oldEl: Element, el: Element) {
+        signal.resolve((el as HTMLMetaElement).content);
+        oldEl.replaceWith(el);
+        this.onSwitch(oldEl, el);
+      },
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      "#matecho-pjax-main": async function (oldEl: Element, el: Element) {
+        const type = await signal.promise;
+        const scripts = await loadPageScript(type);
+        oldEl.replaceWith(el);
+        const wrapper = document.querySelector("#matecho-pjax-main");
+        if (wrapper) {
+          const className = PjaxBackward ? "slide-out" : "slide-in";
+          wrapper.addEventListener(
+            "animationend",
+            () => {
+              wrapper.classList.remove(className);
+            },
+            { once: true }
+          );
+          wrapper.classList.add(className);
+        }
+        await scripts.init?.(el as HTMLDivElement);
+        this.onSwitch(oldEl, el);
+      }
+    }
   });
 
-  document.addEventListener("pjax:success", ((e: PjaxSuccessEvent) => {
-    const wrapper = document.querySelector("#matecho-pjax-main");
-    if (wrapper) {
-      const className = e.backward ? "slide-out" : "slide-in";
-      wrapper.addEventListener(
-        "animationend",
-        () => {
-          wrapper.classList.remove(className);
-        },
-        { once: true }
-      );
-      wrapper.classList.add(className);
-    }
+  document.addEventListener("pjax:success", (() => {
     void init();
   }) as EventListener);
 
   document.addEventListener("pjax:complete", e => {
-    const scrollPos = (e as PjaxSuccessEvent).scrollPos;
+    const scrollPos = (e as PjaxEvent).scrollPos;
     if (scrollPos) {
       setTimeout(() => {
         document.scrollingElement?.scrollTo({
@@ -103,14 +139,18 @@ function initOnce() {
     }
     np.done();
   });
-  document.addEventListener("pjax:send", () => {
+  document.addEventListener("pjax:send", e => {
+    PjaxBackward = (e as PjaxEvent).backward === true;
     np.start();
     if (breakpoint().down("md")) {
       drawer.open = false;
     }
+    signal.promise = new Promise<string>(resolve => {
+      signal.resolve = resolve;
+    });
   });
 
-  document.addEventListener("pjax:error", ((e: PjaxErrorEvent) => {
+  document.addEventListener("pjax:error", ((e: PjaxEvent) => {
     const newUrl = e.request?.responseURL;
     if (newUrl) {
       location.href = newUrl;
@@ -119,7 +159,15 @@ function initOnce() {
     }
   }) as EventListener);
 
-  void init();
+  const type = (
+    document.querySelector("meta[name=matecho-template]") as HTMLMetaElement
+  ).content;
+
+  void loadPageScript(type)
+    .then(i => {
+      return i.init?.(document.querySelector("#matecho-pjax-main")!);
+    })
+    .then(() => init());
 }
 
 function handleLabelShrink(el: HTMLElement) {
@@ -160,20 +208,9 @@ function handleLabelShrink(el: HTMLElement) {
   });
 }
 
-async function init() {
+function init() {
   const header = document.getElementById("matecho-app-bar-large-label");
   header && handleLabelShrink(header);
-  const CurrentModule = document.querySelector(
-    "meta[name=matecho-template]"
-  ) as HTMLMetaElement;
-  switch (CurrentModule.content) {
-    case "post":
-    case "page":
-      (await import("./pages/post")).init();
-      break;
-    default:
-      import("./pages/index");
-  }
 }
 
 if (document.readyState !== "loading") {
