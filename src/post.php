@@ -102,15 +102,12 @@ $this->need('header.php');
                     <!-- "data-pjax-state" prevent Pjax handle this form. -->
                     <form class="transition" method="post" action="<?php $this->commentUrl() ?>" role="form"
                         data-pjax-state>
-                        <?php if ($this->user->hasLogin()): ?>
-                            <p>
-                                <?php _e('登录身份: '); ?><a href="<?php $this->options->profileUrl(); ?>">
-                                    <?php $this->user->screenName(); ?>
-                                </a>. <a href="<?php $this->options->logoutUrl(); ?>" title="Logout">
-                                    <?php _e('退出'); ?> &raquo;
-                                </a>
-                            </p>
-                        <?php else: ?>
+                        <?php if ($this->user->hasLogin()){ ?>
+                            <div class="flex items-center gap-2">
+                                <mdui-avatar src="<?php Matecho::Gravatar($this->user->mail) ?>"></mdui-avatar>
+                                <span><?php $this->user->screenName(); ?></span>
+                            </div>
+                        <?php } else { ?>
                             <div class="flex flex-wrap">
                                 <mdui-text-field class="w-1/2 sm:w-1/3 pr-1" label="称呼" variant="outlined" type="text"
                                     name="author" value="<?php $this->remember('author'); ?>" required></mdui-text-field>
@@ -118,9 +115,8 @@ $this->need('header.php');
                                     name="mail" value="<?php $this->remember('mail'); ?>" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>></mdui-text-field>
                                 <mdui-text-field class="w-full sm:w-1/3 pt-2 sm:pt-0 sm:pl-1" label="网址" variant="outlined"
                                     type="url" name="url" value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>></mdui-text-field>
-
                             </div>
-                        <?php endif; ?>
+                        <?php } ?>
                         <div class="flex flex-gap-2 flex-col items-center mt-4">
                             <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" required>
                                 <?php $this->remember('text'); ?>
@@ -129,7 +125,6 @@ $this->need('header.php');
                                 <mdui-button class="matecho-comment-submit-btn" type="submit">评论</mdui-button>
                                 <mdui-button class="matecho-comment-cancel-btn" variant="outlined">取消回复</mdui-button>
                             </div>
-
                         </div>
                     </form>
                 </div>
