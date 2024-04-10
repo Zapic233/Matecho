@@ -151,14 +151,19 @@ function initPrism(container: HTMLElement) {
 
 function initFancybox(container: HTMLElement) {
   void import("@fancyapps/ui/dist/fancybox/fancybox.css");
-  void import("@fancyapps/ui").then(({ Fancybox: fb }) => {
+  void Promise.all([
+    import("@fancyapps/ui"),
+    import("@fancyapps/ui/l10n/Fancybox/zh_CN")
+  ]).then(([{ Fancybox: fb }, { zh_CN }]) => {
     container.querySelectorAll<HTMLImageElement>("img").forEach(v => {
       v.setAttribute("data-fancybox", "article");
       if (v.alt ?? v.title) {
         v.setAttribute("data-caption", v.alt ?? v.title);
       }
     });
-    fb.bind("[data-fancybox]");
+    fb.bind("[data-fancybox]", {
+      l10n: zh_CN
+    });
   });
 }
 
