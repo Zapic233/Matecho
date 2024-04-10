@@ -43,7 +43,7 @@ export default defineConfig(async env => {
       }),
       Matecho(),
       PrismJS({
-        languages: ["c", "typescript", "bash"],
+        languages: ["c", "typescript", "bash", "less", "scss", "sass"],
         plugins: ["line-numbers"]
       })
     ],

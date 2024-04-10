@@ -70,6 +70,10 @@
   cursor: help;
 }
 
+.token.reset-color {
+  color: rgb(var(--mdui-color-on-background));
+}
+
 @media (prefers-color-scheme: dark) {
   .token.comment,
   .token.prolog,

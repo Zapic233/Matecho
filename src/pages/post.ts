@@ -4,7 +4,7 @@ import { Snackbar } from "mdui/components/snackbar";
 import "@/style/post.css";
 import "virtual:components/post";
 import { mGlobal } from "@/utils/global";
-import { PrismLangs } from "@/utils/prism";
+import { PrismLangs, PrismVue } from "@/utils/prism";
 import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
@@ -145,6 +145,7 @@ function initComments(el: HTMLElement) {
 function initPrism(container: HTMLElement) {
   void import("@/style/prism.css");
   void import("virtual:prismjs").then(({ default: Prism }) => {
+    PrismVue(Prism);
     Prism.highlightAllUnder(container);
   });
 }
