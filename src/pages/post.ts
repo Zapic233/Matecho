@@ -235,7 +235,7 @@ function initCodeBlockAction(wrapper: HTMLElement) {
       wrapper.appendChild(
         Object.assign(document.createElement("div"), {
           innerText: lang,
-          className: "prism-code-lang"
+          className: "matecho-code-lang"
         } as Partial<HTMLDivElement>)
       );
     }
