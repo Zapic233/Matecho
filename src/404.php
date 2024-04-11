@@ -28,5 +28,4 @@ Typecho\Plugin::export();
         <mdui-button onclick="history.back()">返回上一页</mdui-button>
         <mdui-button href="<?php $this->options->siteUrl() ?>" variant="outlined">返回首页</mdui-button>
     </div>
-    <!--matecho-assets-injection-->
 <?php $this->need('footer.php'); ?>
