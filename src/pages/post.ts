@@ -26,58 +26,31 @@ function openSnackbar(msg: string) {
     sb.open = true;
   });
 }
-function initComments(el: HTMLElement) {
-  const list = el.querySelector("#matecho-comment-list")!;
-  if (!list) return;
-  const formWrapper = el.querySelector<HTMLDivElement>(
-    ".matecho-comment-form"
-  )!;
+
+function cloneCommentForm() {
+  const node = document
+    .querySelector(".matecho-comment-form__main")
+    ?.cloneNode(true) as HTMLDivElement;
+  if (!node) throw new Error("Main comment form not found.");
+  node.querySelector<TextField>("[name=text]")!.value = "";
+  node.removeAttribute("id");
+  initCommentForm(node);
+  return node;
+}
+
+function initCommentForm(formWrapper: HTMLDivElement) {
   const form = formWrapper.querySelector<HTMLFormElement>("form")!;
-  const cancelReplyBtn = el.querySelector<Button>(
-    ".matecho-comment-form .matecho-comment-cancel-btn"
+  const submitBtn = formWrapper.querySelector<Button>(
+    ".matecho-comment-submit-btn"
   )!;
-  const submitBtn = el.querySelector<Button>(
-    ".matecho-comment-form .matecho-comment-submit-btn"
+  const cancelBtn = formWrapper.querySelector<Button>(
+    ".matecho-comment-cancel-btn"
   )!;
-  const CommentHeader = el.querySelector<HTMLDivElement>(
-    ".matecho-comment-form-title"
-  )!;
-
-  const clearFormReplyState = () => {
-    CommentHeader.innerText = "发表评论";
-    formWrapper.classList.remove("matecho-comment-form__reply");
-    form.querySelector("input[name=parent]")?.remove();
-    list.after(formWrapper);
-  };
-
-  cancelReplyBtn.addEventListener("click", () => {
-    clearFormReplyState();
-  });
-
-  list.addEventListener("click", e => {
-    const target = e.target as HTMLElement;
-    const replyId = target.getAttribute?.("data-to-comment");
-    if (typeof replyId !== "string") return;
-    clearFormReplyState();
-    CommentHeader.innerText = "回复 ";
-    CommentHeader.appendChild(
-      Object.assign(document.createElement("a"), {
-        href: "#comment-" + replyId,
-        innerText: "#" + replyId
-      })
-    );
-    form.appendChild(
-      Object.assign(document.createElement("input"), {
-        name: "parent",
-        value: replyId,
-        type: "hidden"
-      })
-    );
-    formWrapper.classList.add("matecho-comment-form__reply");
-    (e.target as HTMLElement).parentElement!.parentElement!.after(formWrapper);
-  });
   form.addEventListener("submit", e => e.preventDefault());
   submitBtn.addEventListener("click", () => {
+    const commentList = document.querySelector(
+      "#matecho-comment-list"
+    ) as HTMLDivElement;
     const token = window.__MATECHO_ANTI_SPAM__;
     if (!token) return;
     if (form.reportValidity()) {
@@ -95,14 +68,13 @@ function initComments(el: HTMLElement) {
             innerHTML: resp
           }) as HTMLHtmlElement;
           if (e.status === 200) {
-            const currentRoot = el.querySelector("#matecho-comment-list");
-            if (!currentRoot) return location.reload();
+            if (!commentList) return location.reload();
             root
               .querySelectorAll(
                 "#matecho-comment-list .matecho-comment-wrapper"
               )
               .forEach(v => {
-                if (!el.querySelector("#" + v.id)) {
+                if (!commentList.querySelector("#" + v.id)) {
                   if (v.classList.contains("matecho-comment-child")) {
                     const parentId = v.parentElement?.parentElement?.id || "";
                     const parent = document.getElementById(parentId);
@@ -118,14 +90,27 @@ function initComments(el: HTMLElement) {
                       parentList.appendChild(v);
                     }
                   } else {
-                    currentRoot.appendChild(v);
+                    commentList.appendChild(v);
                   }
                 }
               });
 
-            (formWrapper.querySelector("[name=text]") as TextField).value = "";
-            el.querySelector("#matecho-no-comment-placeholder")?.remove();
-            clearFormReplyState();
+            if (formWrapper.classList.contains("matecho-comment-form__reply")) {
+              formWrapper.remove();
+            } else {
+              const contentField = formWrapper.querySelector(
+                "[name=text]"
+              ) as TextField;
+              // set required to false before clear text, prevent error message
+              contentField.required = false;
+              contentField.value = "";
+              setTimeout(() => {
+                contentField.required = true;
+              });
+            }
+            commentList
+              .querySelector("#matecho-no-comment-placeholder")
+              ?.remove();
           } else {
             const errMsg = (root.querySelector(".container") as HTMLDivElement)
               ?.innerText;
@@ -139,6 +124,46 @@ function initComments(el: HTMLElement) {
           formWrapper.classList.remove("matecho-form__loading");
         });
     }
+  });
+  cancelBtn.addEventListener("click", () => {
+    formWrapper.remove();
+  });
+}
+
+function initComments(el: HTMLElement) {
+  const list = el.querySelector("#matecho-comment-list")!;
+  if (!list) return;
+  const formWrapper = el.querySelector<HTMLDivElement>(
+    ".matecho-comment-form"
+  )!;
+  initCommentForm(formWrapper);
+  list.addEventListener("click", e => {
+    const target = e.target as HTMLElement;
+    const replyId = target.getAttribute?.("data-to-comment");
+    if (typeof replyId !== "string") return;
+    if (document.querySelector("#reply-to-" + replyId)) return;
+    const formWrapper = cloneCommentForm();
+    const form = formWrapper.querySelector<HTMLFormElement>("form")!;
+    const CommentHeader = formWrapper.querySelector<HTMLDivElement>(
+      ".matecho-comment-form-title"
+    )!;
+    CommentHeader.innerText = "回复 ";
+    CommentHeader.appendChild(
+      Object.assign(document.createElement("a"), {
+        href: "#comment-" + replyId,
+        innerText: "#" + replyId
+      })
+    );
+    form.appendChild(
+      Object.assign(document.createElement("input"), {
+        name: "parent",
+        value: replyId,
+        type: "hidden"
+      })
+    );
+    formWrapper.classList.add("matecho-comment-form__reply");
+    formWrapper.id = "reply-to-" + replyId;
+    (e.target as HTMLElement).parentElement!.parentElement!.after(formWrapper);
   });
 }
 

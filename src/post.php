@@ -90,7 +90,7 @@ $this->need('header.php');
                 <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
-                <div class="pa-4 matecho-comment-form w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>" id="<?php $this->respondId(); ?>">
+                <div class="pa-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>" id="<?php $this->respondId(); ?>">
                     <div class="matecho-form-lock-mask text-xl">
                         <mdui-icon-lock class="mr-2 opacity-90"></mdui-icon-lock>
                         评论已关闭
@@ -118,9 +118,7 @@ $this->need('header.php');
                             </div>
                         <?php } ?>
                         <div class="flex flex-gap-2 flex-col items-center mt-4">
-                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" required>
-                                <?php $this->remember('text'); ?>
-                            </mdui-text-field>
+                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" required></mdui-text-field>
                             <div class="mt-2">
                                 <mdui-button class="matecho-comment-submit-btn" type="submit">评论</mdui-button>
                                 <mdui-button class="matecho-comment-cancel-btn" variant="outlined">取消回复</mdui-button>
