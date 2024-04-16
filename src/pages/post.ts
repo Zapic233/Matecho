@@ -264,6 +264,9 @@ function handlePasswordForm(form: HTMLFormElement) {
         form.classList.remove("matecho-form__loading");
       });
   });
+  setTimeout(() => {
+    input.focus();
+  });
 }
 
 function initCodeBlockAction(wrapper: HTMLElement) {
