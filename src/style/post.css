@@ -76,3 +76,41 @@
   opacity: 0.3;
   font-size: 0.75rem;
 }
+
+.matecho-comment-form__in {
+  animation: comment-form-in 0.3s cubic-bezier(0.2, 0, 0, 1);
+  overflow: hidden;
+}
+
+.matecho-comment-form__out {
+  animation: comment-form-out 0.3s cubic-bezier(0.2, 0, 0, 1);
+  overflow: hidden;
+}
+
+@keyframes comment-form-in {
+  from {
+    opacity: 0;
+    height: 0;
+    padding: 0 1rem;
+  }
+
+  to {
+    opacity: 1;
+    height: var(--m-height);
+    padding: 1rem;
+  }
+}
+
+@keyframes comment-form-out {
+  to {
+    opacity: 0;
+    height: 0;
+    padding: 0 1rem;
+  }
+
+  from {
+    opacity: 1;
+    height: var(--m-height);
+    padding: 1rem;
+  }
+}
