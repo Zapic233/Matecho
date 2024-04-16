@@ -53,6 +53,9 @@ Typecho\Plugin::export();
                             </div>
                             <a title="<?php $this->title(); ?>" class="text-3xl block line-height-10 matecho-article-link" href="<?php $this->permalink(); ?>">
                                 <?php $this->title(); ?>
+                                <?php if (strlen($this->title) == 0) {?>
+                                    <i>无标题文章</i>
+                                <?php } ?>
                             </a>
                             <div class="mt-4 text-sm font-300 opacity-80 line-clamp-2">
                                 <?php if (!$this->hidden && $this->fields->description) echo $this->fields->description; else $this->excerpt(300,'...'); ?>

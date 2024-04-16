@@ -13,16 +13,7 @@ $this->need('header.php');
                     <?php $this->category(" | "); ?>
                 </div>
                 <div class="truncate text-3xl md:text-5xl line-height-[1.4]!">
-                    <?php $this->archiveType === 'index' ? $this->options->title() : $this->archiveTitle(
-                        array(
-                            'category' => _t('分类 %s 下的文章'),
-                            'search' => _t('包含关键字 %s 的文章'),
-                            'tag' => _t('标签 %s 下的文章'),
-                            'author' => _t('%s 发布的文章')
-                        ),
-                        '',
-                        ''
-                    ); ?>
+                    <?php $this->title(); ?>
                 </div>
                 <div class="text-sm opacity-80 block mt-3 truncate">
                     <?php
@@ -90,11 +81,12 @@ $this->need('header.php');
                 <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
-                <div class="pa-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>" id="<?php $this->respondId(); ?>">
+                <div class="pa-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>"
+                    id="<?php $this->respondId(); ?>">
                     <div class="matecho-form-lock-mask text-xl">
                         <mdui-icon-lock class="mr-2 opacity-90"></mdui-icon-lock>
                         评论已关闭
-                    </div>    
+                    </div>
                     <div class="matecho-form-loading-mask">
                         <mdui-circular-progress></mdui-circular-progress>
                     </div>
@@ -102,7 +94,7 @@ $this->need('header.php');
                     <!-- "data-pjax-state" prevent Pjax handle this form. -->
                     <form class="transition" method="post" action="<?php $this->commentUrl() ?>" role="form"
                         data-pjax-state>
-                        <?php if ($this->user->hasLogin()){ ?>
+                        <?php if ($this->user->hasLogin()) { ?>
                             <div class="flex items-center gap-2">
                                 <mdui-avatar src="<?php Matecho::Gravatar($this->user->mail) ?>"></mdui-avatar>
                                 <span><?php $this->user->screenName(); ?></span>
@@ -118,7 +110,8 @@ $this->need('header.php');
                             </div>
                         <?php } ?>
                         <div class="flex flex-gap-2 flex-col items-center mt-4">
-                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text" required></mdui-text-field>
+                            <mdui-text-field variant="outlined" label="评论内容" rows="3" name="text"
+                                required></mdui-text-field>
                             <div class="mt-2">
                                 <mdui-button class="matecho-comment-submit-btn" type="submit">评论</mdui-button>
                                 <mdui-button class="matecho-comment-cancel-btn" variant="outlined">取消回复</mdui-button>
