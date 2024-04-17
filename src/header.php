@@ -8,6 +8,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 <head>
 	<meta charset="<?php $this->options->charset(); ?>">
 	<meta name="matecho-template" content="<?php echo $this->getArchiveType() ?>">
+    <meta name="theme-color" content="">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<title><?php $this->archiveTitle(array(
 		'category' => _t('分类 %s 下的文章'),

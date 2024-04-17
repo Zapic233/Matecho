@@ -37,6 +37,18 @@ function loadPageScript(type: string): Promise<IInit> {
   }
 }
 
+function toHexColor(color: string): string {
+  return (
+    "#" +
+    color
+      .split(",")
+      .map(v =>
+        parseInt(v.replace("rgb(", "").replace(")", "").trim()).toString(16)
+      )
+      .join("")
+  );
+}
+
 function initOnce() {
   // app bar title will have animation in first time loaded
   setTimeout(() => {
@@ -55,6 +67,13 @@ function initOnce() {
   topBtn.addEventListener("click", () => {
     drawer.open = !drawer.open;
   });
+
+  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')!.content =
+    toHexColor(
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("background-color")
+    );
 
   // Search bar
   const searchBtn = document.querySelector(
