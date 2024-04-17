@@ -74,7 +74,7 @@ $this->need('header.php');
                 <div id="matecho-comment-list">
                     <?php
                     while ($comments->next()) {
-                        Matecho::toComment($comments);
+                        Matecho::toComment($comments, $this->allowComment);
                     }
                     ?>
                 </div>

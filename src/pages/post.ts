@@ -148,11 +148,14 @@ function initCommentForm(formWrapper: HTMLDivElement) {
 function initComments(el: HTMLElement) {
   const list = el.querySelector("#matecho-comment-list")!;
   if (!list) return;
-  const formWrapper = el.querySelector<HTMLDivElement>(
+  const mainFormWrapper = el.querySelector<HTMLDivElement>(
     ".matecho-comment-form"
   )!;
-  initCommentForm(formWrapper);
+  initCommentForm(mainFormWrapper);
   list.addEventListener("click", e => {
+    if (mainFormWrapper.classList.contains("matecho-comment-form__lock")) {
+      return;
+    }
     const target = e.target as HTMLElement;
     const replyId = target.getAttribute?.("data-to-comment");
     if (typeof replyId !== "string") return;

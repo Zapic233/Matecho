@@ -216,7 +216,7 @@ class Matecho {
         }
     }
 
-    static function toComment(\Widget\Comments\Archive &$comments): void {   
+    static function toComment(\Widget\Comments\Archive &$comments, bool $allowComment): void {   
         $isTopLevel = $comments->levels === 0;
         if ($isTopLevel) {
     ?>
@@ -241,7 +241,7 @@ class Matecho {
                     <?php } ?>
                 </div>
                 
-                <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0" <?php if(!$allowComment) {echo "disabled"; } ?>>
                     回复
                 </mdui-button>
                 </div>
@@ -257,7 +257,7 @@ class Matecho {
                         $r = $row->getValue($comments);
                         foreach($comments->children as $child) {
                             $row->setValue($comments, $child);
-                            self::toComment($comments);
+                            self::toComment($comments, $allowComment);
                         }                
                         $row->setValue($comments, $r);
                         $row->setAccessible(false);
@@ -286,7 +286,7 @@ class Matecho {
                     <div class="opacity-60 text-sm">
                         <?php $comments->date(); ?>
                     </div>
-                    <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                    <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0" <?php if(!$allowComment) {echo "disabled"; } ?>>
                         回复
                     </mdui-button>
                     <?php if ($comments->status === "waiting") { ?>
@@ -301,7 +301,7 @@ class Matecho {
                 $r = $row->getValue($comments);
                 foreach($comments->children as $child) {
                     $row->setValue($comments, $child);
-                    self::toComment($comments);
+                    self::toComment($comments, $allowComment);
                 }                
                 $row->setValue($comments, $r); 
                 $row->setAccessible(false);
