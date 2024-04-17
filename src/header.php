@@ -46,7 +46,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
         <div class="flex flex-grow-1 justify-end">
             <form action="/" method="post" role="search" enctype="multipart/form-data">
-                <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" clearable class="mt--4px" type="search" id="matecho-top-search-bar">
+                <mdui-text-field name="s" placeholder="搜索" disabled variant="outlined" clearable class="mt--4px search-form-input" type="search" id="matecho-top-search-bar">
                     <mdui-button-icon name="搜索" slot="icon" id="matecho-top-search-btn">
                         <mdui-icon-search></mdui-icon-search>
                     </mdui-button-icon>

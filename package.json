@@ -7,6 +7,7 @@
     "@fancyapps/ui": "^5.0.35",
     "@mdui/icons": "^1.0.2",
     "@types/http-proxy": "^1.17.14",
+    "@types/jquery": "^3.5.29",
     "@types/katex": "^0.16.7",
     "@types/node": "^20.11.28",
     "@types/nprogress": "^0.2.3",

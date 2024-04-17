@@ -49,6 +49,18 @@ function toHexColor(color: string): string {
   );
 }
 
+function ExSearchIntegration(pjax: Pjax) {
+  window.ExSearchCall = item => {
+    if (item && item.length) {
+      const url = item.attr("data-url");
+      if (url) {
+        document.querySelector<HTMLElement>(".ins-close")?.click();
+        pjax.loadUrl(url);
+      }
+    }
+  };
+}
+
 function initOnce() {
   // app bar title will have animation in first time loaded
   setTimeout(() => {
@@ -181,6 +193,8 @@ function initOnce() {
   const type = (
     document.querySelector("meta[name=matecho-template]") as HTMLMetaElement
   ).content;
+
+  ExSearchIntegration(mGlobal.pjax);
 
   void loadPageScript(type)
     .then(i => {

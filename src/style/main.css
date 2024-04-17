@@ -174,3 +174,13 @@ body ::-webkit-scrollbar-thumb {
 mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
   visibility: hidden;
 }
+
+:root {
+  /* stylelint-disable-next-line custom-property-pattern */
+  --fancybox-zIndex: 2001;
+}
+
+.ins-search-overlay,
+.ins-search-container {
+  z-index: 2001 !important;
+}

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference types="jquery" />
 /// <reference types="prismjs" />
 
 declare module "virtual:prismjs" {
@@ -37,6 +38,7 @@ declare interface Window {
     Prism: boolean;
     KaTeX: boolean;
   };
+  ExSearchCall: (item: JQuery) => void;
 }
 
 declare const __BUILD_DATE__: string;
