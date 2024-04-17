@@ -10,7 +10,6 @@ function themeConfig(Form $form): void {
     Matecho::generateThemeCSS();
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
-    $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:creator值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
     if (!is_writable(__DIR__."/assets/color-scheme.css")) {
         $form->addInput(new Radio("ColorSchemeCache", [0 => "禁用"], 0, "颜色主题样式缓存", "(无法写入缓存, 检查主题目录权限) 缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度."));
     } else {
@@ -21,6 +20,8 @@ function themeConfig(Form $form): void {
     $form->addInput(new Radio("EnableKaTeX", [1 => "自动", 0 => "禁用"], 1, "KaTeX", "渲染LaTeX公式, 在使用\$或者\$\$包裹LaTeX公式即可自动渲染."));
     $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
+    $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:site值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
+    $form->addInput(new Radio("TwitterCardDefaultStyle", ["summary" => "小图(标题+描述)", "summary_large_image" => "大图(仅标题)"], "summary", "X(Twitter) 链接卡片样式", "设置默认twitter:card值, 在把文章链接分享到Twitter时展示成不同样式, 可为文章单独指定样式."));
     $form->addInput(new Hidden("ColorSchemeCSS"));
     require("settings-header.php");
 }
@@ -29,6 +30,7 @@ function themeInit(Archive $context): void {
     Matecho::$ColorScheme = Helper::options()->ColorScheme ?? "";
     Matecho::$GravatarURL = Helper::options()->GravatarURL ?? "";
     Matecho::$TwitterCardRef = Helper::options()->TwitterCardRef ?? "";
+    Matecho::$TwitterCardDefaultStyle = Helper::options()->TwitterCardDefaultStyle ?? "summary";
     Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache ?? false;
     Matecho::$BeianText = Helper::options()->BeianText ?? "";
     Matecho::$ExtraCode = Helper::options()->ExtraCode ?? "";
@@ -40,6 +42,7 @@ function themeInit(Archive $context): void {
 function themeFields($layout){
     $layout->addItem(new Text("cover", null, null, "文章封面", "替代文章默认的封面"));
     $layout->addItem(new Text("description", null, null, "文章描述", "替代文章内容显示在文章列表中文章标题的下方"));
+    $layout->addItem(new Radio("TwitterCardStyle", ["" => "默认", "summary" => "小图(标题+描述)", "summary_large_image" => "大图(仅标题)"], null, "X(Twitter) 链接卡片样式", "设置twitter:card值, 在把文章链接分享到Twitter时展示成不同样式."));
 }
 
 class Matecho {
@@ -49,6 +52,7 @@ class Matecho {
     static string $BeianText;
     static string $ExtraCode;
     static string $TwitterCardRef;
+    static string $TwitterCardDefaultStyle;
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
@@ -146,10 +150,16 @@ class Matecho {
                 "property" => "og:description",
                 "content" => $description
             ], true);
+
+            if (is_string($archive->fields->TwitterCardStyle) && $archive->fields->TwitterCardStyle !== "") {
+                $style = $archive->fields->TwitterCardStyle;
+            } else {
+                $style = self::$TwitterCardDefaultStyle;
+            }
             
             $meta .= self::toTag("meta", [
                 "property" => "twitter:card",
-                "content" => "summary_large_image"
+                "content" => $style
             ], true);
         } else if ($archive->getArchiveType() === "index") {
             $meta .= self::toTag("meta", [
