@@ -10,6 +10,7 @@ function themeConfig(Form $form): void {
     Matecho::generateThemeCSS();
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
+    $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:creator值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
     if (!is_writable(__DIR__."/assets/color-scheme.css")) {
         $form->addInput(new Radio("ColorSchemeCache", [0 => "禁用"], 0, "颜色主题样式缓存", "(无法写入缓存, 检查主题目录权限) 缓存主题样式到本地静态文件, 可以利用缓存加快网页加载速度."));
     } else {
@@ -27,6 +28,7 @@ function themeConfig(Form $form): void {
 function themeInit(Archive $context): void {
     Matecho::$ColorScheme = Helper::options()->ColorScheme ?? "";
     Matecho::$GravatarURL = Helper::options()->GravatarURL ?? "";
+    Matecho::$TwitterCardRef = Helper::options()->TwitterCardRef ?? "";
     Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache ?? false;
     Matecho::$BeianText = Helper::options()->BeianText ?? "";
     Matecho::$ExtraCode = Helper::options()->ExtraCode ?? "";
@@ -46,6 +48,7 @@ class Matecho {
     static bool $ColorSchemeCache;
     static string $BeianText;
     static string $ExtraCode;
+    static string $TwitterCardRef;
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
@@ -72,6 +75,99 @@ class Matecho {
             "FancyBox" => $options->EnableFancyBox ? true : false,
             "Prism" => $options->EnablePrism ? true : false
         ]) . ";</script>";
+    }
+
+    static function toTag(string $tag, array $values, bool $self = false): string {
+        $tag = "<" . $tag . " ";
+        foreach ($values as $attr => $val) {
+            $val = htmlspecialchars($val);
+            $tag .= "$attr=\"$val\" ";
+        }
+        if ($self) {
+            $tag .= "/>";
+        } else {
+            $tag .= "></" . $tag . ">";
+        }
+        return $tag;
+    }
+
+    static function generateOG(Archive $archive): void {
+        $options = Helper::options();
+        $meta = "";
+        $meta .= self::toTag("meta", [
+            "property" => "og:site_name",
+            "content" => Helper::options()->title
+        ], true);
+        
+        $meta .= self::toTag("meta", [
+            "property" => "og:url",
+            "content" => $archive->getArchiveUrl()
+        ], true);
+
+        if (strlen(Matecho::$TwitterCardRef) > 0) {
+            $meta .= self::toTag("meta", [
+                "property" => "twitter:site",
+                "content" => Matecho::$TwitterCardRef
+            ], true);
+        }
+
+        if ($archive->getArchiveType() === "post" || $archive->getArchiveType() === "page") {
+            $meta .= self::toTag("meta", [
+                "property" => "og:type",
+                "content" => "article"
+            ], true);
+            $title = $archive->title;
+            if (strlen($title) == 0) {
+                $title = "无标题文章";
+            }
+            $meta .= self::toTag("meta", [
+                "property" => "og:title",
+                "content" => $title
+            ], true);
+
+            if (!$archive->fields->cover) {
+                $cover = $options->themeUrl.'/'."assets/images/" . $archive->cid % 6 .  ".png";
+            } else {
+                $cover = $archive->fields->cover;
+                
+            }
+            $meta .= self::toTag("meta", [
+                "property" => "og:image",
+                "content" => $cover
+            ], true);
+
+            if (!$archive->hidden && $archive->fields->description) {
+                $description = $archive->fields->description;
+            } else {
+                $description = $archive->description;
+            }
+            
+            $meta .= self::toTag("meta", [
+                "property" => "og:description",
+                "content" => $description
+            ], true);
+            
+            $meta .= self::toTag("meta", [
+                "property" => "twitter:card",
+                "content" => "summary_large_image"
+            ], true);
+        } else if ($archive->getArchiveType() === "index") {
+            $meta .= self::toTag("meta", [
+                "property" => "og:type",
+                "content" => "website"
+            ], true);
+            $meta .= self::toTag("meta", [
+                "property" => "og:title",
+                "content" => Helper::options()->title
+            ], true);
+
+            
+            $meta .= self::toTag("meta", [
+                "property" => "og:description",
+                "content" => Helper::options()->description
+            ], true);
+        }
+        echo $meta;
     }
 
     static function generateThemeCSS(): void {
