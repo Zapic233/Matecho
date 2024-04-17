@@ -18,5 +18,6 @@ Typecho\Plugin::export();
 	</script>
     <?php echo Matecho::$ExtraCode; ?>
     <?php Matecho::themeCSS(); Matecho::generateJSOptions(); ?>
+    <?php $this->footer(); ?>
 </body>
 </html>
