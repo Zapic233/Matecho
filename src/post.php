@@ -8,7 +8,7 @@ $this->need('header.php');
 <div class="matecho-article-wrapper mx-auto px-0 md:px-2 box-border max-w-840px">
     <?php if (!$this->hidden) { ?>
         <div id="matecho-app-bar-large-label">
-            <div class="box-border px-2 md:pl-0 " id="matecho-app-bar-large-label__inner">
+            <div class="box-border pr-2 pl-4 md:pl-0 " id="matecho-app-bar-large-label__inner">
                 <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
                     <?php $this->category(" | "); ?>
                 </div>
@@ -29,7 +29,7 @@ $this->need('header.php');
         <div class="mb-8 md:rounded-xl transition block h-240px w-full overflow-hidden bg-center bg-cover"
             style="background-image: url('<?php Matecho::cover($this); ?>')">
         </div>
-        <div class="w-full px-2 box-border">
+        <div class="w-full px-4 box-border">
             <div class="flex gap-2">
                 <mdui-avatar aria-label="<?php $this->author() ?>"
                     src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
