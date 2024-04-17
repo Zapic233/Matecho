@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference types="prismjs" />
+
 declare module "virtual:prismjs" {
-  export default await import("prismjs");
+  export default Prism;
 }
 
 declare interface PjaxEvent extends Event {
