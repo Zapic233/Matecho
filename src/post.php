@@ -81,7 +81,7 @@ $this->need('header.php');
                 <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
-                <div class="pa-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>"
+                <div class="py-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>"
                     id="<?php $this->respondId(); ?>">
                     <div class="matecho-form-lock-mask text-xl">
                         <mdui-icon-lock class="mr-2 opacity-90"></mdui-icon-lock>

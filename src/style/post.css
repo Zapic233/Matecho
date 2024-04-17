@@ -91,13 +91,13 @@
   from {
     opacity: 0;
     height: 0;
-    padding: 0 1rem;
+    padding: 0;
   }
 
   to {
     opacity: 1;
     height: var(--m-height);
-    padding: 1rem;
+    padding: 1rem 0;
   }
 }
 
@@ -105,12 +105,12 @@
   to {
     opacity: 0;
     height: 0;
-    padding: 0 1rem;
+    padding: 0;
   }
 
   from {
     opacity: 1;
     height: var(--m-height);
-    padding: 1rem;
+    padding: 1rem 0;
   }
 }
