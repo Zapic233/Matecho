@@ -79,7 +79,7 @@ export default (): Plugin => {
                 res.setHeader(k, _res.headers[k]);
               }
               res.statusCode = _res.statusCode;
-              if (html.startsWith("<!DOCTYPE html>")) {
+              if (html.toUpperCase().startsWith("<!DOCTYPE HTML>")) {
                 try {
                   const resp = await server.transformIndexHtml(req.url, html);
                   res.end(resp);
