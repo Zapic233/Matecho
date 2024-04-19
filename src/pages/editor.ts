@@ -6,7 +6,6 @@ function init() {
   const { KaTeX, Prism } = window.__MATECHO_OPTIONS__;
   const ob = new MutationObserver(() => {
     if (window.getComputedStyle(preview).display === "none") return;
-    console.log("1");
     if (KaTeX) initKaTeX(preview);
     if (Prism) {
       preview.querySelectorAll("pre code[class]").forEach(el => {
