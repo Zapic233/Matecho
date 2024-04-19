@@ -96,7 +96,6 @@ export default defineConfig(async env => {
           "python",
           "java",
           "javascript",
-          "go",
           "sql",
           "css",
           "less",
