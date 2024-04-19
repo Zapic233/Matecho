@@ -70,7 +70,12 @@ class Matecho {
 
     static function cover(Archive $archive): void {
         if (!$archive->fields->cover) {
-            self::assets("assets/images/" . $archive->cid % 6 .  ".png");
+            $covers = array_values(array_filter(scandir(__DIR__."/assets/covers"), function($c) {
+                return $c != "." && $c != "..";
+            }));
+            if (!$covers) return;
+            $count = count($covers);
+            self::assets("assets/covers/" . $covers[$archive->cid % $count]);
         } else {
             echo $archive->fields->cover;
         }
