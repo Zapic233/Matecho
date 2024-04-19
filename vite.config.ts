@@ -90,6 +90,7 @@ export default defineConfig(async env => {
           "c",
           "cpp",
           "csharp",
+          "markup-templating",
           "php",
           "php-extras",
           "go",
@@ -116,8 +117,8 @@ export default defineConfig(async env => {
           "rust",
           "smali",
           "stylus",
-          "tsx",
           "jsx",
+          "tsx",
           "swift",
           "ruby",
           ...MatechoConfig.PrismLanguages
