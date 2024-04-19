@@ -59,7 +59,30 @@ export default defineConfig(async env => {
         ]
       }),
       Matecho({
-        extraIcons: MatechoConfig.ExtraMaterialIcons
+        extraIcons: [
+          "tv",
+          "live-tv",
+          "comment",
+          "add",
+          "announcement",
+          "archive",
+          "assignment",
+          "bookmarks",
+          "celebration",
+          "create",
+          "diamond",
+          "discount",
+          "feed",
+          "feedback",
+          "file-download",
+          "group",
+          "near-me",
+          "podcasts",
+          "qr-code",
+          "storefront",
+          "workspace-premium",
+          ...MatechoConfig.ExtraMaterialIcons
+        ]
       }),
       PrismJS({
         languages: [
