@@ -121,6 +121,7 @@ export default defineConfig(async env => {
           "tsx",
           "swift",
           "ruby",
+          "typescript",
           ...MatechoConfig.PrismLanguages
         ],
         plugins: ["line-numbers"]
