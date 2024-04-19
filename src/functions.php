@@ -47,6 +47,7 @@ function themeFields(\Typecho\Widget\Helper\Layout $layout){
     $layout->addItem(new Text("cover", null, null, "文章封面", "替代文章默认的封面"));
     $layout->addItem(new Text("description", null, null, "文章描述", "替代文章内容显示在文章列表中文章标题的下方"));
     $layout->addItem(new Radio("TwitterCardStyle", ["" => "默认", "summary" => "小图(标题+描述)", "summary_large_image" => "大图(仅标题)"], null, "X(Twitter) 链接卡片样式", "设置twitter:card值, 在把文章链接分享到Twitter时展示成不同样式."));
+    require_once("editor-helper.php");
 }
 
 class Matecho {

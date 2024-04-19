@@ -186,7 +186,7 @@ function initComments(el: HTMLElement) {
   });
 }
 
-function initPrism(container: HTMLElement) {
+export function initPrism(container: HTMLElement) {
   void import("@/style/prism.css");
   void import("virtual:prismjs").then(({ default: Prism }) => {
     PrismVue(Prism);
@@ -212,7 +212,7 @@ function initFancybox(container: HTMLElement) {
   });
 }
 
-function initKaTeX(container: HTMLElement) {
+export function initKaTeX(container: HTMLElement) {
   void import("katex/dist/katex.css");
   void import("katex/contrib/auto-render").then(
     ({ default: renderMathInElement }) => {
