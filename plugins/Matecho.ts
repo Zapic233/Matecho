@@ -1,10 +1,23 @@
-import type { ConfigEnv, Plugin } from "vite";
+import { type ConfigEnv, type Plugin } from "vite";
 import { hash } from "./UnoCSSClassMangle";
 import { getUserAgentRegex } from "browserslist-useragent-regexp";
 import { copyFile, cp, readFile, rm, mkdir } from "node:fs/promises";
 import HttpProxy from "http-proxy";
 
-export default (): Plugin => {
+export interface MatechoBuildOptions {
+  PrismLanguages: string[];
+  ExtraMaterialIcons: string[];
+}
+
+export function defineConfig(config: Partial<MatechoBuildOptions>) {
+  return config;
+}
+
+interface MatechoPluginConfig {
+  extraIcons?: string[];
+}
+
+export default (config?: MatechoPluginConfig): Plugin => {
   const codeTokens: Record<string, string> = {};
   const AutoComponents = {
     preloaded: [] as string[],
@@ -116,6 +129,15 @@ export default (): Plugin => {
       }
     },
     async load(id) {
+      if (id === "virtual:components-custom-icon") {
+        const icons = config?.extraIcons;
+        if (!icons) return "";
+        return icons
+          .map(icon => {
+            return `import "@mdui/icons/${icon}";`;
+          })
+          .join("\n");
+      }
       if (id.startsWith("virtual:components")) {
         const src = (
           await readFile(

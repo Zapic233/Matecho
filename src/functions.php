@@ -6,6 +6,7 @@ use Typecho\Widget\Helper\Form;
 use Typecho\Widget\Helper\Form\Element\Textarea;
 use Utils\Helper;
 use Widget\Archive;
+
 function themeConfig(Form $form): void {
     Matecho::generateThemeCSS();
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
@@ -39,7 +40,10 @@ function themeInit(Archive $context): void {
     }
 }
 
-function themeFields($layout){
+function themePageFields(\Typecho\Widget\Helper\Layout $layout) {
+    $layout->addItem(new Text("CustomIcon", null, null, "自定义图标", "独立页面可指定展示在侧栏时的图标, 需要在编译时加入"));
+}
+function themeFields(\Typecho\Widget\Helper\Layout $layout){
     $layout->addItem(new Text("cover", null, null, "文章封面", "替代文章默认的封面"));
     $layout->addItem(new Text("description", null, null, "文章描述", "替代文章内容显示在文章列表中文章标题的下方"));
     $layout->addItem(new Radio("TwitterCardStyle", ["" => "默认", "summary" => "小图(标题+描述)", "summary_large_image" => "大图(仅标题)"], null, "X(Twitter) 链接卡片样式", "设置twitter:card值, 在把文章链接分享到Twitter时展示成不同样式."));
@@ -196,12 +200,13 @@ class Matecho {
         }
     }
 
-    static function pageIcon(string | null $template): string {
-        switch ($template) {
+    static function pageIcon(\Widget\Contents\Page\Rows $archive): string {
+        if (strlen($archive->fields->CustomIcon) > 0) {
+            return $archive->fields->CustomIcon;
+        }
+        switch ($archive->template) {
             case "page-links.php":
                 return "link";
-            case "page-board.php":
-                return "mode-comment--outlined";
             default:
                 return "insert-drive-file";
         }

@@ -2,12 +2,29 @@ import type { UserConfig } from "vite";
 import { defineConfig } from "vite";
 import unocss from "unocss/vite";
 import fg from "fast-glob";
-import Matecho from "./plugins/Matecho";
+import Matecho, { type MatechoBuildOptions } from "./plugins/Matecho";
 import PrismJS from "./plugins/Prism";
 import UnoCSSClassMangle from "./plugins/UnoCSSClassMangle";
 import fs from "node:fs";
 
 export default defineConfig(async env => {
+  let MatechoConfig: MatechoBuildOptions = {
+    PrismLanguages: [],
+    ExtraMaterialIcons: []
+  };
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    MatechoConfig = {
+      ...MatechoConfig,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      ...(await import("./matecho.config")).default
+    };
+  } catch (_) {
+    // ignore
+  }
+
   const isProd = env.mode === "production";
   const isBuild = env.command === "build";
   let COMMIT_ID = "unknown";
@@ -41,9 +58,11 @@ export default defineConfig(async env => {
           })
         ]
       }),
-      Matecho(),
+      Matecho({
+        extraIcons: MatechoConfig.ExtraMaterialIcons
+      }),
       PrismJS({
-        languages: ["c", "typescript", "bash", "less", "scss", "sass"],
+        languages: [...MatechoConfig.PrismLanguages],
         plugins: ["line-numbers"]
       })
     ],

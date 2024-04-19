@@ -37,7 +37,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                 <a href="<?php $page->permalink() ?>">
                     <mdui-list-item <?php Matecho::activePage($this, "page", $page->cid); ?> >
                         <?php 
-                            $icon = Matecho::pageIcon($page->template);
+                            $icon = Matecho::pageIcon($page);
                             echo "<mdui-icon-$icon slot=\"icon\"></mdui-icon-$icon>" ;
                         ?>
                         <?php echo $page->title ?>

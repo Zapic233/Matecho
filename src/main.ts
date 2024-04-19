@@ -18,6 +18,7 @@ import "@/utils/polyfill";
 import "@mdui/icons/insert-drive-file";
 import "@mdui/icons/link";
 
+import "virtual:components-custom-icon";
 import "virtual:components/header";
 import "virtual:components/functions";
 import "virtual:components/sidebar";
