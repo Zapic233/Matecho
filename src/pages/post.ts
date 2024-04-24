@@ -212,7 +212,7 @@ function initFancybox(container: HTMLElement) {
   });
 }
 
-function initShiki(container: HTMLElement) {
+export function initShiki(container: HTMLElement) {
   void Promise.all([
     import("shiki/core"),
     import("shiki/langs"),
