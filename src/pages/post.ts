@@ -221,15 +221,12 @@ function initFancybox(container: HTMLElement) {
 const globalShiki = {} as {
   hl: HighlighterGeneric<BundledLanguage, BundledTheme>;
   bundledLanguages: Record<BundledLanguage, DynamicImportLanguageRegistration>;
-  bundledLanguagesAlias: {
-    [k: string]: DynamicImportLanguageRegistration;
-  };
 };
 
 export async function loadShiki() {
   const [
     { createdBundledHighlighter },
-    { bundledLanguages, bundledLanguagesAlias },
+    { bundledLanguages },
     { bundledThemes },
     { default: initWasm }
   ] = await Promise.all([
@@ -247,15 +244,14 @@ export async function loadShiki() {
       langs: [],
       themes: ["solarized-light", "solarized-dark"]
     }),
-    bundledLanguages,
-    bundledLanguagesAlias
+    bundledLanguages
   });
 }
 export async function initShiki(container: HTMLElement) {
   if (!globalShiki.hl) {
     await loadShiki();
   }
-  const { bundledLanguages, bundledLanguagesAlias, hl } = globalShiki;
+  const { bundledLanguages, hl } = globalShiki;
   const blocks = container.querySelectorAll<HTMLPreElement>(
     "pre code[class*=lang-]"
   );
@@ -263,10 +259,7 @@ export async function initShiki(container: HTMLElement) {
   const loadedLangs = hl.getLoadedLanguages();
   blocks.forEach(el => {
     const lang = /lang-(\w+)/.exec(el.className)?.[1] || "";
-    if (
-      (lang in bundledLanguages || lang in bundledLanguagesAlias) &&
-      !loadedLangs.includes(lang)
-    ) {
+    if (lang in bundledLanguages && !loadedLangs.includes(lang)) {
       requireLangs.add(lang as BundledLanguage);
     }
   });
