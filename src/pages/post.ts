@@ -212,6 +212,55 @@ function initFancybox(container: HTMLElement) {
   });
 }
 
+function initShiki(container: HTMLElement) {
+  void Promise.all([
+    import("shiki/core"),
+    import("shiki/langs"),
+    import("shiki/themes"),
+    import("shiki/onig.wasm?init")
+  ]).then(
+    async ([
+      { createdBundledHighlighter },
+      { bundledLanguages, bundledLanguagesAlias },
+      { bundledThemes },
+      { default: initWasm }
+    ]) => {
+      const blocks = container.querySelectorAll<HTMLPreElement>(
+        "pre code[class*=lang-]"
+      );
+      const requireLangs = new Set<string>();
+      blocks.forEach(el => {
+        const lang = /lang-(\w+)/.exec(el.className)?.[1] || "";
+        if (lang in bundledLanguages || lang in bundledLanguagesAlias) {
+          requireLangs.add(lang);
+        }
+      });
+      const hl = await createdBundledHighlighter(
+        bundledLanguages,
+        bundledThemes,
+        initWasm
+      )({
+        langs: Array.from(requireLangs),
+        themes: ["solarized-light", "solarized-dark"]
+      });
+
+      blocks.forEach(v => {
+        const result = hl.codeToHtml(v.innerText, {
+          lang: "ts",
+          themes: {
+            light: "solarized-light",
+            dark: "solarized-dark"
+          }
+        });
+        const wp = document.createElement("div");
+        wp.innerHTML = result;
+        v.innerHTML = wp.querySelector("code")!.innerHTML;
+        v.parentElement!.classList.add("shiki");
+      });
+    }
+  );
+}
+
 export function initKaTeX(container: HTMLElement) {
   void import("katex/dist/katex.css");
   void import("katex/contrib/auto-render").then(
@@ -307,11 +356,15 @@ function initCodeBlockAction(wrapper: HTMLElement) {
 export function init(el: HTMLElement) {
   initComments(el);
   const article = el.querySelector<HTMLElement>("article.mdui-prose");
-  const { Prism, FancyBox, KaTeX } = window.__MATECHO_OPTIONS__;
+  const { Highlighter, FancyBox, KaTeX } = window.__MATECHO_OPTIONS__;
   if (article) {
     initCodeBlockAction(article);
-    if (Prism && article.querySelector("pre > code[class*=lang-]")) {
-      initPrism(article);
+    if (article.querySelector("pre > code[class*=lang-]")) {
+      if (Highlighter == "Prism") {
+        initPrism(article);
+      } else if (Highlighter == "Shiki") {
+        initShiki(article);
+      }
     }
     if (FancyBox && article.querySelector("img")) {
       initFancybox(article);

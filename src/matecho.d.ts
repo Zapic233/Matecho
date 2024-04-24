@@ -35,7 +35,7 @@ declare interface Window {
   __MATECHO_ANTI_SPAM__: string;
   __MATECHO_OPTIONS__: {
     FancyBox: boolean;
-    Prism: boolean;
+    Highlighter: "Prism" | "Shiki" | "none";
     KaTeX: boolean;
   };
   ExSearchCall: (item: JQuery) => void;
