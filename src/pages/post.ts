@@ -9,6 +9,12 @@ import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
 import "@mdui/icons/copy-all";
+import type {
+  DynamicImportLanguageRegistration,
+  HighlighterGeneric
+} from "shiki/core";
+import type { BundledLanguage } from "shiki/langs";
+import type { BundledTheme } from "shiki/themes";
 
 function openSnackbar(msg: string) {
   const sb = new Snackbar();
@@ -212,55 +218,77 @@ function initFancybox(container: HTMLElement) {
   });
 }
 
-export function initShiki(container: HTMLElement) {
-  void Promise.all([
+const globalShiki = {} as {
+  hl: HighlighterGeneric<BundledLanguage, BundledTheme>;
+  bundledLanguages: Record<BundledLanguage, DynamicImportLanguageRegistration>;
+  bundledLanguagesAlias: {
+    [k: string]: DynamicImportLanguageRegistration;
+  };
+};
+
+export async function loadShiki() {
+  const [
+    { createdBundledHighlighter },
+    { bundledLanguages, bundledLanguagesAlias },
+    { bundledThemes },
+    { default: initWasm }
+  ] = await Promise.all([
     import("shiki/core"),
     import("shiki/langs"),
     import("shiki/themes"),
     import("shiki/onig.wasm?init")
-  ]).then(
-    async ([
-      { createdBundledHighlighter },
-      { bundledLanguages, bundledLanguagesAlias },
-      { bundledThemes },
-      { default: initWasm }
-    ]) => {
-      const blocks = container.querySelectorAll<HTMLPreElement>(
-        "pre code[class*=lang-]"
-      );
-      const requireLangs = new Set<string>();
-      blocks.forEach(el => {
-        const lang = /lang-(\w+)/.exec(el.className)?.[1] || "";
-        if (lang in bundledLanguages || lang in bundledLanguagesAlias) {
-          requireLangs.add(lang);
-        }
-      });
-      const hl = await createdBundledHighlighter(
-        bundledLanguages,
-        bundledThemes,
-        initWasm
-      )({
-        langs: Array.from(requireLangs),
-        themes: ["solarized-light", "solarized-dark"]
-      });
-
-      blocks.forEach(el => {
-        const lang = /lang-(\w+)/.exec(el.className)?.[1];
-        if (!lang) return;
-        const result = hl.codeToHtml(el.innerText, {
-          lang,
-          themes: {
-            light: "solarized-light",
-            dark: "solarized-dark"
-          }
-        });
-        const wp = document.createElement("div");
-        wp.innerHTML = result;
-        el.innerHTML = wp.querySelector("code")!.innerHTML;
-        el.parentElement!.classList.add("shiki");
-      });
-    }
+  ]);
+  Object.assign(globalShiki, {
+    hl: await createdBundledHighlighter(
+      bundledLanguages,
+      bundledThemes,
+      initWasm
+    )({
+      langs: [],
+      themes: ["solarized-light", "solarized-dark"]
+    }),
+    bundledLanguages,
+    bundledLanguagesAlias
+  });
+}
+export async function initShiki(container: HTMLElement) {
+  if (!globalShiki.hl) {
+    await loadShiki();
+  }
+  const { bundledLanguages, bundledLanguagesAlias, hl } = globalShiki;
+  const blocks = container.querySelectorAll<HTMLPreElement>(
+    "pre code[class*=lang-]"
   );
+  const requireLangs = new Set<BundledLanguage>();
+  const loadedLangs = hl.getLoadedLanguages();
+  blocks.forEach(el => {
+    const lang = /lang-(\w+)/.exec(el.className)?.[1] || "";
+    if (
+      (lang in bundledLanguages || lang in bundledLanguagesAlias) &&
+      !loadedLangs.includes(lang)
+    ) {
+      requireLangs.add(lang as BundledLanguage);
+    }
+  });
+
+  await hl.loadLanguage(...Array.from(requireLangs));
+
+  blocks.forEach(el => {
+    if (el.parentElement?.classList.contains("shiki")) return;
+    const lang = /lang-(\w+)/.exec(el.className)?.[1];
+    if (!lang) return;
+    const result = hl.codeToHtml(el.innerText, {
+      lang,
+      themes: {
+        light: "solarized-light",
+        dark: "solarized-dark"
+      }
+    });
+    const wp = document.createElement("div");
+    wp.innerHTML = result;
+    el.innerHTML = wp.querySelector("code")!.innerHTML;
+    el.parentElement!.classList.add("shiki");
+  });
 }
 
 export function initKaTeX(container: HTMLElement) {
@@ -365,7 +393,7 @@ export function init(el: HTMLElement) {
       if (Highlighter == "Prism") {
         initPrism(article);
       } else if (Highlighter == "Shiki") {
-        initShiki(article);
+        void initShiki(article);
       }
     }
     if (FancyBox && article.querySelector("img")) {

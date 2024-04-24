@@ -17,12 +17,12 @@ function init() {
         el.classList.add(
           "lang-" + el.className.split(" ").filter(v => v != "focus")[0]
         );
-        el.querySelectorAll(".line").forEach(el => el.remove());
+        el.querySelectorAll(".line[data-id]").forEach(el => el.remove());
       });
       if (Highlighter == "Prism") {
         initPrism(preview);
       } else if (Highlighter == "Shiki") {
-        initShiki(preview);
+        void initShiki(preview);
       }
     });
     ob.observe(preview, {
