@@ -184,3 +184,7 @@ mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
 .ins-search-container {
   z-index: 2001 !important;
 }
+
+.mdui-prose pre code {
+  display: block;
+}
