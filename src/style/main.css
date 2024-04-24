@@ -185,6 +185,15 @@ mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
   z-index: 2001 !important;
 }
 
+.mdui-prose code,
+.mdui-prose kbd,
+.mdui-prose pre,
+.mdui-prose pre tt,
+.mdui-prose samp {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
+
 .mdui-prose pre code {
   display: block;
 }
