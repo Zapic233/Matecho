@@ -358,7 +358,7 @@ function initCodeBlockAction(wrapper: HTMLElement) {
     )[0];
     if (codeLang) {
       const lang = LangNameMap[codeLang.substring(5)] || codeLang.substring(5);
-      wrapper.appendChild(
+      el.appendChild(
         Object.assign(document.createElement("div"), {
           innerText: lang,
           className: "matecho-code-lang"

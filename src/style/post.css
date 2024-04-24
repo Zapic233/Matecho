@@ -49,6 +49,19 @@
   pointer-events: none;
 }
 
+.matecho-code-lang {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  transition: 0.2s;
+  opacity: 0.3;
+  font-size: 0.75rem;
+}
+
+pre:hover .matecho-code-lang {
+  opacity: 0;
+}
+
 .matecho-code-action-wrapper {
   position: absolute;
   top: 5px;
@@ -57,6 +70,12 @@
   align-items: center;
   user-select: none;
   gap: 0.25rem;
+  opacity: 0;
+  transition: 0.2s;
+}
+
+pre:hover .matecho-code-action-wrapper {
+  opacity: 1;
 }
 
 .matecho-code-action-wrapper mdui-button-icon {
@@ -66,11 +85,6 @@
 
 .matecho-code-action-wrapper mdui-button-icon:hover {
   opacity: 0.8;
-}
-
-.matecho-code-lang {
-  opacity: 0.3;
-  font-size: 0.75rem;
 }
 
 .matecho-comment-form__in {
