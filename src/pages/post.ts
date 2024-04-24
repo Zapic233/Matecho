@@ -4,17 +4,27 @@ import { Snackbar } from "mdui/components/snackbar";
 import "@/style/post.css";
 import "virtual:components/post";
 import { mGlobal } from "@/utils/global";
-import { PrismLangs, PrismVue } from "@/utils/prism";
+import { PrismVue } from "@/utils/prism";
 import ClipboardJS from "clipboard";
 
 import "mdui/components/button-icon";
 import "@mdui/icons/copy-all";
-import type {
-  DynamicImportLanguageRegistration,
-  HighlighterGeneric
-} from "shiki/core";
-import type { BundledLanguage } from "shiki/langs";
+import type { HighlighterGeneric } from "shiki/core";
+import {
+  type BundledLanguage,
+  bundledLanguages,
+  bundledLanguagesInfo
+} from "shiki/langs";
 import type { BundledTheme } from "shiki/themes";
+
+const LangNameMap = {
+  ...Object.fromEntries(bundledLanguagesInfo.map(lang => [lang.id, lang.name])),
+  ...Object.fromEntries(
+    bundledLanguagesInfo.flatMap(
+      lang => lang.aliases?.map(alias => [alias, lang.name]) || []
+    )
+  )
+};
 
 function openSnackbar(msg: string) {
   const sb = new Snackbar();
@@ -218,45 +228,36 @@ function initFancybox(container: HTMLElement) {
   });
 }
 
-const globalShiki = {} as {
-  hl: HighlighterGeneric<BundledLanguage, BundledTheme>;
-  bundledLanguages: Record<BundledLanguage, DynamicImportLanguageRegistration>;
-};
+let shikiInst: HighlighterGeneric<BundledLanguage, BundledTheme>;
 
 export async function loadShiki() {
   const [
     { createdBundledHighlighter },
-    { bundledLanguages },
     { bundledThemes },
     { default: initWasm }
   ] = await Promise.all([
     import("shiki/core"),
-    import("shiki/langs"),
     import("shiki/themes"),
     import("shiki/onig.wasm?init")
   ]);
-  Object.assign(globalShiki, {
-    hl: await createdBundledHighlighter(
-      bundledLanguages,
-      bundledThemes,
-      initWasm
-    )({
-      langs: [],
-      themes: ["solarized-light", "solarized-dark"]
-    }),
-    bundledLanguages
+  shikiInst = await createdBundledHighlighter(
+    bundledLanguages,
+    bundledThemes,
+    initWasm
+  )({
+    langs: [],
+    themes: ["solarized-light", "solarized-dark"]
   });
 }
 export async function initShiki(container: HTMLElement) {
-  if (!globalShiki.hl) {
+  if (!shikiInst) {
     await loadShiki();
   }
-  const { bundledLanguages, hl } = globalShiki;
   const blocks = container.querySelectorAll<HTMLPreElement>(
     "pre code[class*=lang-]"
   );
   const requireLangs = new Set<BundledLanguage>();
-  const loadedLangs = hl.getLoadedLanguages();
+  const loadedLangs = shikiInst.getLoadedLanguages();
   blocks.forEach(el => {
     const lang = /lang-(\w+)/.exec(el.className)?.[1] || "";
     if (lang in bundledLanguages && !loadedLangs.includes(lang)) {
@@ -264,13 +265,13 @@ export async function initShiki(container: HTMLElement) {
     }
   });
 
-  await hl.loadLanguage(...Array.from(requireLangs));
+  await shikiInst.loadLanguage(...Array.from(requireLangs));
 
   blocks.forEach(el => {
     if (el.parentElement?.classList.contains("shiki")) return;
     const lang = /lang-(\w+)/.exec(el.className)?.[1];
     if (!lang) return;
-    const result = hl.codeToHtml(el.innerText, {
+    const result = shikiInst.codeToHtml(el.innerText, {
       lang,
       themes: {
         light: "solarized-light",
@@ -356,7 +357,7 @@ function initCodeBlockAction(wrapper: HTMLElement) {
       c.startsWith("lang-")
     )[0];
     if (codeLang) {
-      const lang = PrismLangs[codeLang.substring(5)] ?? PrismLangs.none;
+      const lang = LangNameMap[codeLang.substring(5)] || codeLang.substring(5);
       wrapper.appendChild(
         Object.assign(document.createElement("div"), {
           innerText: lang,
