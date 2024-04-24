@@ -244,9 +244,11 @@ function initShiki(container: HTMLElement) {
         themes: ["solarized-light", "solarized-dark"]
       });
 
-      blocks.forEach(v => {
-        const result = hl.codeToHtml(v.innerText, {
-          lang: "ts",
+      blocks.forEach(el => {
+        const lang = /lang-(\w+)/.exec(el.className)?.[1];
+        if (!lang) return;
+        const result = hl.codeToHtml(el.innerText, {
+          lang,
           themes: {
             light: "solarized-light",
             dark: "solarized-dark"
@@ -254,8 +256,8 @@ function initShiki(container: HTMLElement) {
         });
         const wp = document.createElement("div");
         wp.innerHTML = result;
-        v.innerHTML = wp.querySelector("code")!.innerHTML;
-        v.parentElement!.classList.add("shiki");
+        el.innerHTML = wp.querySelector("code")!.innerHTML;
+        el.parentElement!.classList.add("shiki");
       });
     }
   );
