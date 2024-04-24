@@ -1,18 +1,3 @@
-.shiki code {
-  counter-reset: step;
-  counter-increment: step 0;
-}
-
-.shiki code .line::before {
-  content: counter(step);
-  counter-increment: step;
-  width: 1rem;
-  margin-right: 1.5rem;
-  display: inline-block;
-  text-align: right;
-  color: #999;
-}
-
 .mdui-prose pre code {
   display: block;
 }
@@ -142,4 +127,43 @@ article pre {
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
   }
+}
+
+pre[class*="language-"].line-numbers,
+pre.shiki.line-numbers {
+  position: relative;
+  counter-reset: line-number;
+}
+
+pre[class*="language-"].line-numbers > code,
+pre.shiki.line-numbers > code {
+  padding-left: 3.8em;
+  white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  padding: 0.8571em 0;
+  left: 0;
+  width: 3em;
+  letter-spacing: -1px;
+  font-size: 0.875em;
+  user-select: none;
+  top: 0;
+  background-color: rgb(var(--mdui-color-surface-container));
+  border-radius: var(--mdui-shape-corner-extra-small);
+}
+
+.line-numbers-rows > span {
+  display: block;
+  counter-increment: line-number;
+}
+
+.line-numbers-rows > span::before {
+  content: counter(line-number);
+  color: #999;
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
 }

@@ -123,8 +123,7 @@ export default defineConfig(async env => {
           "ruby",
           "typescript",
           ...MatechoConfig.PrismLanguages
-        ],
-        plugins: ["line-numbers"]
+        ]
       })
     ],
     appType: "mpa",

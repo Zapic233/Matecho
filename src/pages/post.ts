@@ -380,6 +380,22 @@ function initCodeBlockAction(wrapper: HTMLElement) {
     wrapper.appendChild(copyBtn);
 
     el.appendChild(wrapper);
+
+    if (!el.classList.contains("line-numbers")) {
+      const lineNumWrapper = Object.assign(document.createElement("span"), {
+        className: "line-numbers-rows"
+      });
+      lineNumWrapper.setAttribute("aria-hidden", "true");
+      const lines = codeEl.innerText.split("\n");
+      lines.forEach(() => {
+        lineNumWrapper.appendChild(document.createElement("span"));
+      });
+      if (lines[lines.length - 1].trim() === "") {
+        lineNumWrapper.lastElementChild?.remove();
+      }
+      el.appendChild(lineNumWrapper);
+      el.classList.add("line-numbers");
+    }
   });
 }
 
