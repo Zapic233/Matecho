@@ -115,10 +115,6 @@
   }
 }
 
-article pre {
-  position: relative;
-}
-
 @media (prefers-color-scheme: dark) {
   .shiki,
   .shiki span {
@@ -129,14 +125,12 @@ article pre {
   }
 }
 
-pre[class*="language-"].line-numbers,
-pre.shiki.line-numbers {
+pre.line-numbers {
   position: relative;
   counter-reset: line-number;
 }
 
-pre[class*="language-"].line-numbers > code,
-pre.shiki.line-numbers > code {
+pre.line-numbers > code {
   padding-left: 3.8em;
   white-space: inherit;
 }
