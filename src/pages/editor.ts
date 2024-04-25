@@ -8,7 +8,7 @@ function init() {
     const { KaTeX, Highlighter } = window.__MATECHO_OPTIONS__;
     const ob = new MutationObserver(() => {
       if (window.getComputedStyle(preview).display === "none") return;
-      if (KaTeX) initKaTeX(preview);
+      if (KaTeX) void initKaTeX(preview);
       preview.querySelectorAll("pre code[class]").forEach(el => {
         el.classList.remove("focus");
         el.parentElement?.classList.add(
@@ -20,7 +20,7 @@ function init() {
         el.querySelectorAll(".line[data-id]").forEach(el => el.remove());
       });
       if (Highlighter == "Prism") {
-        initPrism(preview);
+        void initPrism(preview);
       } else if (Highlighter == "Shiki") {
         void initShiki(preview);
       }

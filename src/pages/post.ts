@@ -203,29 +203,33 @@ function initComments(el: HTMLElement) {
 }
 
 export function initPrism(container: HTMLElement) {
-  void import("@/style/prism.css");
-  void import("virtual:prismjs").then(({ default: Prism }) => {
-    PrismVue(Prism);
-    Prism.highlightAllUnder(container);
-  });
+  return Promise.all([
+    import("@/style/prism.css"),
+    import("virtual:prismjs").then(({ default: Prism }) => {
+      PrismVue(Prism);
+      Prism.highlightAllUnder(container);
+    })
+  ]);
 }
 
 function initFancybox(container: HTMLElement) {
-  void import("@fancyapps/ui/dist/fancybox/fancybox.css");
-  void Promise.all([
-    import("@fancyapps/ui"),
-    import("@fancyapps/ui/l10n/Fancybox/zh_CN")
-  ]).then(([{ Fancybox: fb }, { zh_CN }]) => {
-    container.querySelectorAll<HTMLImageElement>("img").forEach(v => {
-      v.setAttribute("data-fancybox", "article");
-      if (v.alt ?? v.title) {
-        v.setAttribute("data-caption", v.alt ?? v.title);
-      }
-    });
-    fb.bind("[data-fancybox]", {
-      l10n: zh_CN
-    });
-  });
+  return Promise.all([
+    import("@fancyapps/ui/dist/fancybox/fancybox.css"),
+    Promise.all([
+      import("@fancyapps/ui"),
+      import("@fancyapps/ui/l10n/Fancybox/zh_CN")
+    ]).then(([{ Fancybox: fb }, { zh_CN }]) => {
+      container.querySelectorAll<HTMLImageElement>("img").forEach(v => {
+        v.setAttribute("data-fancybox", "article");
+        if (v.alt ?? v.title) {
+          v.setAttribute("data-caption", v.alt ?? v.title);
+        }
+      });
+      fb.bind("[data-fancybox]", {
+        l10n: zh_CN
+      });
+    })
+  ]);
 }
 
 let shikiInst: HighlighterGeneric<BundledLanguage, BundledTheme>;
@@ -286,17 +290,19 @@ export async function initShiki(container: HTMLElement) {
 }
 
 export function initKaTeX(container: HTMLElement) {
-  void import("katex/dist/katex.css");
-  void import("katex/contrib/auto-render").then(
-    ({ default: renderMathInElement }) => {
-      renderMathInElement(container, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$", right: "$", display: false }
-        ]
-      });
-    }
-  );
+  return Promise.all([
+    import("katex/dist/katex.css"),
+    import("katex/contrib/auto-render").then(
+      ({ default: renderMathInElement }) => {
+        renderMathInElement(container, {
+          delimiters: [
+            { left: "$$", right: "$$", display: true },
+            { left: "$", right: "$", display: false }
+          ]
+        });
+      }
+    )
+  ]);
 }
 
 function countMoney(str: string) {
@@ -401,13 +407,13 @@ export function init(el: HTMLElement) {
     initCodeBlockAction(article);
     if (article.querySelector("pre > code[class*=lang-]")) {
       if (Highlighter == "Prism") {
-        initPrism(article);
+        void initPrism(article);
       } else if (Highlighter == "Shiki") {
         void initShiki(article);
       }
     }
     if (FancyBox && article.querySelector("img")) {
-      initFancybox(article);
+      void initFancybox(article);
     }
     if (KaTeX) {
       const count$ = countMoney(article.innerText);
@@ -421,7 +427,7 @@ export function init(el: HTMLElement) {
           .join("");
         const excluded$ = countMoney(excludeText);
         if (excluded$ < count$) {
-          initKaTeX(article);
+          void initKaTeX(article);
         }
       }
     }
