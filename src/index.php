@@ -12,7 +12,6 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 /** @var \Widget\Archive $this */
 $this->need('header.php');
-Typecho\Plugin::export();
 ?>
 <div class="mx-auto px-4 md:px-8 box-border w-full max-w-1440px">
     <div id="matecho-app-bar-large-label">
