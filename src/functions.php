@@ -65,7 +65,7 @@ class Matecho {
     static string $TwitterCardRef;
     static string $TwitterCardDefaultStyle;
 
-    static string $ExSearchIntegration;
+    static string $ExSearchIntegration = "";
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;

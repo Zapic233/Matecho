@@ -228,6 +228,16 @@ mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
   box-shadow: var(--mdui-elevation-level2);
 }
 
+.search-keyword {
+  background-color: rgb(var(--mdui-color-primary));
+  color: rgb(var(--mdui-color-on-primary));
+  border-radius: 3px;
+  padding-left: 2px;
+  padding-right: 2px;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
 #matecho-top-search-bar[disabled] + mdui-menu {
   opacity: 0;
   pointer-events: none;

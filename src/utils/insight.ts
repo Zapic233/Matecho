@@ -21,7 +21,7 @@ export interface IExSearchData {
   }[];
 }
 
-function parseKeywords(keywords: string) {
+export function parseKeywords(keywords: string) {
   return keywords
     .split(" ")
     .filter(function (keyword) {

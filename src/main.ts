@@ -27,7 +27,7 @@ import "virtual:components/functions";
 import "virtual:components/sidebar";
 import "virtual:components/footer";
 import type { IExSearchData } from "./utils/insight";
-import { search } from "./utils/insight";
+import { parseKeywords, search } from "./utils/insight";
 
 interface IInit {
   init?: (el: HTMLElement) => void | Promise<void>;
@@ -252,7 +252,12 @@ function handleLabelShrink(el: HTMLElement) {
 }
 
 async function initExSearch(url: string) {
-  function addMenuItem(title: string, desc: string, link?: string) {
+  function addMenuItem(
+    title: string,
+    desc: string,
+    link?: string,
+    keywords?: string
+  ) {
     const el = new ListItem();
     const wrapper = Object.assign(document.createElement("div"), {
       slot: "custom"
@@ -266,6 +271,25 @@ async function initExSearch(url: string) {
       innerText: desc,
       className: "search-desc"
     });
+    if (keywords) {
+      const keyword = parseKeywords(keywords)
+        .map(v => ({
+          word: v,
+          index: descEl.innerHTML.toUpperCase().indexOf(v)
+        }))
+        .sort((a, b) => a.index - b.index)[0];
+      if (keyword.index != -1) {
+        const s = descEl.innerHTML.substring(0, keyword.index).slice(-7);
+        const w = descEl.innerHTML.substring(
+          keyword.index,
+          keyword.index + keyword.word.length
+        );
+        const e = descEl.innerHTML.substring(
+          keyword.index + keyword.word.length
+        );
+        descEl.innerHTML = s + `<span class="search-keyword">${w}</span>` + e;
+      }
+    }
     wrapper.appendChild(titleEl);
     wrapper.appendChild(descEl);
     if (!link) {
@@ -338,16 +362,31 @@ async function initExSearch(url: string) {
       list.innerHTML = "";
       const result = search(data, searchbar.value);
       result.posts.forEach(post => {
-        addMenuItem(post.title || "无标题", post.text, post.path);
+        addMenuItem(
+          post.title || "无标题",
+          post.text,
+          post.path,
+          searchbar.value
+        );
       });
       result.pages.forEach(page => {
-        addMenuItem(page.title || "无标题", page.text, page.path);
+        addMenuItem(
+          page.title || "无标题",
+          page.text,
+          page.path,
+          searchbar.value
+        );
       });
       result.tags.forEach(tag => {
-        addMenuItem(tag.name, tag.slug, tag.permalink);
+        addMenuItem(tag.name, tag.slug, tag.permalink, searchbar.value);
       });
       result.categories.forEach(category => {
-        addMenuItem(category.name, category.slug, category.permalink);
+        addMenuItem(
+          category.name,
+          category.slug,
+          category.permalink,
+          searchbar.value
+        );
       });
       if (list.childNodes.length == 0) {
         addMenuItem("无搜索结果", "尝试更换搜索词");
