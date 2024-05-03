@@ -19,6 +19,7 @@ function themeConfig(Form $form): void {
     $form->addInput(new Radio("EnableFancyBox", [1 => "自动", 0 => "禁用"], 1, "FancyBox", "允许用户放大查看文章内的图片"));
     $form->addInput(new Radio("CodeHighlighter", ["Prism" => "Prism", "Shiki" => "Shiki", "none" => "禁用"], "Prism", "代码高亮", "选择代码高亮引擎, Prism(~50KB)更小更快, Shiki(~600KB)更大更准确."));
     $form->addInput(new Radio("EnableKaTeX", [1 => "自动", 0 => "禁用"], 1, "KaTeX", "渲染LaTeX公式, 在使用\$或者\$\$包裹LaTeX公式即可自动渲染."));
+    $form->addInput(new Radio("ExSearchIntegration", ["enhanced" => "增强", "normal" => "普通"], "enhanced", "ExSearch即时搜索集成", "ExSearch集成模式, 在普通的状态下使用原版搜索框, 在增强状态下使用主题自带的搜索框."));
     $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
     $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:site值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
@@ -35,8 +36,13 @@ function themeInit(Archive $context): void {
     Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache ?? false;
     Matecho::$BeianText = Helper::options()->BeianText ?? "";
     Matecho::$ExtraCode = Helper::options()->ExtraCode ?? "";
+    Matecho::$ExSearchIntegration = Helper::options()->ExSearchIntegration ?? "enhanced";
     if (Matecho::$ColorSchemeCache && Matecho::$ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
         Matecho::generateThemeCSS();
+    }
+
+    if (Matecho::$ExSearchIntegration === "enhanced") {
+        Matecho::ExSearchIntegration();
     }
 }
 
@@ -59,10 +65,52 @@ class Matecho {
     static string $TwitterCardRef;
     static string $TwitterCardDefaultStyle;
 
+    static string $ExSearchIntegration;
+
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
     }
 
+    static function ExSearchIntegration() {
+        $options = \Typecho\Widget::widget('Widget_Options');
+		if (!isset($options->plugins['activated']['ExSearch'])) {
+			return;
+		}
+        
+        $hooks = \Typecho\Plugin::export();
+        foreach($hooks["handles"]["Widget_Archive:header"] as $key => $hook) {
+            if ($hook[0] === "ExSearch_Plugin" && $hook[1] === "header") {
+                unset($hooks["handles"]["Widget_Archive:header"][$key]);
+            }
+        }
+        foreach($hooks["handles"]["Widget_Archive:footer"] as $key => $hook) {
+            if ($hook[0] === "ExSearch_Plugin" && $hook[1] === "footer") {
+                unset($hooks["handles"]["Widget_Archive:footer"][$key]);
+            }
+        }
+
+        \Typecho\Plugin::init($hooks);
+    }
+
+    static function ExSearchURL(): string {
+        $options = \Typecho\Widget::widget('Widget_Options');
+		if (!isset($options->plugins['activated']['ExSearch'])) {
+			return "";
+		}
+        $db = \Typecho\Db::get();
+        $row = $db->fetchRow($db->select()->from('table.exsearch')
+                ->order('table.exsearch.id', \Typecho\Db::SORT_DESC)
+                ->limit(1));
+        $key = $row['key'];
+        $setting = Helper::options()->plugin('ExSearch');
+        if ($setting->static == 'true') {
+            $ExSearch = \Typecho\Common::url('ExSearch/cache/cache-'.$key.'.json', Helper::options()->pluginUrl);
+        } else {
+            $ExSearch = \Typecho\Common::url('ExSearch/cache/cache-'.$key.'.json', Helper::options()->index);
+        }
+
+        return $ExSearch;
+    }
 
     static function Gravatar(string $mail,int $size = 40): void {
         echo self::$GravatarURL.md5(strtolower($mail)).'?s='.$size.'&d=mp';
@@ -88,6 +136,7 @@ class Matecho {
             "KaTeX" => $options->EnableKaTeX ? true : false,
             "FancyBox" => $options->EnableFancyBox ? true : false,
             "Highlighter" => $options->CodeHighlighter ?? "Prism",
+            "ExSearch" => self::$ExSearchIntegration === "enhanced" ? self::ExSearchURL() : ""
         ]) . ";</script>";
     }
 

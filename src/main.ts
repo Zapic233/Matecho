@@ -1,10 +1,13 @@
-import type {
-  NavigationDrawer,
-  Button,
-  ButtonIcon,
-  TextField,
-  LayoutMain,
-  TopAppBar
+import {
+  type NavigationDrawer,
+  type Button,
+  type ButtonIcon,
+  type TextField,
+  type LayoutMain,
+  type TopAppBar,
+  Dropdown,
+  List,
+  ListItem
 } from "mdui";
 
 import "virtual:uno.css";
@@ -23,6 +26,8 @@ import "virtual:components/header";
 import "virtual:components/functions";
 import "virtual:components/sidebar";
 import "virtual:components/footer";
+import type { IExSearchData } from "./utils/insight";
+import { search } from "./utils/insight";
 
 interface IInit {
   init?: (el: HTMLElement) => void | Promise<void>;
@@ -195,7 +200,11 @@ function initOnce() {
     document.querySelector("meta[name=matecho-template]") as HTMLMetaElement
   ).content;
 
-  ExSearchIntegration(mGlobal.pjax);
+  if (window.__MATECHO_OPTIONS__.ExSearch.length > 0) {
+    void initExSearch(window.__MATECHO_OPTIONS__.ExSearch);
+  } else {
+    ExSearchIntegration(mGlobal.pjax);
+  }
 
   void loadPageScript(type)
     .then(i => {
@@ -240,6 +249,113 @@ function handleLabelShrink(el: HTMLElement) {
     showSpinner: false,
     trickle: true
   });
+}
+
+async function initExSearch(url: string) {
+  function addMenuItem(title: string, desc: string, link?: string) {
+    const el = new ListItem();
+    const wrapper = Object.assign(document.createElement("div"), {
+      slot: "custom"
+    });
+    el.appendChild(wrapper);
+    const titleEl = Object.assign(document.createElement("div"), {
+      innerText: title,
+      className: "search-title"
+    });
+    const descEl = Object.assign(document.createElement("div"), {
+      innerText: desc,
+      className: "search-desc"
+    });
+    wrapper.appendChild(titleEl);
+    wrapper.appendChild(descEl);
+    if (!link) {
+      el.disabled = true;
+    } else {
+      el.addEventListener("click", () => {
+        mGlobal.pjax?.loadUrl(link);
+        dropdown.open = false;
+      });
+    }
+    list.appendChild(el);
+  }
+  const searchbar = document.querySelector<TextField>(
+    "#matecho-top-search-bar"
+  );
+  if (!searchbar) return;
+  const data = (await (await fetch(url)).json()) as IExSearchData;
+  const dropdown = new Dropdown();
+  dropdown.trigger = "manual";
+  dropdown.placement = "bottom-start";
+  const list = new List();
+  list.classList.add("search-menu");
+  searchbar.after(dropdown);
+  searchbar.slot = "trigger";
+  dropdown.appendChild(searchbar);
+  dropdown.appendChild(list);
+  searchbar.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const el = list.querySelector<ListItem>("mdui-list-item[active]");
+      if (el && dropdown.open) {
+        el.click();
+        searchbar.value = "";
+        searchbar.blur();
+      }
+    }
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      const el = list.querySelector<ListItem>("mdui-list-item[active]");
+      if (!el) {
+        (list.firstElementChild as ListItem).active = true;
+      }
+      if (el?.nextElementSibling) {
+        (el.nextElementSibling as ListItem).active = true;
+        el.active = false;
+      } else if (el === list.lastElementChild) {
+        (list.firstElementChild as ListItem).active = true;
+        el!.active = false;
+      }
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      const el = list.querySelector<ListItem>("mdui-list-item[active]");
+      if (!el) {
+        (list.lastElementChild as ListItem).active = true;
+      }
+      if (el?.previousElementSibling) {
+        (el.previousElementSibling as ListItem).active = true;
+        el.active = false;
+      } else if (el === list.firstElementChild) {
+        (list.lastElementChild as ListItem).active = true;
+        el!.active = false;
+      }
+    }
+  });
+  searchbar.addEventListener(
+    "input",
+    () => {
+      if (searchbar.value.length == 0) return void (dropdown.open = false);
+      list.innerHTML = "";
+      const result = search(data, searchbar.value);
+      result.posts.forEach(post => {
+        addMenuItem(post.title || "无标题", post.text, post.path);
+      });
+      result.pages.forEach(page => {
+        addMenuItem(page.title || "无标题", page.text, page.path);
+      });
+      result.tags.forEach(tag => {
+        addMenuItem(tag.name, tag.slug, tag.permalink);
+      });
+      result.categories.forEach(category => {
+        addMenuItem(category.name, category.slug, category.permalink);
+      });
+      if (list.childNodes.length == 0) {
+        addMenuItem("无搜索结果", "尝试更换搜索词");
+      }
+      dropdown.open = true;
+    },
+    { passive: true }
+  );
 }
 
 function init() {

@@ -37,6 +37,7 @@ declare interface Window {
     FancyBox: boolean;
     Highlighter: "Prism" | "Shiki" | "none";
     KaTeX: boolean;
+    ExSearch: string;
   };
   ExSearchCall: (item: JQuery) => void;
 }

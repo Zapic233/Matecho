@@ -197,3 +197,38 @@ mdui-navigation-drawer:not(:defined) + #matecho-pjax-main {
 .mdui-prose pre code {
   display: block;
 }
+
+.search-title {
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  padding: 0.25rem 1rem;
+}
+
+.search-desc {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: keep-all;
+  text-overflow: ellipsis;
+  height: 1.2em;
+  padding: 0.25rem 1rem;
+}
+
+.search-menu {
+  max-width: 320px;
+  width: calc(100vw - 120px);
+  margin-top: 8px;
+  max-height: 65vh;
+  overflow-y: auto;
+  border-radius: var(--mdui-shape-corner-extra-small);
+  background-color: rgb(var(--mdui-color-surface-container));
+  box-shadow: var(--mdui-elevation-level2);
+}
+
+#matecho-top-search-bar[disabled] + mdui-menu {
+  opacity: 0;
+  pointer-events: none;
+}
