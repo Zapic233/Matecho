@@ -264,11 +264,11 @@ async function initExSearch(url: string) {
     });
     el.appendChild(wrapper);
     const titleEl = Object.assign(document.createElement("div"), {
-      innerText: title,
+      innerHTML: title,
       className: "search-title"
     });
     const descEl = Object.assign(document.createElement("div"), {
-      innerText: desc,
+      innerHTML: desc,
       className: "search-desc"
     });
     if (keywords) {
