@@ -94,6 +94,7 @@ function initCommentForm(formWrapper: HTMLDivElement) {
     if (!form.reportValidity()) return;
     const data = new FormData(form);
     data.set("_", token);
+    data.set("receiveMail", "yes");
     formWrapper.classList.add("matecho-form__loading");
     try {
       const req = await fetch(form.action, {
