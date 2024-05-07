@@ -22,6 +22,45 @@ Material Design typecho theme base on MDUI.
 2. 将主题解压到`/usr/themes/Matecho/`中
 3. 在Typecho设置中启用主题
 
+## 自定义
+
+如果需要快速修改源码, 可以Fork此仓库, 并启用Github Action, 在网页上直接修改源码, 提交后自动触发构建, 可以在Artifact里找到构建好的主题.
+在项目根目录下创建`matecho.config.ts`, 写入以下模板:
+
+```ts
+export default {
+    PrismLanguages: [];
+    ExtraMaterialIcons: [];
+}
+```
+
+#### 自定义Prism支持的语言
+
+Prism语言包较小, 如果按Shiki动态加载语言会造成较大的overhead, 因此引入Prism时会直接将所有需要的语言包打包好. 主题默认自带超过30种常用语言, 如果发现你所需的语言没有被打包, 可以在`PrismLanguages`中添加自己想要的语言:
+
+```ts
+export default {
+    PrismLanguages: ["rust", "groovy"];
+    ExtraMaterialIcons: [];
+}
+```
+
+默认自带的语言参考`vite.config.ts`的`PrismJS`插件配置部分.
+
+#### 自定义Material Icon图标
+
+Material Icon图标非常多, 如果全部加载会使得文件巨大, 故主题只选取了部分图标打包. 如果需要其他的图标, 参考[MDUI图标组件库](https://www.mdui.org/zh-cn/docs/2/libraries/icons)添加.  
+只需要写入图标名称即可, 如`import '@mdui/icons/4k-plus.js';`, 只需要填入`4k-plus`.
+
+```ts
+export default {
+    PrismLanguages: [];
+    ExtraMaterialIcons: ["4k-plus", "adjust--rounded"];
+}
+```
+
+提交代码后, 如果已经启用Action, 主题会自动开始构建, 下载最新构建产物即可.
+
 ## 开发
 
 使用`localhost`作为域名安装Typecho, 并暴露在`80`, 安装Typecho后, 将`dist`文件夹软链接到Typecho目录中`/usr/themes/Matecho/`  
@@ -38,7 +77,7 @@ pnpm dev
 
 **注意**
 
-1. 该项目并未预期直接修改编译后产物, 构建过程包括很多重要的逻辑, 务必从源码修改后编译
+1. 该项目并未预期直接修改编译后产物, 构建过程包括很多重要的逻辑, 务必从源码修改后编译(参考上方"自定义"章节快速修改源码)
 2. 以`m-`开头的CSS类在由UnoCSS在构建过程中自动生成, 会随源码改变而改变, 不可依赖其定位元素
 
 ## 构建
