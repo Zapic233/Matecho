@@ -1,3 +1,4 @@
+import { Snackbar } from "mdui/components/snackbar";
 import type Pjax from "pjax";
 
 interface IGlobal {
@@ -9,3 +10,20 @@ interface IGlobal {
 export const mGlobal = {
   pjax: null
 } as IGlobal;
+
+export function openSnackbar(msg: string) {
+  const sb = new Snackbar();
+  sb.textContent = msg;
+  document.body.appendChild(sb);
+  sb.placement = "bottom-end";
+  sb.addEventListener(
+    "closed",
+    () => {
+      sb.remove();
+    },
+    { once: true }
+  );
+  setTimeout(() => {
+    sb.open = true;
+  });
+}
