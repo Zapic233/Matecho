@@ -19,6 +19,7 @@ function themeConfig(Form $form): void {
     $form->addInput(new Radio("EnableFancyBox", [1 => "自动", 0 => "禁用"], 1, "FancyBox", "允许用户放大查看文章内的图片"));
     $form->addInput(new Radio("CodeHighlighter", ["Prism" => "Prism", "Shiki" => "Shiki", "none" => "禁用"], "Prism", "代码高亮", "选择代码高亮引擎, Prism(~50KB)更小更快, Shiki(~600KB)更大更准确."));
     $form->addInput(new Radio("EnableKaTeX", [1 => "自动", 0 => "禁用"], 1, "KaTeX", "渲染LaTeX公式, 在使用\$或者\$\$包裹LaTeX公式即可自动渲染."));
+    $form->addInput(new Radio("EnableMermaid", [1 => "自动", 0 => "禁用"], 1, "Mermaid", "渲染流程图, 将Mermaid代码包括在mermaid代码块(```mermaid```)中, 即可自动渲染."));
     $form->addInput(new Radio("ExSearchIntegration", ["enhanced" => "增强", "normal" => "普通"], "enhanced", "ExSearch即时搜索集成", "ExSearch集成模式, 在普通的状态下使用原版搜索框, 在增强状态下使用主题自带的搜索框."));
     $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
@@ -123,6 +124,7 @@ class Matecho {
         echo "<script>window.__MATECHO_OPTIONS__=" . json_encode([
             "KaTeX" => $options->EnableKaTeX ? true : false,
             "FancyBox" => $options->EnableFancyBox ? true : false,
+            "Mermaid" => $options -> EnableMermaid ? true : false,
             "Highlighter" => $options->CodeHighlighter ?? "Prism",
             "ExSearch" => $options->ExSearchIntegration === "enhanced" ? self::ExSearchURL() : ""
         ]) . ";</script>";

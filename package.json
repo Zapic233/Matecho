@@ -27,6 +27,7 @@
     "katex": "^0.16.10",
     "lint-staged": "^15.2.2",
     "mdui": "^2.0.6",
+    "mermaid": "^10.9.0",
     "nprogress": "^0.2.0",
     "pjax": "^0.2.8",
     "postcss": "^8.4.38",

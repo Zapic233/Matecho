@@ -44,6 +44,26 @@ export function initKaTeX(container: HTMLElement) {
   ]);
 }
 
+export async function initMermaid(container: HTMLElement) {
+  const nodes = container.querySelectorAll<HTMLElement>(
+    "pre > code.lang-mermaid"
+  );
+  const mapNodes = Array.from(nodes).map(node => {
+    const parent = node.parentElement!;
+    parent.classList.add("mermaid");
+    parent.setAttribute("data-processed", "");
+    parent.innerHTML = node.innerHTML || "";
+    return parent;
+  });
+  const { default: mermaid } = await import("mermaid");
+  mermaid.initialize({
+    startOnLoad: false
+  });
+  return await mermaid.run({
+    nodes: mapNodes
+  });
+}
+
 function countMoney(str: string) {
   let count = -1;
   let index = -2;
@@ -54,9 +74,15 @@ function countMoney(str: string) {
 export function init(el: HTMLElement) {
   initComments(el);
   const article = el.querySelector<HTMLElement>("article.mdui-prose");
-  const { Highlighter, FancyBox, KaTeX } = window.__MATECHO_OPTIONS__;
+  const { Highlighter, FancyBox, KaTeX, Mermaid } = window.__MATECHO_OPTIONS__;
   if (article) {
     initCodeBlockAction(article);
+    // enforce Mermaid processed before code block
+    // this is required to prevent codeblock logic break Mermaid.
+    // initMermaid will modify DOM struct make code block logic cannot process it as code block
+    if (Mermaid && article.querySelector("pre > code.lang-mermaid")) {
+      void initMermaid(article);
+    }
     if (article.querySelector("pre > code[class*=lang-]")) {
       if (Highlighter == "Prism") {
         void initPrism(article);
