@@ -29,19 +29,14 @@ function themeConfig(Form $form): void {
 }
 
 function themeInit(Archive $context): void {
-    Matecho::$ColorScheme = Helper::options()->ColorScheme ?? "";
-    Matecho::$GravatarURL = Helper::options()->GravatarURL ?? "";
-    Matecho::$TwitterCardRef = Helper::options()->TwitterCardRef ?? "";
-    Matecho::$TwitterCardDefaultStyle = Helper::options()->TwitterCardDefaultStyle ?? "summary";
-    Matecho::$ColorSchemeCache = Helper::options()->ColorSchemeCache ?? false;
-    Matecho::$BeianText = Helper::options()->BeianText ?? "";
-    Matecho::$ExtraCode = Helper::options()->ExtraCode ?? "";
-    Matecho::$ExSearchIntegration = Helper::options()->ExSearchIntegration ?? "enhanced";
-    if (Matecho::$ColorSchemeCache && Matecho::$ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
+    $options = Helper::options();
+    Matecho::$BeianText = $options->BeianText ?? "";
+    Matecho::$ExtraCode = $options->ExtraCode ?? "";
+    if ($options->ColorSchemeCache && $options->ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
         Matecho::generateThemeCSS();
     }
 
-    if (Matecho::$ExSearchIntegration === "enhanced") {
+    if ($options->ExSearchIntegration === "enhanced") {
         Matecho::ExSearchIntegration();
     }
 }
@@ -57,15 +52,8 @@ function themeFields(\Typecho\Widget\Helper\Layout $layout){
 }
 
 class Matecho {
-    static string $ColorScheme;
-    static string $GravatarURL;
-    static bool $ColorSchemeCache;
     static string $BeianText;
     static string $ExtraCode;
-    static string $TwitterCardRef;
-    static string $TwitterCardDefaultStyle;
-
-    static string $ExSearchIntegration = "";
 
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
@@ -113,7 +101,7 @@ class Matecho {
     }
 
     static function Gravatar(string $mail,int $size = 40): void {
-        echo self::$GravatarURL.md5(strtolower($mail)).'?s='.$size.'&d=mp';
+        echo Helper::options()->GravatarURL.md5(strtolower($mail)).'?s='.$size.'&d=mp';
     }
 
     static function cover(Archive $archive): void {
@@ -136,7 +124,7 @@ class Matecho {
             "KaTeX" => $options->EnableKaTeX ? true : false,
             "FancyBox" => $options->EnableFancyBox ? true : false,
             "Highlighter" => $options->CodeHighlighter ?? "Prism",
-            "ExSearch" => self::$ExSearchIntegration === "enhanced" ? self::ExSearchURL() : ""
+            "ExSearch" => $options->ExSearchIntegration === "enhanced" ? self::ExSearchURL() : ""
         ]) . ";</script>";
     }
 
@@ -167,10 +155,10 @@ class Matecho {
             "content" => $archive->getArchiveUrl()
         ], true);
 
-        if (strlen(Matecho::$TwitterCardRef) > 0) {
+        if (strlen($options->TwitterCardRef) > 0) {
             $meta .= self::toTag("meta", [
                 "property" => "twitter:site",
-                "content" => Matecho::$TwitterCardRef
+                "content" => $options->TwitterCardRef
             ], true);
         }
 
@@ -213,7 +201,7 @@ class Matecho {
             if (is_string($archive->fields->TwitterCardStyle) && $archive->fields->TwitterCardStyle !== "") {
                 $style = $archive->fields->TwitterCardStyle;
             } else {
-                $style = self::$TwitterCardDefaultStyle;
+                $style = $options->TwitterCardDefaultStyle;
             }
             
             $meta .= self::toTag("meta", [
@@ -245,11 +233,12 @@ class Matecho {
     }
 
     static function themeCSS(): void {
-        if (!self::$ColorScheme) return;
-        if (self::$ColorSchemeCache) {
-            echo "<link rel=\"stylesheet\" href=\"". Helper::options()->themeUrl ."/assets/color-scheme.css?" . substr(Matecho::$ColorScheme, 1) . "\">";
+        $options = Helper::options();
+        if (!$options->ColorScheme) return;
+        if ($options->ColorSchemeCache) {
+            echo "<link rel=\"stylesheet\" href=\"". Helper::options()->themeUrl ."/assets/color-scheme.css?" . substr($options->ColorScheme, 1) . "\">";
         } else {
-            $css = Helper::options()->ColorSchemeCSS;
+            $css = $options->ColorSchemeCSS;
             if (!$css) return;
             echo "<style>".$css."</style>";
         }
