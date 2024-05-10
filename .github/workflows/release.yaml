@@ -1,0 +1,49 @@
+name: release
+run-name: Release ${{ github.ref_name }}
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          lfs: true
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm type-check
+
+      - name: Build
+        run: pnpm build
+
+      - name: Rename dist
+        run: mv dist Matecho
+
+      - name: Packing
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -D -r Matecho-${{ github.ref_name }}.zip Matecho
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Matecho-${{ github.ref_name }}.zip
+          generate_release_notes: true
+          make_latest: true
+          draft: true

@@ -43,7 +43,7 @@ export default defineConfig(async env => {
     COMMIT_ID = id.substring(0, 7);
     try {
       const tag = fs
-        .readFileSync(__dirname + "/.git/refs/tags/" + packageJson.version)
+        .readFileSync(__dirname + "/.git/refs/tags/v" + packageJson.version)
         .toString("utf-8")
         .trim();
       if (tag == id) COMMIT_ID = packageJson.version;
