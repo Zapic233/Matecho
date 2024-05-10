@@ -15,6 +15,7 @@ export function defineConfig(config: Partial<MatechoBuildOptions>) {
 
 interface MatechoPluginConfig {
   extraIcons?: string[];
+  CommitID?: string;
 }
 
 export default (config?: MatechoPluginConfig): Plugin => {
@@ -170,11 +171,13 @@ export default (config?: MatechoPluginConfig): Plugin => {
     },
     transform(code, id) {
       if (env.command === "serve" || !id.endsWith("_actual_php.html")) return;
-      return code.replace(/<\?(?:php|).+?(\?>|$)/gis, match => {
-        const token = "PHPCode" + hash(match) + Date.now();
-        codeTokens[token] = match;
-        return token;
-      });
+      return code
+        .replaceAll("__COMMIT_ID__", config.CommitID ?? "")
+        .replace(/<\?(?:php|).+?(\?>|$)/gis, match => {
+          const token = "PHPCode" + hash(match) + Date.now();
+          codeTokens[token] = match;
+          return token;
+        });
     },
     transformIndexHtml(html, ctx) {
       let r = html;

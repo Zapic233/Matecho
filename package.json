@@ -67,5 +67,6 @@
     "patchedDependencies": {
       "pjax@0.2.8": "patches/pjax@0.2.8.patch"
     }
-  }
+  },
+  "version": "0.1.1"
 }

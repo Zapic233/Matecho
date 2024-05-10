@@ -5,7 +5,8 @@
     "target": "ESNext",
     "lib": ["ESNext"],
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "include": ["vite.config.ts", "matecho.config.ts", "plugins/**/*.ts"]
 }

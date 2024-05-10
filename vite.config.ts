@@ -6,6 +6,7 @@ import Matecho, { type MatechoBuildOptions } from "./plugins/Matecho";
 import PrismJS from "./plugins/Prism";
 import UnoCSSClassMangle from "./plugins/UnoCSSClassMangle";
 import fs from "node:fs";
+import packageJson from "./package.json";
 
 export default defineConfig(async env => {
   let MatechoConfig: MatechoBuildOptions = {
@@ -29,12 +30,27 @@ export default defineConfig(async env => {
   const isBuild = env.command === "build";
   let COMMIT_ID = "unknown";
   try {
-    const id = fs
+    let id = fs
       .readFileSync(__dirname + "/.git/HEAD")
       .toString("utf-8")
       .trim();
-    console.log("Current head @ " + id);
-    COMMIT_ID = id.startsWith("ref:") ? id : id.substring(0, 7);
+    if (id.startsWith("ref: ")) {
+      id = fs
+        .readFileSync(__dirname + "/.git/" + id.substring(5))
+        .toString("utf-8")
+        .trim();
+    }
+    COMMIT_ID = id.substring(0, 7);
+    try {
+      const tag = fs
+        .readFileSync(__dirname + "/.git/refs/tags/" + packageJson.version)
+        .toString("utf-8")
+        .trim();
+      if (tag == id) COMMIT_ID = packageJson.version;
+    } catch (_) {
+      /**/
+    }
+    console.log("Current head @ " + COMMIT_ID);
   } catch (_) {
     /**/
   }
@@ -59,6 +75,7 @@ export default defineConfig(async env => {
         ]
       }),
       Matecho({
+        CommitID: COMMIT_ID,
         extraIcons: [
           "tv",
           "live-tv",
