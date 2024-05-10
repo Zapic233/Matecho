@@ -155,7 +155,8 @@ export default defineConfig(async env => {
         output: {
           assetFileNames: "assets/assets-[hash].[ext]",
           chunkFileNames: "assets/chunk-[hash].js",
-          entryFileNames: "assets/chuck-[hash].js"
+          entryFileNames: "assets/chuck-[hash].js",
+          experimentalMinChunkSize: 20000
         }
       },
       target: isProd ? "es2018" : "esnext",
