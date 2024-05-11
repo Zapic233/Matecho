@@ -3,6 +3,7 @@ import { hash } from "./UnoCSSClassMangle";
 import { getUserAgentRegex } from "browserslist-useragent-regexp";
 import { copyFile, cp, readFile, rm, mkdir } from "node:fs/promises";
 import HttpProxy from "http-proxy";
+import { existsSync } from "node:fs";
 
 export interface MatechoBuildOptions {
   PrismLanguages: string[];
@@ -49,7 +50,11 @@ export default (config?: MatechoPluginConfig): Plugin => {
     },
     async buildStart(options) {
       if (env.command === "serve" && Array.isArray(options.input)) {
-        await rm("dist/", { recursive: true });
+        try {
+          await rm("dist/", { recursive: true });
+        } catch (_) {
+          //
+        }
         await mkdir("dist/");
         await Promise.all(
           options.input.map(file => {
@@ -62,7 +67,11 @@ export default (config?: MatechoPluginConfig): Plugin => {
     },
     watchChange(id) {
       if (id.endsWith(".php")) {
-        void copyFile(id, id.replace("src/", "dist/"));
+        if (existsSync(id)) {
+          void copyFile(id, id.replace("src/", "dist/"));
+        } else {
+          void rm(id.replace("src/", "dist/"));
+        }
       }
     },
     configureServer(server) {
