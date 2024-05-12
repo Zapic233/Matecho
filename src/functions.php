@@ -1,4 +1,5 @@
 <?php
+use Typecho\Request;
 use Typecho\Widget\Helper\Form\Element\Radio;
 use Typecho\Widget\Helper\Form\Element\Hidden;
 use Typecho\Widget\Helper\Form\Element\Text;
@@ -21,6 +22,7 @@ function themeConfig(Form $form): void {
     $form->addInput(new Radio("EnableKaTeX", [1 => "自动", 0 => "禁用"], 1, "KaTeX", "渲染LaTeX公式, 在使用\$或者\$\$包裹LaTeX公式即可自动渲染."));
     $form->addInput(new Radio("EnableMermaid", [1 => "自动", 0 => "禁用"], 1, "Mermaid", "渲染流程图, 将Mermaid代码包括在mermaid代码块(```mermaid```)中, 即可自动渲染."));
     $form->addInput(new Radio("ExSearchIntegration", ["enhanced" => "增强", "normal" => "普通"], "enhanced", "ExSearch即时搜索集成", "ExSearch集成模式, 在普通的状态下使用原版搜索框, 在增强状态下使用主题自带的搜索框."));
+    $form->addInput(new Text("GlotAccessToken", null, "", "glot.io 访问密钥", "填入后, 可以通过调用glot.io API直接运行代码块中的代码, 详细获取方法请查看文档,"));
     $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
     $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:site值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
@@ -30,6 +32,9 @@ function themeConfig(Form $form): void {
 }
 
 function themeInit(Archive $context): void {
+    if (Matecho::ApiProvider($context)) {
+        die();
+    }
     $options = Helper::options();
     Matecho::$BeianText = $options->BeianText ?? "";
     Matecho::$ExtraCode = $options->ExtraCode ?? "";
@@ -56,8 +61,101 @@ class Matecho {
     static string $BeianText;
     static string $ExtraCode;
 
+    static array $LangExtMap = [
+        "assembly" => "asm",
+        "ats" => "ats",
+        "bash" => "sh",
+        "c" => "c",
+        "clisp" => "lsp",
+        "clojure" => "clj",
+        "cobol" => "cob",
+        "coffeescript" => "coffee",
+        "cpp" => "cpp",
+        "crystal" => "cr",
+        "csharp" => "cs",
+        "d" => "d",
+        "dart" => "dart",
+        "elixir" => "ex",
+        "elm" => "elm",
+        "erlang" => "erl",
+        "fsharp" => "fs",
+        "go" => "go",
+        "groovy" => "groovy",
+        "guile" => "scm",
+        "hare" => "ha",
+        "haskell" => "hs",
+        "idris" => "idr",
+        "java" => "java",
+        "javascript" => "js",
+        "julia" => "jl",
+        "kotlin" => "kt",
+        "lua" => "lua",
+        "mercury" => "m",
+        "nim" => "nim",
+        "nix" => "nix",
+        "ocaml" => "ml",
+        "pascal" => "pp",
+        "perl" => "perl",
+        "php" => "php",
+        "python" => "py",
+        "raku" => "raku",
+        "ruby" => "ruby",
+        "rust" => "rs",
+        "sac" => "sac",
+        "scala" => "scala",
+        "swift" => "swift",
+        "typescript" => "ts",
+        "zig" => "zig"
+    ];
+
     static function assets(string $path = ''): void {
         echo Helper::options()->themeUrl.'/'.$path;
+    }
+
+    static function ApiProvider(Archive $context): bool {
+        $options = Helper::options();
+        $req = Request::getInstance();
+        $path = $req->getPathInfo();
+        if ($req->isPost() && $path == "/api/runner") {
+            if (!$options->GlotAccessToken) {
+                header("HTTP/1.1 500");
+                header("Content-Type: application/json");
+                print('{ "message": "glot.io access token not exists." }');
+                return true;
+            }
+            $body = $req->get("@json");
+            if (!isset(self::$LangExtMap[$body["lang"]])) {
+                header("HTTP/1.1 500");
+                header("Content-Type: application/json");
+                print('{ "message": "this lang is not supported." }');
+                return true;
+            }
+            $curl = curl_init("https://glot.io/api/run/" . $body["lang"] . "/latest");
+            curl_setopt_array($curl, [
+                CURLOPT_POST => true,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_HEADER => false,
+                CURLOPT_HTTPHEADER => [
+                    "Content-Type: application/json",
+                    "Authorization: Token " . $options->GlotAccessToken
+                ],
+                CURLOPT_POSTFIELDS => json_encode([
+                    "files" => [
+                        [
+                            "name" => "main." . self::$LangExtMap[$body["lang"]],
+                            "content" => $body["code"]
+                        ]
+                    ]
+                ]),
+                CURLOPT_RETURNTRANSFER => true
+            ]);
+            $resp = curl_exec($curl);
+            curl_close($curl);
+            header("Content-Type: application/json");
+            print_r($resp);
+            return true;
+        }
+        return false;
     }
 
     static function ExSearchIntegration() {

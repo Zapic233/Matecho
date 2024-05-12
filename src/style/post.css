@@ -83,6 +83,10 @@ pre:hover .matecho-code-action-wrapper {
   transition: opacity 0.2s;
 }
 
+.matecho-code-action-wrapper mdui-button-icon[loading] {
+  opacity: 1;
+}
+
 .matecho-code-action-wrapper mdui-button-icon:hover {
   opacity: 0.8;
 }
@@ -145,6 +149,17 @@ pre.line-numbers > code {
   white-space: inherit;
 }
 
+pre.line-numbers > code::after {
+  content: " ";
+  visibility: hidden;
+}
+
+pre.block-editable code {
+  overflow: hidden;
+  padding-bottom: calc(0.8751em + 8px);
+  user-select: none;
+}
+
 .line-numbers .line-numbers-rows {
   position: absolute;
   pointer-events: none;
@@ -193,4 +208,75 @@ pre.mermaid[data-processed=""]::after {
 
 pre.mermaid[data-processed="true"] {
   text-align: center;
+}
+
+pre textarea.editor {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow: hidden;
+  overflow-x: auto;
+  position: absolute;
+  left: 0;
+  border: none;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+  padding: 0.8571em 1.1429em;
+  padding-left: 3.8em;
+  box-sizing: border-box;
+  font-size: 0.875em;
+  line-height: 24.5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  color: transparent;
+  appearance: none;
+  resize: none;
+  outline: none;
+  tab-size: 4;
+  caret-color: black;
+}
+
+.block-editable pre.output code.stdout.empty {
+  font-style: italic;
+}
+
+.block-editable pre.output code.stdout::before {
+  content: "Output";
+}
+
+.block-editable pre.output code.stderr::before {
+  content: "Error";
+}
+
+.block-editable pre.output code::before {
+  position: absolute;
+  left: 16px;
+  top: -4px;
+  font-size: 0.75em;
+  opacity: 0.5;
+  font-style: normal;
+}
+
+.block-editable pre.output code.stderr {
+  color: red;
+  margin-top: -4px;
+}
+
+.block-editable .output code {
+  padding-bottom: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  overflow-x: auto;
+  user-select: initial;
+}
+
+pre.output {
+  margin-top: -32px;
+  padding-top: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  pre textarea.editor {
+    caret-color: white;
+  }
 }
