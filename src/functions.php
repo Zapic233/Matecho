@@ -1,5 +1,6 @@
 <?php
 use Typecho\Request;
+use Typecho\Response;
 use Typecho\Widget\Helper\Form\Element\Radio;
 use Typecho\Widget\Helper\Form\Element\Hidden;
 use Typecho\Widget\Helper\Form\Element\Text;
@@ -32,8 +33,10 @@ function themeConfig(Form $form): void {
 }
 
 function themeInit(Archive $context): void {
-    if (Matecho::ApiProvider($context)) {
-        die();
+    $responder = Matecho::ApiProvider($context);
+    if ($responder) {
+        $responder->respond();
+        exit();
     }
     $options = Helper::options();
     Matecho::$BeianText = $options->BeianText ?? "";
@@ -112,23 +115,26 @@ class Matecho {
         echo Helper::options()->themeUrl.'/'.$path;
     }
 
-    static function ApiProvider(Archive $context): bool {
+    static function ApiProvider(Archive $context): ?Response {
         $options = Helper::options();
         $req = Request::getInstance();
+        $res = Response::getInstance();
         $path = $req->getPathInfo();
         if ($req->isPost() && $path == "/api/runner") {
+            $res->clean();
+            $res->setContentType("application/json");
             if (!$options->GlotAccessToken) {
-                header("HTTP/1.1 500");
-                header("Content-Type: application/json");
-                print('{ "message": "glot.io access token not exists." }');
-                return true;
+                $res->setStatus(500);
+                return $res->addResponder(function() {
+                    print_r('{ "message": "glot.io access token not exists." }');
+                });
             }
             $body = json_decode(file_get_contents("php://input"), true);;
             if (!isset(self::$LangExtMap[$body["lang"]])) {
-                header("HTTP/1.1 500");
-                header("Content-Type: application/json");
-                print('{ "message": "this lang is not supported." }');
-                return true;
+                $res->setStatus(500);
+                return $res->addResponder(function() {
+                    print_r('{ "message": "this lang is not supported." }');
+                });
             }
             $curl = curl_init("https://glot.io/api/run/" . $body["lang"] . "/latest");
             curl_setopt_array($curl, [
@@ -151,11 +157,11 @@ class Matecho {
             ]);
             $resp = curl_exec($curl);
             curl_close($curl);
-            header("Content-Type: application/json");
-            print_r($resp);
-            return true;
+            return $res->addResponder(function() use ($resp) {
+                print_r($resp);
+            });
         }
-        return false;
+        return null;
     }
 
     static function ExSearchIntegration() {
