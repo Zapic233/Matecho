@@ -56,6 +56,11 @@
   transition: 0.2s;
   opacity: 0.3;
   font-size: 0.75rem;
+  user-select: none;
+}
+
+.code-running .matecho-code-lang {
+  opacity: 0;
 }
 
 pre:hover .matecho-code-lang {
@@ -72,6 +77,10 @@ pre:hover .matecho-code-lang {
   gap: 0.25rem;
   opacity: 0;
   transition: 0.2s;
+}
+
+.code-running .matecho-code-action-wrapper {
+  opacity: 1;
 }
 
 pre:hover .matecho-code-action-wrapper {
@@ -145,8 +154,11 @@ pre.line-numbers {
 }
 
 pre.line-numbers > code {
-  padding-left: 3.8em;
+  margin-left: 3em;
   white-space: inherit;
+  padding-left: 0.8em;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 pre.line-numbers > code::after {
@@ -156,7 +168,6 @@ pre.line-numbers > code::after {
 
 pre.block-editable code {
   overflow: hidden;
-  padding-bottom: calc(0.8751em + 8px);
   user-select: none;
 }
 
@@ -164,14 +175,17 @@ pre.block-editable code {
   position: absolute;
   pointer-events: none;
   padding: 0.8571em 0;
+  box-sizing: border-box;
+  top: 0;
   left: 0;
   width: 3em;
   letter-spacing: -1px;
   font-size: 0.875em;
   user-select: none;
-  top: 0;
+  height: 100%;
   background-color: rgb(var(--mdui-color-surface-container));
-  border-radius: var(--mdui-shape-corner-extra-small);
+  border-radius: var(--mdui-shape-corner-extra-small) 0 0
+    var(--mdui-shape-corner-extra-small);
 }
 
 .line-numbers-rows > span {
@@ -211,7 +225,7 @@ pre.mermaid[data-processed="true"] {
 }
 
 pre textarea.editor {
-  white-space: nowrap;
+  white-space: pre;
   word-break: keep-all;
   overflow: hidden;
   overflow-x: auto;
@@ -219,13 +233,14 @@ pre textarea.editor {
   left: 0;
   border: none;
   background: transparent;
-  width: 100%;
+  width: calc(100% - 3.8em);
   height: 100%;
   padding: 0.8571em 1.1429em;
-  padding-left: 3.8em;
+  margin-left: 3.8em;
+  padding-left: 0;
   box-sizing: border-box;
   font-size: 0.875em;
-  line-height: 24.5px;
+  line-height: 1.75;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
   color: transparent;
@@ -236,19 +251,31 @@ pre textarea.editor {
   caret-color: black;
 }
 
-.block-editable pre.output code.stdout.empty {
+pre.has-output {
+  margin-bottom: 0;
+}
+
+pre.has-output > code {
+  border-bottom-right-radius: 0;
+}
+
+pre.has-output > .line-numbers-rows {
+  border-bottom-left-radius: 0;
+}
+
+pre.output code.stdout.empty {
   font-style: italic;
 }
 
-.block-editable pre.output code.stdout::before {
+pre.output code.stdout::before {
   content: "Output";
 }
 
-.block-editable pre.output code.stderr::before {
+pre.output code.stderr::before {
   content: "Error";
 }
 
-.block-editable pre.output code::before {
+pre.output code::before {
   position: absolute;
   left: 16px;
   top: -4px;
@@ -257,25 +284,26 @@ pre textarea.editor {
   font-style: normal;
 }
 
-code.stdout + code.stderr {
-  margin-top: -4px;
-}
-
-.block-editable pre.output code.stderr {
+pre.output code.stderr {
   color: red;
 }
 
-.block-editable .output code {
+pre.output code {
   padding-bottom: 0.5rem;
   position: relative;
   overflow: hidden;
   overflow-x: auto;
   user-select: initial;
+  border-radius: 0;
 }
 
 pre.output {
-  margin-top: -32px;
-  padding-top: 24px;
+  margin-top: 0;
+}
+
+pre.output code:last-child {
+  border-radius: 0 0 var(--mdui-shape-corner-extra-small)
+    var(--mdui-shape-corner-extra-small);
 }
 
 @media (prefers-color-scheme: dark) {

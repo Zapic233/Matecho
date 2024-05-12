@@ -199,7 +199,6 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
           className: "matecho-code-lang"
         } as Partial<HTMLDivElement>)
       );
-      el.classList.add("block-editable");
     }
 
     if (
@@ -207,17 +206,20 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
       (glotSupportList.includes(codeLang.toLocaleLowerCase()) ||
         codeLang.toLocaleLowerCase() in glotLangAliasMap)
     ) {
+      el.classList.add("block-editable");
       const runBtn = document.createElement("mdui-button-icon");
       runBtn.appendChild(document.createElement("mdui-icon-play-arrow"));
       const realLang = glotSupportList.includes(codeLang.toLocaleLowerCase())
         ? codeLang.toLowerCase()
         : glotLangAliasMap[codeLang.toLowerCase()];
+      let CodeBlockOutput: HTMLElement;
       // eslint-disable-next-line @typescript-eslint/no-misused-promises
       runBtn.addEventListener("click", async () => {
         runBtn.loading = true;
+        el.classList.add("code-running");
         const resp = await runCodeBlock(realLang, codeEl.innerText);
         runBtn.loading = false;
-        el.querySelector("pre.output")?.remove();
+        el.classList.remove("code-running");
         const wrapper = document.createElement("pre");
         wrapper.classList.add("output");
         if ("message" in resp) {
@@ -240,9 +242,15 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
             wrapper.appendChild(stderr);
           }
         }
-        codeEl.after(wrapper);
+        CodeBlockOutput?.remove();
+        CodeBlockOutput = wrapper;
+        el.classList.add("has-output");
+        el.after(wrapper);
       });
       const editor = document.createElement("textarea");
+      editor.autocomplete = "off";
+      editor.autocapitalize = "off";
+      editor.spellcheck = false;
       editor.classList.add("editor");
       bindTextarea(editor, codeEl, codeLang);
       codeEl.before(editor);
