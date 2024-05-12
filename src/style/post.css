@@ -257,9 +257,12 @@ pre textarea.editor {
   font-style: normal;
 }
 
+code.stdout + code.stderr {
+  margin-top: -4px;
+}
+
 .block-editable pre.output code.stderr {
   color: red;
-  margin-top: -4px;
 }
 
 .block-editable .output code {
