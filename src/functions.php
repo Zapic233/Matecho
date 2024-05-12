@@ -123,7 +123,7 @@ class Matecho {
                 print('{ "message": "glot.io access token not exists." }');
                 return true;
             }
-            $body = $req->get("@json");
+            $body = json_decode(file_get_contents("php://input"), true);;
             if (!isset(self::$LangExtMap[$body["lang"]])) {
                 header("HTTP/1.1 500");
                 header("Content-Type: application/json");
