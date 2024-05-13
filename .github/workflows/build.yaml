@@ -42,4 +42,4 @@ jobs:
           name: Matecho-${{ github.sha }}
           path: Matecho
       - name: Update deployment
-        run: "curl -m 5 --output - -H 'X-Authorization: ${{ secrets.update_access_token }}' https://matecho-dev.zapic.moe/index.php/UpdateMatecho?artifact_id=${{ steps.artifact-upload.outputs.artifact-id }};exit 0;"
+        run: "curl -s -m 5 -H 'X-Authorization: ${{ secrets.update_access_token }}' https://matecho-dev.zapic.moe/index.php/UpdateMatecho?artifact_id=${{ steps.artifact-upload.outputs.artifact-id }} || true"
