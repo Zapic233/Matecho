@@ -17,7 +17,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		'author' => _t('%s 发布的文章')
 	),'',' - '); ?><?php $this->options->title(); ?></title>
     <style>.un-br{position:fixed;top:0;left:0;width:100%;height:100%;background-color:#eee;text-align:center;z-index: 99999;}.un-br_sf{font-size: 5em; color:#999;}@media(prefers-color-scheme:dark){.un-br{color:white;background-color:#1f1f1f;}.un-br_sf{color: #ccc;}}</style>
-    <link rel="stylesheet" href="/src/style/main.css">
+    <link rel="stylesheet" href="/src/style/main.less">
     <script type="module" src="/src/main.ts"></script>
     <?php Matecho::generateOG($this) ?>
     <?php $this->header("commentReply=&antiSpam="); ?>

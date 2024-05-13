@@ -296,7 +296,7 @@ const LangNameMap = {
 
 export function initPrism(container: HTMLElement) {
   return Promise.all([
-    import("@/style/prism.css"),
+    import("@/style/prism.less"),
     import("virtual:prismjs").then(({ default: Prism }) => {
       PrismVue(Prism);
       Prism.highlightAllUnder(container);

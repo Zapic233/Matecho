@@ -2,7 +2,7 @@ import { initComments } from "./comment";
 import { handlePasswordForm } from "./locked";
 import { initCodeBlockAction, initPrism, initShiki } from "./code-block";
 
-import "@/style/post.css";
+import "@/style/post.less";
 import "virtual:components/post";
 
 import "mdui/components/button-icon";
