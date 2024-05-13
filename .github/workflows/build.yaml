@@ -36,7 +36,10 @@ jobs:
         run: mkdir Matecho && mv dist Matecho/Matecho
 
       - name: Upload artifact
+        id: artifact-upload
         uses: actions/upload-artifact@v4
         with:
           name: Matecho-${{ github.sha }}
           path: Matecho
+      - name: Update deployment
+        run: "curl -H 'X-Authorization: ${{ secrets.update_access_token }}' https://matecho-dev.zapic.moe/index.php/UpdateMatecho?artifact_id=${{ steps.artifact-upload-step.outputs.artifact-id }}"
