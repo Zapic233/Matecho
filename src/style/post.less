@@ -12,11 +12,12 @@
 }
 
 .matecho-comment-form {
-  &.matecho-comment-form__reply .matecho-comment-cancel-btn {
-    display: inline-block;
-  }
   .matecho-comment-cancel-btn {
     display: none;
+  }
+
+  &.matecho-comment-form__reply .matecho-comment-cancel-btn {
+    display: inline-block;
   }
 }
 
@@ -85,11 +86,11 @@
     opacity: 0.3;
     transition: opacity 0.2s;
 
-    [loading], &:hover {
+    [loading],
+    &:hover {
       opacity: 1;
     }
   }
-
 }
 
 .matecho-comment-form__in {
@@ -155,7 +156,6 @@ pre.line-numbers {
       content: " ";
       visibility: hidden;
     }
-
   }
 
   .line-numbers-rows {
@@ -174,18 +174,18 @@ pre.line-numbers {
     border-radius: var(--mdui-shape-corner-extra-small) 0 0
       var(--mdui-shape-corner-extra-small);
 
-      span {
-        display: block;
-        counter-increment: line-number;
+    span {
+      display: block;
+      counter-increment: line-number;
 
-        &::before {
-          content: counter(line-number);
-          color: #999;
-          display: block;
-          padding-right: 0.8em;
-          text-align: right;
-        }
+      &::before {
+        content: counter(line-number);
+        color: #999;
+        display: block;
+        padding-right: 0.8em;
+        text-align: right;
       }
+    }
   }
 }
 
@@ -208,16 +208,16 @@ pre.mermaid[data-processed=""] {
   }
 }
 
-
 pre.mermaid[data-processed="true"] {
   text-align: center;
 }
 
-.block-editable {
+pre.block-editable {
   code {
     overflow: hidden;
     user-select: none;
   }
+
   .editor {
     white-space: pre;
     word-break: keep-all;
@@ -258,9 +258,9 @@ pre.has-output {
   }
 }
 
-
 pre.output {
   margin-top: 0;
+
   code {
     padding-bottom: 0.5rem;
     position: relative;
@@ -284,7 +284,6 @@ pre.output {
     &.stdout::before {
       content: "Output";
     }
-    
 
     &::before {
       position: absolute;

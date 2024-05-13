@@ -115,6 +115,9 @@ dependencies:
   stylelint-config-standard:
     specifier: ^36.0.0
     version: 36.0.0(stylelint@16.3.1)
+  stylelint-less:
+    specifier: ^3.0.1
+    version: 3.0.1(postcss@8.4.38)(stylelint@16.3.1)
   typescript:
     specifier: ^5.4.2
     version: 5.4.2
@@ -4080,6 +4083,18 @@ packages:
     dependencies:
       stylelint: 16.3.1(typescript@5.4.2)
       stylelint-config-recommended: 14.0.0(stylelint@16.3.1)
+    dev: false
+
+  /stylelint-less@3.0.1(postcss@8.4.38)(stylelint@16.3.1):
+    resolution: {integrity: sha512-6GkZ4jhmReXxX61IiNaniZFuyTzYTTC4HvRLNNok883d1ux/wUodM1uik+iAHZM1VSCwNASaj0Th6ZX46WZLMw==}
+    peerDependencies:
+      postcss: ^8.4.31
+      stylelint: ^16.0.2
+    dependencies:
+      postcss: 8.4.38
+      postcss-resolve-nested-selector: 0.1.1
+      postcss-value-parser: 4.2.0
+      stylelint: 16.3.1(typescript@5.4.2)
     dev: false
 
   /stylelint@16.3.1(typescript@5.4.2):

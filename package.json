@@ -39,6 +39,7 @@
     "shiki": "^1.3.0",
     "stylelint": "^16.3.1",
     "stylelint-config-standard": "^36.0.0",
+    "stylelint-less": "^3.0.1",
     "typescript": "^5.4.2",
     "typescript-eslint": "^7.4.0",
     "unocss": "^0.58.6",
@@ -49,8 +50,8 @@
     "build": "vite build",
     "prepare": "husky",
     "type-check": "tsc --noEmit",
-    "lint": "eslint --max-warnings 0 . && stylelint --max-warnings 0 **/*.css",
-    "lint:fix": "eslint --max-warnings 0 --fix . && stylelint --max-warnings 0 --fix **/*.css && prettier --write -u --log-level silent ."
+    "lint": "eslint --max-warnings 0 . && stylelint --max-warnings 0 **/*.{c,le}ss",
+    "lint:fix": "eslint --max-warnings 0 --fix . && stylelint --max-warnings 0 --fix **/*.{c,le}ss && prettier --write -u --log-level silent ."
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -59,7 +60,7 @@
     "*.{json,md,yml,yaml,cjs}": [
       "prettier --ignore-unknown --write"
     ],
-    "*.css": [
+    "*.{c,le}ss": [
       "stylelint --fix --max-warnings 0",
       "prettier --ignore-unknown --write"
     ]

@@ -1,4 +1,5 @@
 module.exports = {
+  plugins: ["stylelint-less"],
   extends: ["stylelint-config-standard"],
   rules: {
     "selector-class-pattern": [
