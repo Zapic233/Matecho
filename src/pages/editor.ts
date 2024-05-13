@@ -1,4 +1,5 @@
 import { initKaTeX, initPrism, initShiki } from "./post";
+import "@/style/editor.less";
 
 function init() {
   const int = setInterval(() => {
@@ -11,12 +12,14 @@ function init() {
       if (KaTeX) void initKaTeX(preview);
       preview.querySelectorAll("pre code[class]").forEach(el => {
         el.classList.remove("focus");
-        el.parentElement?.classList.add(
-          "lang-" + el.className.split(" ").filter(v => v != "focus")[0]
-        );
-        el.classList.add(
-          "lang-" + el.className.split(" ").filter(v => v != "focus")[0]
-        );
+        let lang = el.className.split(" ").find(v => v != "focus");
+        if (!lang) return;
+        lang = lang
+          .split("-")
+          .filter(v => v != "r")
+          .join("-");
+        el.parentElement?.classList.add("lang-" + lang);
+        el.classList.add("lang-" + lang);
         el.querySelectorAll(".line[data-id]").forEach(el => el.remove());
       });
       if (Highlighter == "Prism") {
