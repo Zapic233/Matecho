@@ -145,7 +145,11 @@ function bindTextarea(
   });
   area.addEventListener("input", () => {
     const { Highlighter } = window.__MATECHO_OPTIONS__;
-    if (Highlighter === "Shiki" && shikiInst) {
+    if (
+      Highlighter === "Shiki" &&
+      shikiInst &&
+      shikiInst.getLoadedLanguages().includes(lang)
+    ) {
       codeEl.innerHTML = /<code>([\s\S]*?)<\/code>/.exec(
         shikiInst.codeToHtml(area.value, {
           lang,
