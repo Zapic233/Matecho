@@ -89,22 +89,74 @@ $this->need('header.php');
                 没有文章
             </div>
         <?php } ?>
-        <?php $TotalPage=ceil($this->getTotal()/$this->parameter->pageSize); ?>
+        <?php 
+            $CurrentPage = $this->getCurrentPage();
+            $TotalPage=ceil($this->getTotal()/$this->parameter->pageSize);
+            $PageLinkTemp = Typecho\Router::url(
+                $this->parameter->type .
+                (false === strpos($this->parameter->type, '_page') ? '_page' : null),
+                $this->pageRow,
+                $this->options->index
+            );
+        ?>
         <?php if ($TotalPage > 1){ ?>
-            <div class="flex justify-center mt-6 mb-3">
-                <mdui-segmented-button-group>
-                    <?php if ($this->_currentPage > 1) {
-                        $this->pageLink('<mdui-segmented-button><mdui-icon-arrow-back slot="icon"></mdui-icon-arrow-back>上一页</mdui-segmented-button>');
-                    } else { ?>
-                        <mdui-segmented-button disabled><mdui-icon-arrow-back slot="icon"></mdui-icon-arrow-back>上一页</mdui-segmented-button>
+            <div class="flex justify-center items-center mt-6 mb-3 line-height-0 select-none text-sm ">
+            <?php if ($CurrentPage > 1) {
+                $this->pageLink('<mdui-button-icon><mdui-icon-chevron-left></mdui-icon-chevron-left></mdui-button-icon>');
+            } else { ?>
+                <mdui-button-icon disabled><mdui-icon-chevron-left></mdui-icon-chevron-left></mdui-button-icon>
+            <?php } ?>
+            
+            <div class="px-2">
+                <?php
+                    if ($CurrentPage > 4) { ?>
+                        <a class="decoration-none!" href="<?php echo str_replace("{page}", "1", $PageLinkTemp); ?>">
+                            <mdui-button-icon class="w-8 h-8 min-w-8">
+                                <span class="text-sm">
+                                    1
+                                </span>
+                            </mdui-button-icon>
+                        </a>
+                        <mdui-button-icon class="w-8 h-8 min-w-8">
+                            <mdui-icon-more-horiz class="text-sm"></mdui-icon-more-horiz>
+                        </mdui-button-icon>
+                    <?php } 
+                    $StartPage = $CurrentPage - 2;
+                    if ($CurrentPage < 5) {
+                        $StartPage = 1;
+                    } else if ($TotalPage - $CurrentPage < 4) {
+                        $StartPage = $TotalPage - 4;
+                    }
+
+                    for ($i = $StartPage; $i < $StartPage + 5; $i++) {
+                        if ($i > $TotalPage) break; ?> 
+                        <a class="decoration-none!" href="<?php echo str_replace("{page}", (string)$i, $PageLinkTemp); ?>" >
+                            <mdui-button-icon class="w-8 h-8 min-w-8" <?php if ($i == $CurrentPage) { ?> variant="tonal" <?php } ?> >
+                                <span class="text-sm">
+                                    <?php echo $i; ?>
+                                </span>
+                            </mdui-button-icon>
+                        </a>
+                    <?php }
+                    if ($TotalPage - $CurrentPage > 3) { ?>
+                        <mdui-button-icon class="w-8 h-8 min-w-8">
+                            <mdui-icon-more-horiz class="text-sm"></mdui-icon-more-horiz>
+                        </mdui-button-icon>
+                        <a class="decoration-none!" href="<?php echo str_replace("{page}", (string)$TotalPage, $PageLinkTemp); ?>">
+                            <mdui-button-icon class="w-8 h-8 min-w-8">
+                                <span class="text-sm">
+                                    <?php echo $TotalPage; ?>
+                                </span>
+                            </mdui-button-icon>
+                        </a>
                     <?php } ?>
-                    <mdui-segmented-button><?php echo $this->_currentPage; ?> / <?php echo $TotalPage; ?></mdui-segmented-button>
-                    <?php if ($this->_currentPage < $TotalPage) {
-                        $this->pageLink('<mdui-segmented-button><mdui-icon-arrow-forward slot="end-icon"></mdui-icon-arrow-forward>下一页</mdui-segmented-button>','next');
-                    } else { ?>
-                        <mdui-segmented-button disabled><mdui-icon-arrow-forward slot="end-icon"></mdui-icon-arrow-forward>下一页</mdui-segmented-button>
-                    <?php } ?>
-                </mdui-segmented-button-group>
+            </div>
+
+            <?php if ($CurrentPage < $TotalPage) {
+                $this->pageLink('<mdui-button-icon><mdui-icon-chevron-right></mdui-icchevron-right></mdui-button-icon>','next');
+            } else { ?>
+                <mdui-button-icon disabled><mdui-icon-chevron-right></mdui-icchevron-right></mdui-button-icon>
+            <?php } ?>
             </div>
         <?php } ?>
 </div>
