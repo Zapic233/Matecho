@@ -191,6 +191,7 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
     const codeLangCls = Array.from(codeEl.classList).filter(c =>
       c.startsWith("lang-")
     )[0];
+    if (!codeLangCls) return;
     const codeLangOpt = codeLangCls.substring(5).split("-");
     const codeLang = codeLangOpt[0];
     if (codeLang) {
