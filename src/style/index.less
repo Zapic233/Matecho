@@ -1,0 +1,44 @@
+.matecho-article-card__animating {
+  position: fixed;
+  pointer-events: none;
+  transition:
+    height 0.3s,
+    width 0.3s,
+    top 0.3s,
+    left 0.2s,
+    background-color 0s 0.3s,
+    border-radius 0.3s;
+  width: 824px;
+  height: 240px;
+  top: 223px;
+  left: calc((100% - 824px) / 2);
+  background-color: transparent;
+  box-shadow: none;
+
+  & .matecho-article-card__meta {
+    animation: fade-out 0.3s forwards;
+  }
+}
+
+@media (width <= 840px) {
+  .matecho-article-card__animating {
+    width: 100%;
+    top: 198px;
+    left: 0;
+    border-radius: 0;
+  }
+}
+
+.matecho-article-animation__running .matecho-article-cover {
+  visibility: hidden;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

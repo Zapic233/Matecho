@@ -9,13 +9,13 @@ $this->need('header.php');
     <?php if (!$this->hidden) { ?>
         <div id="matecho-app-bar-large-label">
             <div class="box-border pr-2 pl-4 md:pl-0 " id="matecho-app-bar-large-label__inner">
-                <div class="text-sm mb-2 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
+                <div class="text-sm mb-2 uppercase h-5" style="color: rgb(var(--mdui-color-primary-light));">
                     <?php $this->category(" | "); ?>
                 </div>
                 <div class="truncate text-3xl md:text-5xl line-height-[1.4]!">
                     <?php $this->title(); ?>
                 </div>
-                <div class="text-sm opacity-80 block mt-3 truncate">
+                <div class="text-sm opacity-80 block mt-3 truncate h-5">
                     <?php
                     if ($this->archiveType === 'post') {
                         if (!$this->hidden && $this->fields->description) {
@@ -26,7 +26,7 @@ $this->need('header.php');
                 </div>
             </div>
         </div>
-        <div class="mb-8 md:rounded-xl transition block h-240px w-full overflow-hidden bg-center bg-cover"
+        <div class="matecho-article-cover mb-8 md:rounded-xl transition block h-240px w-full overflow-hidden bg-center bg-cover"
             style="background-image: url('<?php Matecho::cover($this); ?>')">
         </div>
         <div class="w-full px-4 box-border">

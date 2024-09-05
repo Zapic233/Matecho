@@ -45,8 +45,8 @@ $this->need('header.php');
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 grid-gap-4">
             <?php while ($this->next()){ ?>
                 <mdui-card clickable="false" class="flex flex-col matecho-article-card">
-                        <a href="<?php $this->permalink(); ?>" title="<?php $this->title(); ?>" class="h-240px rounded-xl block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
-                        <div class="pa-4 flex-grow-1">
+                        <a href="<?php $this->permalink(); ?>" title="<?php $this->title(); ?>" class="h-240px flex-shrink-0 block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
+                        <div class="matecho-article-card__meta pa-4 flex-grow-1">
                             <div class="text-sm mb-1 uppercase" style="color: rgb(var(--mdui-color-primary-light));">
                                 <?php $this->category(" | "); ?>
                             </div>
@@ -60,7 +60,7 @@ $this->need('header.php');
                                 <?php if (!$this->hidden && $this->fields->description) echo $this->fields->description; else $this->excerpt(300,'...'); ?>
                             </div>
                         </div>
-                        <div class="flex gap-2 pl-4 pr-1 mb-2 items-center">
+                        <div class="matecho-article-card__meta flex gap-2 pl-4 pr-1 mb-2 items-center">
                             <div class="flex flex-wrap flex-grow-1">
                                 <mdui-button variant="text" class="rounded matecho-info-button" disabled>
                                     <mdui-icon-calendar-month slot="icon"></mdui-icon-calendar-month>
