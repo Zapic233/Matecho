@@ -29,7 +29,6 @@ export function init() {
           });
           parent.classList.add("matecho-article-card__animating");
           document.body.appendChild(parent);
-          document.body.style.overflow = "hidden";
           Object.assign(listMain.style, {
             opacity: "0",
             pointerEvents: "none"
@@ -48,14 +47,9 @@ export function init() {
           document.addEventListener(
             "pjax:complete",
             () => {
-              document.body.style.overflow = "";
               (parent as HTMLElement).style.position = "absolute";
               const articleMain = document.querySelector("#matecho-pjax-main");
-              if (
-                !articleMain ||
-                !articleMain.parentElement ||
-                articleMain.querySelector("#matecho-password-form")
-              ) {
+              if (!articleMain || !articleMain.parentElement) {
                 parent.remove();
                 return;
               }
