@@ -27,17 +27,19 @@ export function init() {
           parent.classList.add("matecho-article-card__animating");
           document.body.appendChild(parent);
           document.body.style.overflow = "hidden";
+          Object.assign(listMain.style, {
+            opacity: "0",
+            pointerEvents: "none"
+          });
+          document.body.classList.add("matecho-article-animation__running");
           requestAnimationFrame(() => {
-            Object.assign(listMain.style, {
-              opacity: "0",
-              pointerEvents: "none"
-            });
-            document.body.classList.add("matecho-article-animation__running");
-            Object.assign((parent as HTMLElement).style, {
-              height: "",
-              width: "",
-              left: "",
-              top: ""
+            requestAnimationFrame(() => {
+              Object.assign((parent as HTMLElement).style, {
+                height: "",
+                width: "",
+                left: "",
+                top: ""
+              });
             });
           });
           document.addEventListener(
