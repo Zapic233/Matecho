@@ -128,6 +128,7 @@ function initOnce() {
       "#matecho-pjax-main",
       "#matecho-app-bar-title__inner",
       "#matecho-sidebar-list",
+      "#matecho-side-nav",
       "meta[name=matecho-template]"
     ],
     cacheBust: false,

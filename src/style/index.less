@@ -11,7 +11,7 @@
   width: 824px;
   height: 240px;
   top: 223px;
-  left: calc((100% - 824px) / 2);
+  left: calc((100% - 824px + 80px) / 2);
   background-color: transparent;
   box-shadow: none;
 
@@ -20,7 +20,14 @@
   }
 }
 
-@media (width <= 840px) {
+@media (width <= 937px) {
+  .matecho-article-card__animating {
+    width: calc(100% - 80px - 1rem);
+    left: calc(80px + 0.5rem);
+  }
+}
+
+@media (width <= 839px) {
   .matecho-article-card__animating {
     width: 100%;
     top: 198px;
