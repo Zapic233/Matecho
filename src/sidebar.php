@@ -4,7 +4,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /** @var \Widget\Archive $this */
 ?>
 
-<mdui-navigation-rail id="matecho-side-nav" class="hidden md:block fixed" contained>
+<mdui-navigation-rail id="matecho-side-nav" class="fixed" contained>
     <a href="/">
         <mdui-navigation-rail-item <?php Matecho::activePage($this, "index"); ?> >
             <mdui-icon-home slot="icon"></mdui-icon-home>
@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
         </mdui-navigation-rail-item>
     </a>
     <a>
-    <mdui-navigation-rail-item>
+    <mdui-navigation-rail-item id="matecho-side-nav__categories">
         <mdui-icon-category slot="icon"></mdui-icon-category>
         分类
     </mdui-navigation-rail-item>
@@ -33,17 +33,31 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                 </a>
 		<?php } ?>
 </mdui-navigation-rail>
-
+<mdui-list id="matecho-side-nav__categories-list" style="background-color: rgb(var(--mdui-color-background))" class="fixed left-80px h-100vh px-2 w-240px z-1000 shadow">
+    <?php 
+        $this->widget('Widget_Metas_Category_List')->to($category);
+        /** @var \Widget\Metas\Category\Rows $category */
+	    while ($category->next()) {
+            if ($category->parent != 0) continue;
+        ?>
+            <a href="<?php $category->permalink() ?>" class="decoration-none!">
+                <mdui-list-item rounded <?php Matecho::activePage($this, "category", $category->mid); ?> >
+                    <?php echo $category->name ?>
+                    <span class="text-xs opacity-60" slot="description"><?php echo $category->description ?></span>
+                </mdui-list-item>
+            </a>
+	<?php } ?>
+</mdui-list>
 <mdui-navigation-drawer close-on-overlay-click id="matecho-drawer" modal>
     <nav>
-        <mdui-list id="matecho-sidebar-list">
+        <mdui-list id="matecho-sidebar-list" class="px-2">
         <a href="/">
             <mdui-list-item rounded <?php Matecho::activePage($this, "index"); ?> >
                 <mdui-icon-home slot="icon"></mdui-icon-home>
                 首页
             </mdui-list-item>
         </a>
-        <mdui-divider></mdui-divider>
+        <mdui-divider class="my-2"></mdui-divider>
         <mdui-list-subheader>分类</mdui-list-subheader>
         <?php 
             $this->widget('Widget_Metas_Category_List')->to($category);
@@ -58,7 +72,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                     </mdui-list-item>
                 </a>
 		<?php } ?>
-        <mdui-divider></mdui-divider>
+        <mdui-divider class="my-2"></mdui-divider>
         <?php 
             $this->widget('Widget_Contents_Page_List')->to($page);
             /** @var \Widget\Contents\Page\Rows $page */
