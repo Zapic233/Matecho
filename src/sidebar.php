@@ -4,11 +4,11 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 /** @var \Widget\Archive $this */
 ?>
 
-<mdui-navigation-drawer contained class="md:w-240px fixed!" close-on-overlay-click id="matecho-drawer">
+<mdui-navigation-drawer close-on-overlay-click id="matecho-drawer" modal>
     <nav>
         <mdui-list id="matecho-sidebar-list">
         <a href="/">
-            <mdui-list-item <?php Matecho::activePage($this, "index"); ?> >
+            <mdui-list-item rounded <?php Matecho::activePage($this, "index"); ?> >
                 <mdui-icon-home slot="icon"></mdui-icon-home>
                 首页
             </mdui-list-item>
@@ -22,7 +22,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                 if ($category->parent != 0) continue;
             ?>
                 <a href="<?php $category->permalink() ?>">
-                    <mdui-list-item class="pl-42px" <?php Matecho::activePage($this, "category", $category->mid); ?> >
+                    <mdui-list-item rounded class="pl-42px" <?php Matecho::activePage($this, "category", $category->mid); ?> >
                         <?php echo $category->name ?>
                         <span class="text-xs opacity-60" slot="description"><?php echo $category->description ?></span>
                     </mdui-list-item>
@@ -35,7 +35,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		    while ($page->next()) {
         ?>
                 <a href="<?php $page->permalink() ?>">
-                    <mdui-list-item <?php Matecho::activePage($this, "page", $page->cid); ?> >
+                    <mdui-list-item rounded <?php Matecho::activePage($this, "page", $page->cid); ?> >
                         <?php 
                             $icon = Matecho::pageIcon($page);
                             echo "<mdui-icon-$icon slot=\"icon\"></mdui-icon-$icon>" ;
