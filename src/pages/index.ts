@@ -5,6 +5,9 @@ export function init() {
   document
     .querySelectorAll("mdui-card.matecho-article-card")
     .forEach(parent => {
+      if (parent.getAttribute("data-article-hidden") !== null) {
+        return;
+      }
       parent.querySelectorAll("a[href]").forEach(href => {
         href.addEventListener("click", () => {
           const pSize = parent.getBoundingClientRect();
