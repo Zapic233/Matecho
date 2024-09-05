@@ -28,6 +28,9 @@ export function init() {
             top: pSize.top + "px"
           });
           parent.classList.add("matecho-article-card__animating");
+          if (pSize.top < 220) {
+            parent.classList.add("matecho-article-card__reverse");
+          }
           document.body.appendChild(parent);
           Object.assign(listMain.style, {
             opacity: "0",

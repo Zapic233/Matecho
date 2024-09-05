@@ -2,12 +2,9 @@
   position: fixed;
   pointer-events: none;
   transition:
-    height 0.3s,
-    width 0.3s,
-    top 0.3s,
+    all 0.3s,
     left 0.2s,
-    background-color 0s 0.3s,
-    border-radius 0.3s;
+    background-color 0s 0.3s;
   width: 824px;
   height: 240px;
   top: 223px;
@@ -17,6 +14,13 @@
 
   & .matecho-article-card__meta {
     animation: fade-out 0.3s forwards;
+  }
+
+  &.matecho-article-card__reverse {
+    transition:
+      all 0.3s,
+      top 0.2s,
+      background-color 0s 0.3s;
   }
 }
 
