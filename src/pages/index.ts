@@ -9,9 +9,9 @@ export function init() {
         href.addEventListener("click", () => {
           const pSize = parent.getBoundingClientRect();
           const placeholder = document.createElement("div");
-          const main =
+          const listMain =
             document.querySelector<HTMLDivElement>("#matecho-pjax-main")!;
-          main.style.transition = ".1s";
+          listMain.style.transition = ".1s";
           Object.assign(placeholder.style, {
             display: "block",
             height: pSize.height + "px",
@@ -28,7 +28,10 @@ export function init() {
           document.body.appendChild(parent);
           document.body.style.overflow = "hidden";
           requestAnimationFrame(() => {
-            main.style.opacity = "0";
+            Object.assign(listMain.style, {
+              opacity: "0",
+              pointerEvents: "none"
+            });
             document.body.classList.add("matecho-article-animation__running");
             Object.assign((parent as HTMLElement).style, {
               height: "",
@@ -42,23 +45,23 @@ export function init() {
             () => {
               document.body.style.overflow = "";
               (parent as HTMLElement).style.position = "absolute";
-              const main = document.querySelector("#matecho-pjax-main");
+              const articleMain = document.querySelector("#matecho-pjax-main");
               if (
-                !main ||
-                !main.parentElement ||
-                main.querySelector("#matecho-password-form")
+                !articleMain ||
+                !articleMain.parentElement ||
+                articleMain.querySelector("#matecho-password-form")
               ) {
                 parent.remove();
                 return;
               }
               const ob = new MutationObserver(() => {
-                if (!main.parentElement) {
+                if (!articleMain.parentElement) {
                   ob.disconnect();
                   parent.remove();
                   return;
                 }
               });
-              ob.observe(main.parentElement, {
+              ob.observe(articleMain.parentElement, {
                 childList: true
               });
               document
