@@ -128,8 +128,6 @@ function initOnce() {
       "#matecho-pjax-main",
       "#matecho-app-bar-title__inner",
       "#matecho-sidebar-list",
-      "#matecho-side-nav",
-      "#matecho-side-nav__categories-list",
       "meta[name=matecho-template]"
     ],
     cacheBust: false,
@@ -402,52 +400,6 @@ async function initExSearch(url: string) {
 function init() {
   const header = document.getElementById("matecho-app-bar-large-label");
   header && handleLabelShrink(header);
-
-  const categoriesBtn = document.querySelector<Button>(
-    "#matecho-side-nav__categories"
-  );
-  const categoriesList = document.querySelector(
-    "#matecho-side-nav__categories-list"
-  );
-
-  if (categoriesBtn && categoriesList) {
-    let inInteractiveArea = false;
-    categoriesList.addEventListener("click", () => {
-      categoriesList.classList.remove("active");
-    });
-    categoriesList.addEventListener("mouseenter", () => {
-      inInteractiveArea = true;
-    });
-    categoriesList.addEventListener("mouseleave", () => {
-      inInteractiveArea = false;
-      setTimeout(() => {
-        if (inInteractiveArea) return;
-        categoriesList.classList.remove("active");
-      }, 150);
-    });
-    categoriesBtn.addEventListener("focus", () => {
-      inInteractiveArea = true;
-      categoriesList.classList.add("active");
-    });
-    categoriesBtn.addEventListener("blur", () => {
-      inInteractiveArea = false;
-      setTimeout(() => {
-        if (inInteractiveArea) return;
-        categoriesList.classList.remove("active");
-      }, 150);
-    });
-    categoriesBtn.addEventListener("mouseenter", () => {
-      inInteractiveArea = true;
-      categoriesList.classList.add("active");
-    });
-    categoriesBtn.addEventListener("mouseleave", () => {
-      inInteractiveArea = false;
-      setTimeout(() => {
-        if (inInteractiveArea) return;
-        categoriesList.classList.remove("active");
-      }, 150);
-    });
-  }
 }
 
 if (document.readyState !== "loading") {

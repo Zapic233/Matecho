@@ -31,7 +31,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
         </div>
 	</noscript>
     <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
-        <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn" class="md:w-56px md:mx-4px">
+        <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
             <mdui-icon-menu></mdui-icon-menu>
         </mdui-button-icon>
         <mdui-top-app-bar-title id="matecho-app-bar-title" style="display: none;">
