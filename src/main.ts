@@ -160,6 +160,10 @@ function initOnce() {
     }
   });
 
+  document.addEventListener("pjax:send", () => {
+    drawer.open = false;
+  });
+
   document.addEventListener("pjax:success", (() => {
     void init();
   }) as EventListener);

@@ -13,7 +13,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                 首页
             </mdui-list-item>
         </a>
-        <mdui-divider></mdui-divider>
+        <mdui-divider class="my-2"></mdui-divider>
         <mdui-list-subheader>分类</mdui-list-subheader>
         <?php 
             $this->widget('Widget_Metas_Category_List')->to($category);
@@ -28,7 +28,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                     </mdui-list-item>
                 </a>
 		<?php } ?>
-        <mdui-divider></mdui-divider>
+        <mdui-divider class="my-2"></mdui-divider>
         <?php 
             $this->widget('Widget_Contents_Page_List')->to($page);
             /** @var \Widget\Contents\Page\Rows $page */
