@@ -10,49 +10,66 @@ export function init() {
       }
       parent.querySelectorAll("a[href]").forEach(href => {
         href.addEventListener("click", () => {
-          const pSize = parent.getBoundingClientRect();
+          let pSize = parent.getBoundingClientRect();
           const placeholder = document.createElement("div");
-          const listMain =
-            document.querySelector<HTMLDivElement>("#matecho-pjax-main")!;
-          listMain.style.transition = ".1s";
+          const abort = new AbortController();
           Object.assign(placeholder.style, {
             display: "block",
             height: pSize.height + "px",
             width: pSize.width + "px"
           });
-          parent.after(placeholder);
-          Object.assign((parent as HTMLElement).style, {
-            height: pSize.height + "px",
-            width: pSize.width + "px",
-            left: pSize.left + "px",
-            top: pSize.top + "px"
-          });
-          parent.classList.add("matecho-article-card__animating");
-          if (pSize.top < 220) {
-            parent.classList.add("matecho-article-card__reverse");
-          }
-          document.body.appendChild(parent);
-          Object.assign(listMain.style, {
-            opacity: "0",
-            pointerEvents: "none"
-          });
-          document.body.classList.add("matecho-article-animation__running");
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              Object.assign((parent as HTMLElement).style, {
-                height: "",
-                width: "",
-                left: "",
-                top: ""
-              });
-            });
-          });
+          document.addEventListener(
+            "scroll",
+            () => {
+              pSize = parent.getBoundingClientRect();
+            },
+            {
+              signal: abort.signal
+            }
+          );
+          document.addEventListener(
+            "resize",
+            () => {
+              pSize = parent.getBoundingClientRect();
+            },
+            {
+              signal: abort.signal
+            }
+          );
           document.addEventListener(
             "pjax:complete",
             () => {
+              abort.abort();
+              parent.after(placeholder);
+              Object.assign((parent as HTMLElement).style, {
+                height: pSize.height + "px",
+                width: pSize.width + "px",
+                left: pSize.left + "px",
+                top: pSize.top + "px"
+              });
+              parent.classList.add("matecho-article-card__animating");
+              if (pSize.top < 220) {
+                parent.classList.add("matecho-article-card__reverse");
+              }
+              document.body.appendChild(parent);
+              document.body.classList.add("matecho-article-animation__running");
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                  Object.assign((parent as HTMLElement).style, {
+                    height: "",
+                    width: "",
+                    left: "",
+                    top: ""
+                  });
+                });
+              });
               (parent as HTMLElement).style.position = "absolute";
               const articleMain = document.querySelector("#matecho-pjax-main");
-              if (!articleMain || !articleMain.parentElement) {
+              if (
+                !articleMain ||
+                !articleMain.parentElement ||
+                !articleMain.querySelector(".matecho-article-cover")
+              ) {
                 parent.remove();
                 return;
               }
@@ -66,15 +83,19 @@ export function init() {
               ob.observe(articleMain.parentElement, {
                 childList: true
               });
-              document
-                .querySelector("#matecho-pjax-main")
-                ?.addEventListener("animationend", () => {
+              document.querySelector("#matecho-pjax-main")?.addEventListener(
+                "animationend",
+                () => {
                   parent.remove();
                   ob.disconnect();
                   document.body.classList.remove(
                     "matecho-article-animation__running"
                   );
-                });
+                },
+                {
+                  once: true
+                }
+              );
             },
             { once: true }
           );
