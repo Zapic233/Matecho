@@ -24,10 +24,13 @@ function themeConfig(Form $form): void {
     $form->addInput(new Radio("EnableMermaid", [1 => "自动", 0 => "禁用"], 1, "Mermaid", "渲染流程图, 将Mermaid代码包括在mermaid代码块(```mermaid```)中, 即可自动渲染."));
     $form->addInput(new Radio("ExSearchIntegration", ["enhanced" => "增强", "normal" => "普通"], "enhanced", "ExSearch即时搜索集成", "ExSearch集成模式, 在普通的状态下使用原版搜索框, 在增强状态下使用主题自带的搜索框."));
     $form->addInput(new Text("GlotAccessToken", null, "", "glot.io 访问密钥", "填入后, 可以通过调用glot.io API直接运行代码块中的代码, 详细获取方法请查看文档,"));
-    $form->addInput(new Text("BeianText", null, "", "备案信息", "显示在页脚版权信息下方"));
+    $form->addInput(new Text("BeiAnText", null, "", "备案信息", "显示在页脚版权信息下方"));
     $form->addInput(new Textarea("ExtraCode", null, "", "页脚HTML代码", "插入统计代码或者额外的插件"));
     $form->addInput(new Text("TwitterCardRef", null, "", "X(Twitter) 引用的用户名", "给站点设置twitter:site值, 在Twitter分享此站点的链接时引用到自己的Twitter账号, 例如@KawaiiZapic."));
     $form->addInput(new Radio("TwitterCardDefaultStyle", ["summary" => "小图(标题+描述)", "summary_large_image" => "大图(仅标题)"], "summary", "X(Twitter) 链接卡片样式", "设置默认twitter:card值, 在把文章链接分享到Twitter时展示成不同样式, 可为文章单独指定样式."));
+    $form->addInput(new Text("LinkBilibili", null, "", "哔哩哔哩链接", "哔哩哔哩主页链接, 显示在页脚."));
+    $form->addInput(new Text("LinkTwitter", null, "", "X(Twitter) 链接", "X(Twitter)主页链接, 显示在页脚."));
+    $form->addInput(new Text("LinkGithub", null, "", "Github 链接", "Github主页链接, 显示在页脚."));
     $form->addInput(new Hidden("ColorSchemeCSS"));
     require("settings-header.php");
 }
@@ -39,8 +42,11 @@ function themeInit(Archive $context): void {
         exit();
     }
     $options = Helper::options();
-    Matecho::$BeianText = $options->BeianText ?? "";
+    Matecho::$BeiAnText = $options->BeiAnText ?? "";
     Matecho::$ExtraCode = $options->ExtraCode ?? "";
+    Matecho::$LinkBilibili = $options->LinkBilibili ?? "";
+    Matecho::$LinkTwitter = $options->LinkTwitter ?? "";
+    Matecho::$LinkGithub = $options->LinkGithub ?? "";
     if ($options->ColorSchemeCache && $options->ColorScheme && !file_exists(__DIR__."/assets/color-scheme.css")) {
         Matecho::generateThemeCSS();
     }
@@ -61,8 +67,11 @@ function themeFields(\Typecho\Widget\Helper\Layout $layout){
 }
 
 class Matecho {
-    static string $BeianText;
+    static string $BeiAnText;
     static string $ExtraCode;
+    static string $LinkBilibili;
+    static string $LinkTwitter;
+    static string $LinkGithub;
 
     static array $LangExtMap = [
         "assembly" => "asm",
