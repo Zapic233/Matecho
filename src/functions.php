@@ -54,6 +54,10 @@ function themeInit(Archive $context): void {
     if ($options->ExSearchIntegration === "enhanced") {
         Matecho::ExSearchIntegration();
     }
+
+    Matecho::$CoverList = array_values(array_filter(scandir(__DIR__."/assets/covers"), function($c) {
+        return $c != "." && $c != "..";
+    }));
 }
 
 function themePageFields(\Typecho\Widget\Helper\Layout $layout) {
@@ -72,6 +76,7 @@ class Matecho {
     static string $LinkBilibili;
     static string $LinkTwitter;
     static string $LinkGithub;
+    static array $CoverList = [];
 
     static array $LangExtMap = [
         "assembly" => "asm",
@@ -220,10 +225,8 @@ class Matecho {
 
     static function cover(Archive $archive): void {
         if (!$archive->fields->cover) {
-            $covers = array_values(array_filter(scandir(__DIR__."/assets/covers"), function($c) {
-                return $c != "." && $c != "..";
-            }));
-            if (!$covers) return;
+            $covers = self::$CoverList;
+            if (!$covers || !count($covers)) return;
             $count = count($covers);
             self::assets("assets/covers/" . $covers[$archive->cid % $count]);
         } else {
