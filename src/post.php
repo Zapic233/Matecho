@@ -9,7 +9,7 @@ $this->need('header.php');
     <?php if (!$this->hidden) { ?>
         <div id="matecho-app-bar-large-label">
             <div class="box-border pr-2 pl-4 md:pl-0 " id="matecho-app-bar-large-label__inner">
-                <div class="text-sm mb-2 uppercase h-5 text-m-primary-light">
+                <div class="text-sm mb-2 uppercase h-5 text-m-primary">
                     <?php $this->category(" | "); ?>
                 </div>
                 <div class="truncate text-3xl md:text-5xl line-height-[1.4]!">

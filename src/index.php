@@ -47,7 +47,7 @@ $this->need('header.php');
                 <mdui-card clickable="false" class="flex flex-col matecho-article-card" <?php if($this->hidden) { ?> data-article-hidden <?php } ?> >
                         <a href="<?php $this->permalink(); ?>" title="<?php $this->title(); ?>" class="h-240px flex-shrink-0 block w-full bg-center bg-cover block" style="background-image: url('<?php Matecho::cover($this);?>')"></a>
                         <div class="matecho-article-card__meta pa-4 flex-grow-1">
-                            <div class="text-sm mb-1 uppercase text-m-primary-light">
+                            <div class="text-sm mb-1 uppercase text-m-primary">
                                 <?php $this->category(" | "); ?>
                             </div>
                             <a title="<?php $this->title(); ?>" class="text-3xl block line-height-10 matecho-article-link" href="<?php $this->permalink(); ?>">
