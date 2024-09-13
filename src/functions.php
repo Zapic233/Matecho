@@ -208,7 +208,7 @@ class Matecho {
         if ($setting->static == 'true') {
             $ExSearch = \Typecho\Common::url('ExSearch/cache/cache-'.$key.'.json', Helper::options()->pluginUrl);
         } else {
-            $ExSearch = \Typecho\Common::url('ExSearch/cache/cache-'.$key.'.json', Helper::options()->index);
+            $ExSearch = \Typecho\Common::url('/ExSearch/?action=api&key='.$key, Helper::options()->index);
         }
 
         return $ExSearch;
