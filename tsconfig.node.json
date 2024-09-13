@@ -8,5 +8,10 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "matecho.config.ts", "plugins/**/*.ts"]
+  "include": [
+    "vite.config.ts",
+    "matecho.config.ts",
+    "unocss.config.ts",
+    "plugins/**/*.ts"
+  ]
 }

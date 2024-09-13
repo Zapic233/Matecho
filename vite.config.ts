@@ -58,16 +58,6 @@ export default defineConfig(async env => {
   return {
     plugins: [
       unocss({
-        theme: {
-          breakpoints: {
-            xs: "0px",
-            sm: "600px",
-            md: "840px",
-            lg: "1080px",
-            xl: "1440px",
-            xxl: "1920px"
-          }
-        },
         transformers: isBuild && [
           UnoCSSClassMangle({
             classPrefix: "m-"
