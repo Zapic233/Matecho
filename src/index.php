@@ -109,7 +109,7 @@ $this->need('header.php');
             
             <div class="px-2">
                 <?php
-                    if ($CurrentPage > 4) { ?>
+                    if ($CurrentPage > 4 && $TotalPage > 5) { ?>
                         <a class="decoration-none!" href="<?php echo str_replace("{page}", "1", $PageLinkTemp); ?>">
                             <mdui-button-icon class="w-8 h-8 min-w-8">
                                 <span class="text-sm">
@@ -138,7 +138,7 @@ $this->need('header.php');
                             </mdui-button-icon>
                         </a>
                     <?php }
-                    if ($TotalPage - $CurrentPage > 3) { ?>
+                    if ($TotalPage - $CurrentPage > 3 && $TotalPage > 5) { ?>
                         <mdui-button-icon class="w-8 h-8 min-w-8">
                             <mdui-icon-more-horiz class="text-sm"></mdui-icon-more-horiz>
                         </mdui-button-icon>
