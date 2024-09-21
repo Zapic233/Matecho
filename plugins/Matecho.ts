@@ -207,52 +207,33 @@ export default (config?: MatechoPluginConfig): Plugin => {
           .join("\n");
       }
       if (id.endsWith("_actual_php.html")) {
-        return (
-          await readFile(id.replace("_actual_php.html", ".php"))
-        ).toString();
+        return (await readFile(id.replace("_actual_php.html", ".php")))
+          .toString()
+          .replace(/<\?(?:php|).+?(\?>|$)/gis, match => {
+            const token = "PHPCode" + hash(match) + Date.now();
+            codeTokens[token] = match;
+            return token;
+          });
       }
-    },
-    transform(code, id) {
-      if (env.command === "serve" || !id.endsWith("_actual_php.html")) return;
-      return code
-        .replaceAll("__COMMIT_ID__", config.CommitID ?? "")
-        .replace(/<\?(?:php|).+?(\?>|$)/gis, match => {
-          const token = "PHPCode" + hash(match) + Date.now();
-          codeTokens[token] = match;
-          return token;
-        });
     },
     transformIndexHtml(html, ctx) {
       let r = html;
-      r = r.replaceAll(
-        "<%= CompatibilityUserAgentRegex %>",
-        JSON.stringify(
-          getUserAgentRegex({
-            ignoreMinor: true,
-            allowHigherVersions: true
-          }).toString()
-        ).slice(1, -1)
-      );
+      r = r
+        .replaceAll(
+          "<%= CompatibilityUserAgentRegex %>",
+          JSON.stringify(
+            getUserAgentRegex({
+              ignoreMinor: true,
+              allowHigherVersions: true
+            }).toString()
+          ).slice(1, -1)
+        )
+        .replaceAll("__COMMIT_ID__", config.CommitID ?? "");
       ctx.filename = ctx.filename.replace("_actual_php.html", ".php");
       if (env.command !== "serve") {
         Object.entries(codeTokens).forEach(([token, code]) => {
           r = r.replaceAll(token, code);
         });
-        if (r.includes("<!--matecho-assets-injection-->")) {
-          const assets: string[] = [];
-          r = r.replaceAll(
-            /<script[^<>]+\/Matecho\/[^<>]+><\/script>\n?/g,
-            match => {
-              assets.push(match);
-              return "";
-            }
-          );
-          r = r.replaceAll(/<link[^<>]+\/Matecho\/[^<>]+>\n?/g, match => {
-            assets.push(match);
-            return "";
-          });
-          r = r.replace("<!--matecho-assets-injection-->", assets.join(""));
-        }
       }
       return r;
     },
