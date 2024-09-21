@@ -4,6 +4,7 @@ import { getUserAgentRegex } from "browserslist-useragent-regexp";
 import { copyFile, cp, readFile, rm, mkdir } from "node:fs/promises";
 import HttpProxy from "http-proxy";
 import { existsSync } from "node:fs";
+import type { IncomingMessage, ServerResponse } from "node:http";
 
 export interface MatechoBuildOptions {
   PrismLanguages: string[];
@@ -18,6 +19,51 @@ interface MatechoPluginConfig {
   extraIcons?: string[];
   CommitID?: string;
 }
+
+const createTransformProxy = (
+  transformer: (
+    html: string,
+    req: IncomingMessage,
+    res: ServerResponse<IncomingMessage>
+  ) => Promise<string> | string,
+  config?: HttpProxy.ServerOptions
+): HttpProxy => {
+  const proxy = HttpProxy.createProxyServer({
+    selfHandleResponse: true,
+    ...config
+  });
+  proxy.on("proxyReq", req => {
+    req.setHeader("Accept-Encoding", "");
+  });
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  proxy.on("proxyRes", async (proxyRes, req, res) => {
+    for (const k in proxyRes.headers) {
+      res.setHeader(k, proxyRes.headers[k]);
+    }
+    res.statusCode = proxyRes.statusCode;
+
+    if (!proxyRes.headers["content-type"]?.startsWith("text/html")) {
+      proxyRes.pipe(res);
+      return;
+    }
+
+    const data = await new Promise<string>(resolve => {
+      let resp = "";
+      proxyRes.setEncoding("utf-8");
+      proxyRes.on("data", (chuck: string) => {
+        resp += chuck;
+      });
+      proxyRes.on("end", () => {
+        resolve(resp);
+      });
+    });
+
+    const result = await transformer(data, req, res);
+    res.end(result);
+  });
+
+  return proxy;
+};
 
 export default (config?: MatechoPluginConfig): Plugin => {
   const codeTokens: Record<string, string> = {};
@@ -77,54 +123,42 @@ export default (config?: MatechoPluginConfig): Plugin => {
     configureServer(server) {
       return () => {
         void server.middlewares.use((req, res) => {
-          const proxy = HttpProxy.createServer({
-            target: "http://" + (server.config.server.host || "localhost"),
-            selfHandleResponse: true
-          });
-          proxy.on("proxyReq", _req => {
-            _req.setHeader("Accept-Encoding", "");
-            AutoComponents.preloaded = [];
-          });
-          // eslint-disable-next-line @typescript-eslint/no-misused-promises
-          proxy.on("proxyRes", async (_res, req, res) => {
-            if (_res.headers["content-type"].split(";")[0] == "text/html") {
-              const html = await new Promise<string>(resolve => {
-                let resp = "";
-                _res.setEncoding("utf-8");
-                _res.on("data", (chuck: string) => {
-                  resp += chuck;
-                });
-                _res.on("end", () => {
-                  resolve(resp);
-                });
-              });
-              for (const k in _res.headers) {
-                res.setHeader(k, _res.headers[k]);
-              }
-              res.statusCode = _res.statusCode;
-              if (html.toUpperCase().startsWith("<!DOCTYPE HTML>")) {
+          const proxy = createTransformProxy(
+            async (html, req) => {
+              if (
+                html
+                  .substring(0, 15)
+                  .toUpperCase()
+                  .startsWith("<!DOCTYPE HTML>")
+              ) {
                 try {
-                  const resp = await server.transformIndexHtml(req.url, html);
-                  res.end(resp);
+                  return await server.transformIndexHtml(req.url, html);
                 } catch (e) {
                   console.error(e);
                   if (e instanceof Error) {
-                    server.hot.send({
-                      type: "error",
-                      err: {
-                        message: e.message,
-                        stack: e.stack
-                      }
-                    });
+                    setTimeout(() => {
+                      server.hot.send({
+                        type: "error",
+                        err: {
+                          message: e.message,
+                          stack: e.stack
+                        }
+                      });
+                    }, 100);
                   }
-                  res.end(await server.transformIndexHtml(req.url, ""));
+                  return await server.transformIndexHtml(req.url, "");
                 }
               } else {
-                res.end(html);
+                return html;
               }
-            } else {
-              _res.pipe(res);
+            },
+            {
+              target: "http://" + (server.config.server.host || "localhost"),
+              selfHandleResponse: true
             }
+          );
+          proxy.on("proxyReq", () => {
+            AutoComponents.preloaded = [];
           });
           proxy.web(req, res);
         });
