@@ -377,7 +377,8 @@ class Matecho {
     static function activePage(Archive $archive, string $type, int $id = -1): void {
         $thisType = $archive->getArchiveType();
         if ($thisType == $type) {
-            if ($thisType === "category" && $archive->categories[0]["mid"] !== $id) return;
+            if ($thisType === "category" && $archive->getPageRow()["mid"] !== $id) return;
+            if ($thisType === "tag" && $archive->getPageRow()["mid"] !== $id) return;
             if ($thisType === "page" && $archive->cid !== $id) return;
             echo "active";
         }
