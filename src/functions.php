@@ -294,12 +294,7 @@ class Matecho {
                 "content" => $title
             ], true);
 
-            if (!$archive->fields->cover) {
-                $cover = $options->themeUrl.'/'."assets/images/" . $archive->cid % 6 .  ".png";
-            } else {
-                $cover = $archive->fields->cover;
-                
-            }
+            $cover = $archive->fields->cover ?: $options->themeUrl.'/'."assets/images/" . $archive->cid % 6 .  ".png";
             $meta .= self::toTag("meta", [
                 "property" => "og:image",
                 "content" => $cover
@@ -363,7 +358,7 @@ class Matecho {
     }
 
     static function pageIcon(\Widget\Contents\Page\Rows $archive): string {
-        if (strlen($archive->fields->CustomIcon) > 0) {
+        if ($archive->fields->CustomIcon && strlen($archive->fields->CustomIcon) > 0) {
             return $archive->fields->CustomIcon;
         }
         switch ($archive->template) {
