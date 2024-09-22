@@ -28,13 +28,15 @@ $this->need('header.php');
                 <?php
                 if ($this->archiveType === 'index') {
                     $this->options->description();
-                } else if ($this->archiveType === "category" || $this->archiveType == "tag" || $this->archiveType === "search") {
+                } else if (in_array( $this->getArchiveType(), ["category", "tag", "search"])) {
                     $description = Matecho::tpVersion("1.2.1") > 0 ? $this->archiveDescription : $this->description;
                     if ($description) {
                         echo $description;
                     } else {
                         printf("共 %d 篇文章", $this->getTotal());
                     }
+                } else if ($this->getArchiveType() === "author") {
+                    printf("共 %d 篇文章", $this->getTotal());
                 } else {
                     echo $this->archiveType;
                 }
