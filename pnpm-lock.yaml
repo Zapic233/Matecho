@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   mermaid@10.9.0:
-    hash: l3r3drqk6v4eb3fonwjwv5quum
+    hash: jeeb55hvctxeforyy4lqwpkdsi
     path: patches/mermaid@10.9.0.patch
   pjax@0.2.8:
     hash: iuixa4ml5tqviea274csqnnr7a
@@ -87,7 +87,7 @@ dependencies:
     version: 2.0.6
   mermaid:
     specifier: ^10.9.0
-    version: 10.9.0(patch_hash=l3r3drqk6v4eb3fonwjwv5quum)
+    version: 10.9.0(patch_hash=jeeb55hvctxeforyy4lqwpkdsi)
   nprogress:
     specifier: ^0.2.0
     version: 0.2.0
@@ -3230,7 +3230,7 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /mermaid@10.9.0(patch_hash=l3r3drqk6v4eb3fonwjwv5quum):
+  /mermaid@10.9.0(patch_hash=jeeb55hvctxeforyy4lqwpkdsi):
     resolution: {integrity: sha512-swZju0hFox/B/qoLKK0rOxxgh8Cf7rJSfAUc1u8fezVihYMvrJAS45GzAxTVf4Q+xn9uMgitBcmWk7nWGXOs/g==}
     dependencies:
       '@braintree/sanitize-url': 6.0.4

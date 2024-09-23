@@ -1,3 +1,33 @@
+diff --git a/dist/mermaid-c5809711.js b/dist/mermaid-c5809711.js
+index a2c099207eb80ddf8fdec6cf8cb70a13a21ee4a2..55f904e1ff1607521ab4a0f00603d02eddaf1958 100644
+--- a/dist/mermaid-c5809711.js
++++ b/dist/mermaid-c5809711.js
+@@ -12334,8 +12334,9 @@ const render$1 = async function(id2, text2, svgContainingElement) {
+   const firstChild = svg2.firstChild;
+   const diagramClassDefs = (_b = (_a = diag.renderer).getClasses) == null ? void 0 : _b.call(_a, text2, diag);
+   const rules = createUserStyles(config2, diagramType, diagramClassDefs, idSelector);
++  const rulesDark = createUserStyles({...config2, themeVariables: theme.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
+   const style1 = document.createElement("style");
+-  style1.innerHTML = rules;
++  style1.innerHTML = rules + `@media (prefers-color-scheme: dark) {${rulesDark}}`;
+   svg2.insertBefore(style1, firstChild);
+   try {
+     await diag.renderer.draw(text2, id2, version, diag);
+diff --git a/dist/mermaid-f47111a7.js b/dist/mermaid-f47111a7.js
+index 1effcbec89ecea797913e95128063612c42f62bb..930343bea2e9739bf6477e208d7f3d5ca69bbc03 100644
+--- a/dist/mermaid-f47111a7.js
++++ b/dist/mermaid-f47111a7.js
+@@ -6089,8 +6089,9 @@ const render$1 = async function(id2, text, svgContainingElement) {
+   const firstChild = svg.firstChild;
+   const diagramClassDefs = (_b = (_a = diag.renderer).getClasses) == null ? void 0 : _b.call(_a, text, diag);
+   const rules = createUserStyles(config2, diagramType, diagramClassDefs, idSelector);
++  const rulesDark = createUserStyles({...config2, themeVariables: theme.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
+   const style1 = document.createElement("style");
+-  style1.innerHTML = rules;
++  style1.innerHTML = rules + `@media (prefers-color-scheme: dark) {${rulesDark}}`;
+   svg.insertBefore(style1, firstChild);
+   try {
+     await diag.renderer.draw(text, id2, version, diag);
 diff --git a/dist/mermaid.js b/dist/mermaid.js
 index ef05f6a0f4869895ecfde055ca295b38f46fbf46..561793e757be9f0dfe90b339d01038dd77553242 100644
 --- a/dist/mermaid.js
