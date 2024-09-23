@@ -1,4 +1,4 @@
-import { initKaTeX, initPrism, initShiki } from "./post";
+import { initKaTeX, initMermaid, initPrism, initShiki } from "./post";
 import "@/style/editor.less";
 
 function init() {
@@ -6,7 +6,7 @@ function init() {
     const preview = document.querySelector<HTMLDivElement>("#wmd-preview");
     if (!preview) return;
     clearInterval(int);
-    const { KaTeX, Highlighter } = window.__MATECHO_OPTIONS__;
+    const { KaTeX, Highlighter, Mermaid } = window.__MATECHO_OPTIONS__;
     const ob = new MutationObserver(() => {
       if (window.getComputedStyle(preview).display === "none") return;
       if (KaTeX) void initKaTeX(preview);
@@ -22,6 +22,7 @@ function init() {
         el.classList.add("lang-" + lang);
         el.querySelectorAll(".line[data-id]").forEach(el => el.remove());
       });
+      if (Mermaid) void initMermaid(preview);
       if (Highlighter == "Prism") {
         void initPrism(preview);
       } else if (Highlighter == "Shiki") {
