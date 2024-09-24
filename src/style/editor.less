@@ -3,5 +3,11 @@
 }
 
 #wmd-preview pre.mermaid {
-  background: transparent;
+  &:first-child {
+    margin-top: 0.5rem;
+  }
+
+  &[data-processed="true"] {
+    background: transparent;
+  }
 }
