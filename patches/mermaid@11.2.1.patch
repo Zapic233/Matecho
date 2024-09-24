@@ -6,7 +6,7 @@ index 13603a2204ed75e59cdd3b59f1dad2a50a0ca1d3..946475ca2dc3522e669f56752b3e5cc1
    const firstChild = svg.firstChild;
    const diagramClassDefs = diag.renderer.getClasses?.(text, diag);
    const rules = createUserStyles(config, diagramType, diagramClassDefs, idSelector);
-+  const rulesDark = createUserStyles({...config2, themeVariables: theme.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
++  const rulesDark = createUserStyles({...config, themeVariables: themes_default.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
    const style1 = document.createElement("style");
 -  style1.innerHTML = rules;
 +  style1.innerHTML = rules + `@media (prefers-color-scheme: dark) {${rulesDark}}`;
@@ -21,7 +21,7 @@ index 2f09b512ef847144a4bcff16ab39853061f45eb4..bee36b4162e605eaa6a45f7506a40286
    const firstChild = svg.firstChild;
    const diagramClassDefs = diag.renderer.getClasses?.(text, diag);
    const rules = createUserStyles(config, diagramType, diagramClassDefs, idSelector);
-+  const rulesDark = createUserStyles({...config2, themeVariables: theme.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
++  const rulesDark = createUserStyles({...config, themeVariables: themes_default.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
    const style1 = document.createElement("style");
 -  style1.innerHTML = rules;
 +  style1.innerHTML = rules + `@media (prefers-color-scheme: dark) {${rulesDark}}`;
@@ -36,7 +36,7 @@ index 36adb8de5ea722a4c23798b47045faf08a8c7e4f..7f06dd6cfc71bb0b0cb8ac2c62fcc485
      const firstChild = svg.firstChild;
      const diagramClassDefs = diag.renderer.getClasses?.(text2, diag);
      const rules = createUserStyles(config6, diagramType, diagramClassDefs, idSelector);
-+    const rulesDark = createUserStyles({...config2, themeVariables: theme.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
++    const rulesDark = createUserStyles({...config6, themeVariables: themes_default.dark.getThemeVariables({})}, diagramType, diagramClassDefs, idSelector);
      const style1 = document.createElement("style");
 -    style1.innerHTML = rules;
 +    style1.innerHTML = rules + `@media (prefers-color-scheme: dark) {${rulesDark}}`;

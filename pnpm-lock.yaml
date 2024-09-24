@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   mermaid@11.2.1:
-    hash: bay2jxhes346iob5ldnhs6vake
+    hash: vdulhcxkb3gpkhbe4nemq6rkru
     path: patches/mermaid@11.2.1.patch
   pjax@0.2.8:
     hash: iuixa4ml5tqviea274csqnnr7a
@@ -90,7 +90,7 @@ importers:
         version: 2.1.2
       mermaid:
         specifier: ^11.2.1
-        version: 11.2.1(patch_hash=bay2jxhes346iob5ldnhs6vake)
+        version: 11.2.1(patch_hash=vdulhcxkb3gpkhbe4nemq6rkru)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -4793,7 +4793,7 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@11.2.1(patch_hash=bay2jxhes346iob5ldnhs6vake):
+  mermaid@11.2.1(patch_hash=vdulhcxkb3gpkhbe4nemq6rkru):
     dependencies:
       '@braintree/sanitize-url': 7.1.0
       '@iconify/utils': 2.1.33
