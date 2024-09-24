@@ -6,6 +6,7 @@
   "dependencies": {
     "@fancyapps/ui": "^5.0.36",
     "@mdui/icons": "^1.0.2",
+    "@mermaid-js/mermaid-zenuml": "^0.2.0",
     "@types/http-proxy": "^1.17.15",
     "@types/jquery": "^3.5.30",
     "@types/katex": "^0.16.7",

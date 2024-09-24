@@ -55,7 +55,13 @@ export async function initMermaid(container: HTMLElement) {
     parent.innerHTML = node.innerHTML || "";
     return parent;
   });
-  const { default: mermaid } = await import("mermaid");
+  const [{ default: mermaid }, { default: ZenUML }] = await Promise.all([
+    import("mermaid"),
+    import("@mermaid-js/mermaid-zenuml")
+  ]);
+  await mermaid.registerExternalDiagrams([ZenUML], {
+    lazyLoad: true
+  });
   mermaid.initialize({
     startOnLoad: false
   });
