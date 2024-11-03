@@ -313,7 +313,12 @@ async function initExSearch(url: string) {
     "#matecho-top-search-bar"
   );
   if (!searchbar) return;
-  const data = (await (await fetch(url)).json()) as IExSearchData;
+  let data: IExSearchData;
+  try {
+    data = (await (await fetch(url)).json()) as IExSearchData;
+  } catch (_) {
+    return;
+  }
   const dropdown = new Dropdown();
   dropdown.trigger = "manual";
   dropdown.placement = "bottom-start";
