@@ -32,10 +32,12 @@ $linksCount = count($links);
     </div>
     <div class="grid grid-gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         <?php foreach ($links as $link) { ?>
-            <a href="<?php echo $link["url"] ?>" title="<?php echo $link["name"] ?>">
-                <mdui-card clickable class="w-full h-full pa-4 px-2">
+            <a href="<?php echo $link["url"] ?>" title="<?php echo $link["name"] ?>" target="_blank">
+                <mdui-card clickable class="w-full h-full pa-4 px-2 dark:bg-m-surface-container">
                     <div class="flex items-center">
-                        <mdui-avatar class="mr-2 flex-shrink-0" src="<?php echo $link["image"] ?>"></mdui-avatar>
+                        <mdui-avatar class="mr-2 flex-shrink-0">
+                            <img class="w-full h-full object-contain matecho-link-avatar" src="<?php echo $link["image"] ?>" name="<?php echo $link["name"] ?>">
+                        </mdui-avatar>
                         <span class="text-xl truncate"><?php echo $link["name"] ?></span>
                     </div>
                     <div class="opacity-80 pl-48px text-xs"><?php echo $link["description"] ?></div>

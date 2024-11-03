@@ -38,6 +38,8 @@ function loadPageScript(type: string): Promise<IInit> {
     case "post":
     case "page":
       return import("@/pages/post");
+    case "page-links":
+      return import("@/pages/links");
     default:
       return import("@/pages/index");
   }

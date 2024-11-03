@@ -1,6 +1,11 @@
-import { defineConfig } from "unocss";
+import { defineConfig, presetUno } from "unocss";
 
 export default defineConfig({
+  presets: [
+    presetUno({
+      dark: "media"
+    })
+  ],
   theme: {
     breakpoints: {
       xs: "0px",
@@ -16,6 +21,12 @@ export default defineConfig({
       /^text-m-(.*)$/,
       ([, c]) => {
         return { color: `rgb(var(--mdui-color-${c}))` };
+      }
+    ],
+    [
+      /^bg-m-(.*)$/,
+      ([, c]) => {
+        return { "background-color": `rgb(var(--mdui-color-${c}))` };
       }
     ]
   ]
