@@ -41,7 +41,11 @@ function loadPageScript(type: string): Promise<IInit> {
     case "page-links":
       return import("@/pages/links");
     default:
-      return import("@/pages/index");
+      if (type.startsWith("page-")) {
+        return import("@/pages/post");
+      } else {
+        return import("@/pages/index");
+      }
   }
 }
 
