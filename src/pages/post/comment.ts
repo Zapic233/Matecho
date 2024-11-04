@@ -1,5 +1,6 @@
 import type { TextField, Button } from "mdui";
 import { openSnackbar } from "@/utils/global";
+import { sendComment } from "@/main";
 
 function cloneCommentForm() {
   const node = document
@@ -55,16 +56,8 @@ function initCommentForm(formWrapper: HTMLDivElement) {
     data.set("receiveMail", "yes");
     formWrapper.classList.add("matecho-form__loading");
     try {
-      const req = await fetch(form.action, {
-        body: data,
-        method: "POST",
-        credentials: "same-origin"
-      });
-      const resp = await req.text();
-      const root = Object.assign(document.createElement("html"), {
-        innerHTML: resp
-      }) as HTMLHtmlElement;
-      if (req.status === 200) {
+      const { success, error, root } = await sendComment(form.action, data);
+      if (success) {
         if (!commentList) return location.reload();
         root
           .querySelectorAll("#matecho-comment-list .matecho-comment-wrapper")
@@ -105,9 +98,7 @@ function initCommentForm(formWrapper: HTMLDivElement) {
         }
         commentList.querySelector("#matecho-no-comment-placeholder")?.remove();
       } else {
-        const errMsg = (root.querySelector(".container") as HTMLDivElement)
-          ?.innerText;
-        openSnackbar(errMsg || "无法发送评论, 请检查网络连接.");
+        openSnackbar(error || "无法发送评论, 请检查网络连接.");
       }
     } catch (e) {
       openSnackbar("无法发送评论, 请检查网络连接.");

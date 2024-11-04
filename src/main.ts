@@ -149,13 +149,17 @@ function initOnce() {
         const type = await signal.promise;
         const scripts = await loadPageScript(type);
         oldEl.replaceWith(el);
-        const wrapper = document.querySelector("#matecho-pjax-main");
-        if (wrapper) {
+        const wrapper =
+          document.querySelector<HTMLDivElement>("#matecho-pjax-main");
+        const main = document.querySelector<HTMLDivElement>("#matecho-main");
+        if (wrapper && main) {
           const className = PjaxBackward ? "slide-out" : "slide-in";
+          main.style.overflow = "hidden";
           wrapper.addEventListener(
             "animationend",
             () => {
               wrapper.classList.remove(className);
+              main.style.overflow = "";
             },
             { once: true }
           );
@@ -416,6 +420,45 @@ async function initExSearch(url: string) {
 function init() {
   const header = document.getElementById("matecho-app-bar-large-label");
   header && handleLabelShrink(header);
+}
+
+interface CommentResult {
+  root: HTMLHtmlElement;
+  success: boolean;
+  error: string;
+}
+export async function sendComment(
+  url: string,
+  data: FormData
+): Promise<CommentResult> {
+  const token = window.__MATECHO_ANTI_SPAM__;
+  if (typeof token === "string") {
+    data.set("_", token);
+  }
+  data.set("receiveMail", "yes");
+  const req = await fetch(url, {
+    body: data,
+    method: "POST",
+    credentials: "same-origin"
+  });
+
+  const resp = await req.text();
+  const root = Object.assign(document.createElement("html"), {
+    innerHTML: resp
+  }) as HTMLHtmlElement;
+  if (req.status === 200) {
+    return {
+      root,
+      success: true,
+      error: ""
+    };
+  } else {
+    return {
+      root,
+      success: false,
+      error: (root.querySelector(".container") as HTMLDivElement)?.innerText
+    };
+  }
 }
 
 if (document.readyState !== "loading") {
