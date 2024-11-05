@@ -78,7 +78,7 @@ $this->need('header.php');
                         }
                     ?>
                 </div>
-                <?php if ($this->commentsNum === 0) { ?>
+                <?php if ($comments->___length() === 0) { ?>
                     <div class="my-12 text-md text-center opacity-50" id="matecho-no-comment-placeholder">没有评论</div>
                 <?php } ?>
                 <div class="py-4 matecho-comment-form matecho-comment-form__main w-full box-border relative <?php echo $this->allowComment ? "" : "matecho-comment-form__lock"; ?>"
