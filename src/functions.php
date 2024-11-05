@@ -18,6 +18,12 @@ function themeConfig(Form $form): void {
             <a href="/admin/options-reading.php">修改设置</a>
         </div>
     <?php }
+    if ($options->commentsPageBreak) { ?>
+        <div>
+            <b>警告:</b> 已启用评论分页, 主题不支持该功能, 会导致评论缺失. 
+            <a href="/admin/options-discussion.php">修改设置</a>
+        </div>
+    <?php }
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
     if (!is_writable(__DIR__."/assets/color-scheme.css")) {
@@ -227,7 +233,9 @@ class Matecho {
     }
 
     static function Gravatar(string $mail,int $size = 40): void {
-        echo Helper::options()->GravatarURL.md5(strtolower($mail)).'?s='.$size.'&d=mp';
+        $options = Helper::options();
+        $rating = $options->commentsAvatarRating;
+        echo $options->GravatarURL . md5(strtolower($mail)).'?s='.$size.'&d=mp&r=' . $rating;
     }
 
     static function cover(Archive $archive): void {
@@ -388,11 +396,12 @@ class Matecho {
 
     static function toComment(\Widget\Comments\Archive &$comments, bool $allowComment): void {   
         $isTopLevel = $comments->levels === 0;
-        if ($isTopLevel) {
+        $options = Helper::options();
+        if ($isTopLevel || !$options->commentsThreaded) {
     ?>
         <div class="w-full box-border matecho-comment-wrapper matecho-comment-parent" id="comment-<?php echo $comments->coid ?>">
             <div class="flex items-center">
-                <mdui-avatar class="matecho-comment-avatar"><?php $comments->gravatar(40) ?></mdui-avatar>
+                <mdui-avatar class="matecho-comment-avatar" src="<?php self::Gravatar($comments->mail, 40) ?>"></mdui-avatar>
                 <div class="ml-4 matecho-comment-author">
                     <?php $comments->author(); ?>
                 </div>
@@ -400,24 +409,24 @@ class Matecho {
             </div>
             <div class="pl-56px">
                 <div class="mdui-prose mb-2">
+                    <?php if($comments->levels > 0) { ?>
+                        <a class="text-sm" href="#comment-<?php echo $comments->parent; ?>">回复 #<?php echo $comments->parent; ?>:</a>
+                    <?php } ?>
                     <?php $comments->content(); ?>
                 </div>
                 <div class="flex items-center">
-                    
-                <div class="opacity-60 text-sm">
-                    <?php $comments->date(); ?>
-                    <?php if ($comments->status === "waiting") { ?>
-                        <span class="ml-2 text-sm">等待审核</span>
+                    <div class="opacity-60 text-sm">
+                        <?php $comments->date(); ?>
+                        <?php if ($comments->status === "waiting") { ?>
+                            <span class="ml-2 text-sm">等待审核</span>
+                        <?php } ?>
+                    </div>
+                    <?php if ($options->commentsThreaded) { ?>
+                        <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0" <?php if(!$allowComment) {echo "disabled"; } ?>>
+                            回复
+                        </mdui-button>
                     <?php } ?>
                 </div>
-                
-                <mdui-button class="matecho-comment-reply h-6 min-w-0 w-3rem ml-2 inline-block" data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0" <?php if(!$allowComment) {echo "disabled"; } ?>>
-                    回复
-                </mdui-button>
-                </div>
-            </div>
-            <div>
-                
             </div>
             <?php if (count($comments->children) > 0) { ?>
                 <div class="w-full pl-56px box-border mt-4 matecho-comment-children-list">
@@ -439,14 +448,14 @@ class Matecho {
     <?php } else {?>
         <div class="w-full box-border matecho-comment-wrapper matecho-comment-child" id="comment-<?php echo $comments->coid ?>">
             <div class="flex items-center">
-                <mdui-avatar class="matecho-comment-avatar w-28px h-28px flex-shrink-0"><?php $comments->gravatar(28) ?></mdui-avatar>
+                <mdui-avatar class="matecho-comment-avatar w-28px h-28px flex-shrink-0" src="<?php self::Gravatar($comments->mail, 28) ?>"></mdui-avatar>
                 <div class="ml-2 matecho-comment-author">
                     <?php $comments->author(); ?>
                 </div>
                 <span class="flex-grow text-right text-sm opacity-60">#<?php echo $comments->coid; ?></span>
             </div>
             <div class="pl-35px">
-                <div class="mdui-prose mb-2">
+                <div class="mdui-prose">
                     <?php if($comments->levels > 1) { ?>
                         <a class="text-sm" href="#comment-<?php echo $comments->parent; ?>">回复 #<?php echo $comments->parent; ?>:</a>
                     <?php } ?>

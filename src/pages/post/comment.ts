@@ -48,17 +48,14 @@ function initCommentForm(formWrapper: HTMLDivElement) {
     const commentList = document.querySelector(
       "#matecho-comment-list"
     ) as HTMLDivElement;
-    const token = window.__MATECHO_ANTI_SPAM__;
-    if (!token) return;
     if (!form.reportValidity()) return;
     const data = new FormData(form);
-    data.set("_", token);
-    data.set("receiveMail", "yes");
     formWrapper.classList.add("matecho-form__loading");
     try {
       const { success, error, root } = await sendComment(form.action, data);
       if (success) {
         if (!commentList) return location.reload();
+        document.querySelector("#matecho-no-comment-placeholder")?.remove();
         root
           .querySelectorAll("#matecho-comment-list .matecho-comment-wrapper")
           .forEach(v => {

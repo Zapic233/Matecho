@@ -102,7 +102,7 @@ $this->need('header.php');
             );
         ?>
         <?php if ($TotalPage > 1){ ?>
-            <div class="flex justify-center items-center mt-6 mb-3 line-height-0 select-none text-sm ">
+            <div class="flex justify-center items-center mt-6 mb-3 line-height-0 select-none text-sm">
             <?php if ($CurrentPage > 1) {
                 $this->pageLink('<mdui-button-icon><mdui-icon-chevron-left></mdui-icon-chevron-left></mdui-button-icon>');
             } else { ?>
