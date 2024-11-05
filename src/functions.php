@@ -11,6 +11,13 @@ use Widget\Archive;
 
 function themeConfig(Form $form): void {
     Matecho::generateThemeCSS();
+    $options = Helper::options();
+    if ($options->pageSize % 12 != 0) { ?>
+        <div>
+            <b>警告:</b> "每页文章数目"不为12的整倍数, 可能会导致在不同大小屏幕下文章列表底部大面积留白. 
+            <a href="/admin/options-reading.php">修改设置</a>
+        </div>
+    <?php }
     $form->addInput(new Text("ColorScheme", null, "", "主题色", "十六进制的主题色, 如#E91E63."));
     $form->addInput(new Text("GravatarURL", null, "https://gravatar.loli.net/avatar/", "Gravatar镜像", ""));
     if (!is_writable(__DIR__."/assets/color-scheme.css")) {
