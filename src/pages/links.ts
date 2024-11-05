@@ -163,12 +163,16 @@ const replyApplication = (id: string) => {
 const handleReplyApplication = () => {
   const dialog = document.querySelector<Dialog>("#matecho-links-reply-dialog");
   if (!dialog) return;
+  const form = document.querySelector<HTMLFormElement>(
+    "#matecho-link-reply-form"
+  );
   const replyBtn = document.querySelectorAll<Button>(
     ".matecho-links-application__reply"
   );
   replyBtn.forEach(el => {
     el.addEventListener("click", () => {
       replyApplication(el.getAttribute("data-to-comment") || "");
+      form?.reset();
     });
   });
   const cancel = document.querySelector<Button>("#matecho-links-reply-cancel");
@@ -179,9 +183,6 @@ const handleReplyApplication = () => {
   });
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   submit.addEventListener("click", async () => {
-    const form = document.querySelector<HTMLFormElement>(
-      "#matecho-link-reply-form"
-    );
     if (!form) return;
     const data = new FormData(form);
     data.set("parent", currentReplyId);
@@ -190,6 +191,7 @@ const handleReplyApplication = () => {
       const { success, error } = await sendComment(form.action, data);
       if (success) {
         dialog.open = false;
+        document.querySelector("#comment-" + currentReplyId)?.remove();
         openSnackbar("回复成功.");
       } else {
         openSnackbar(error || "无法发送回复, 请检查网络连接.");

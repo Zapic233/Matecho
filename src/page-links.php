@@ -54,6 +54,10 @@ $linksCount = count($links);
     <div class="max-w-768px mx-auto">
         <?php if ($this->authorId == $this->user->uid) { ?>
             <div class="text-2xl mt-12 mb-4">友链申请</div>
+            
+            <div class="h-120px items-center justify-center hidden matecho-link-apply__empty">
+                <span class="opacity-60">没有待处理的申请</span>
+            </div>
             <?php $comments = $this->comments();
             $count = 0;
             while ($comments->next()) {
@@ -62,42 +66,38 @@ $linksCount = count($links);
                 }
                 $count++;
                 ?>
-                <div class="matecho-links-application w-full">
-                    <div class="">
-                        <div class="flex items-center gap-4">
-                            <mdui-avatar aria-label="<?php $this->author() ?>"
-                                src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
-                            <span><?php $this->author(); ?></span>
+                <div class="matecho-links-application w-full" id="comment-<?php echo $comments->coid ?>">
+                    <div class="flex items-center gap-4">
+                        <mdui-avatar aria-label="<?php $this->author() ?>"
+                            src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
+                        <span><?php $this->author(); ?></span>
+                    </div>
+                    <div class="pl-56px">
+                        <div class="mt-2">
+                            网站名称: <?php echo $comments->author ?><br>
+                            网址: <a href="<?php echo $comments->url; ?>" target="_blank"><?php echo $comments->url; ?></a>
+                            <?php echo $comments->content ?>
                         </div>
-                        <div class="pl-56px">
-                            <div class="mt-2">
-                                网站名称: <?php echo $comments->author ?><br>
-                                网址: <a href="<?php echo $comments->url; ?>" target="_blank"><?php echo $comments->url; ?></a>
-                                <?php echo $comments->content ?>
-                            </div>
-                            <div class="mt-2 flex items-center">
-                                <span class="opacity-80 text-sm"><?php $comments->date(); ?></span>
-                                <mdui-button class="h-6 min-w-0 w-3rem ml-2 inline-block matecho-links-application__reply"
-                                    data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
-                                    回复
-                                </mdui-button>
-                            </div>
-                            <mdui-divider class="mt-2"></mdui-divider>
+                        <div class="mt-2 flex items-center">
+                            <span class="opacity-80 text-sm"><?php $comments->date(); ?></span>
+                            <mdui-button class="h-6 min-w-0 w-3rem ml-2 inline-block matecho-links-application__reply"
+                                data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                                回复
+                            </mdui-button>
                         </div>
+                        <mdui-divider class="mt-2"></mdui-divider>
                     </div>
                 </div>
                 <?php
             }
             if ($count === 0) { ?>
-                <div class="h-120px flex items-center justify-center">
-                    <span class="opacity-60">没有待处理的申请</span>
-                </div>
             <?php }
         } ?>
     </div>
     <mdui-dialog id="matecho-links-reply-dialog" close-on-esc close-on-overlay-click headline="回复申请">
         <div slot="description" class="w-95vw max-w-540px my-2 px-1">
-            <form id="matecho-link-reply-form" method="post" action="<?php $this->commentUrl() ?>" role="form" data-pjax-state>
+            <form id="matecho-link-reply-form" method="post" action="<?php $this->commentUrl() ?>" role="form"
+                data-pjax-state>
                 <mdui-text-field variant="outlined" label="回复" rows="3" name="text" required></mdui-text-field>
             </form>
         </div>
