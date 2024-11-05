@@ -187,6 +187,15 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
     const wrapper = Object.assign(document.createElement("div"), {
       className: "matecho-code-action-wrapper"
     } as Partial<HTMLDivElement>);
+
+    const copyBtn = document.createElement("mdui-button-icon");
+    copyBtn.addEventListener("click", () => {
+      ClipboardJS.copy(codeEl.innerText);
+      openSnackbar("已复制到剪切板");
+    });
+    copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
+    wrapper.appendChild(copyBtn);
+
     // ! the languages class name render by Typecho is lang-xxx, but it will be changed to language-xxx after Prism highlighted it.
     const codeLangCls = Array.from(codeEl.classList).filter(c =>
       c.startsWith("lang-")
@@ -261,14 +270,6 @@ export function initCodeBlockAction(wrapper: HTMLElement) {
       codeEl.before(editor);
       wrapper.appendChild(runBtn);
     }
-
-    const copyBtn = document.createElement("mdui-button-icon");
-    copyBtn.addEventListener("click", () => {
-      ClipboardJS.copy(codeEl.innerText);
-      openSnackbar("已复制到剪切板");
-    });
-    copyBtn.appendChild(document.createElement("mdui-icon-copy-all"));
-    wrapper.appendChild(copyBtn);
 
     el.appendChild(wrapper);
 

@@ -74,21 +74,19 @@
   align-items: center;
   user-select: none;
   gap: 0.25rem;
-  opacity: 0;
   transition: 0.2s;
 
-  .code-running &,
-  pre:hover & {
-    opacity: 1;
-  }
-
   mdui-button-icon {
-    opacity: 0.3;
+    opacity: 0;
     transition: opacity 0.2s;
 
-    [loading],
+    &[loading],
     &:hover {
-      opacity: 1;
+      opacity: 1 !important;
+    }
+
+    pre:hover & {
+      opacity: 0.3;
     }
   }
 }
