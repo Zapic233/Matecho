@@ -16,6 +16,8 @@ export default defineConfig(async env => {
   try {
     MatechoConfig = {
       ...MatechoConfig,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore dynamic imported module
       ...(await import("./matecho.config")).default
     };
   } catch (_) {
