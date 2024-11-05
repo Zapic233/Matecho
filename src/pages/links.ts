@@ -135,7 +135,7 @@ const handleLinkApplication = () => {
         } else {
           openSnackbar(error || "无法发送申请, 请检查网络连接.");
         }
-      } catch (e) {
+      } catch (_) {
         openSnackbar("无法发送申请, 请检查网络连接.");
       } finally {
         submitBtn.loading = false;
@@ -196,7 +196,7 @@ const handleReplyApplication = () => {
       } else {
         openSnackbar(error || "无法发送回复, 请检查网络连接.");
       }
-    } catch (e) {
+    } catch (_) {
       openSnackbar("无法发送申请, 请检查网络连接.");
     } finally {
       submit.loading = false;

@@ -419,7 +419,9 @@ async function initExSearch(url: string) {
 
 function init() {
   const header = document.getElementById("matecho-app-bar-large-label");
-  header && handleLabelShrink(header);
+  if (header) {
+    handleLabelShrink(header);
+  }
 }
 
 interface CommentResult {

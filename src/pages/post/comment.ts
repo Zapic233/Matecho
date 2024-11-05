@@ -97,7 +97,7 @@ function initCommentForm(formWrapper: HTMLDivElement) {
       } else {
         openSnackbar(error || "无法发送评论, 请检查网络连接.");
       }
-    } catch (e) {
+    } catch (_) {
       openSnackbar("无法发送评论, 请检查网络连接.");
     } finally {
       formWrapper.classList.remove("matecho-form__loading");

@@ -14,12 +14,8 @@ export default defineConfig(async env => {
     ExtraMaterialIcons: []
   };
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     MatechoConfig = {
       ...MatechoConfig,
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       ...(await import("./matecho.config")).default
     };
   } catch (_) {

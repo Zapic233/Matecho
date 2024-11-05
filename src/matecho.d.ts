@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/triple-slash-reference */
 /// <reference types="jquery" />
 /// <reference types="prismjs" />
 

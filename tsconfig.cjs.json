@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "composite": true,
-    "module": "ESNext",
+    "module": "NodeNext",
     "target": "ESNext",
     "lib": ["ESNext"],
     "moduleResolution": "node",
@@ -10,11 +10,5 @@
     "allowJs": true,
     "checkJs": false
   },
-  "include": [
-    "vite.config.ts",
-    "matecho.config.ts",
-    "unocss.config.ts",
-    "plugins/**/*.ts",
-    "eslint.config.js"
-  ]
+  "include": [".stylelintrc.cjs", "postcss.config.cjs"]
 }
