@@ -13,7 +13,7 @@ $this->need('header.php');
 $links = Matecho::links();
 $linksCount = count($links);
 ?>
-<div class="mx-auto px-4 md:px-8 box-border w-full max-w-1440px">
+<div class="mx-auto px-5 md:px-8 box-border w-full max-w-1440px">
     <div id="matecho-app-bar-large-label">
         <div class="flex flex-col" id="matecho-app-bar-large-label__inner">
             <div class="truncate text-3xl md:text-5xl line-height-[1.4]!">
@@ -51,47 +51,41 @@ $linksCount = count($links);
             </a>
         <?php } ?>
     </div>
+</div>
+<?php if ($this->authorId == $this->user->uid) { ?>
     <div class="max-w-768px mx-auto">
-        <?php if ($this->authorId == $this->user->uid) { ?>
-            <div class="text-2xl mt-12 mb-4">友链申请</div>
-            
-            <div class="h-120px items-center justify-center hidden matecho-link-apply__empty">
-                <span class="opacity-60">没有待处理的申请</span>
-            </div>
-            <?php $comments = $this->comments();
-            $count = 0;
-            while ($comments->next()) {
-                if (count($comments->children) > 0) {
-                    continue;
-                }
-                $count++;
-                ?>
-                <div class="matecho-links-application w-full" id="comment-<?php echo $comments->coid ?>">
-                    <div class="flex items-center gap-4">
-                        <mdui-avatar aria-label="<?php $this->author() ?>"
-                            src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
-                        <span><?php $this->author(); ?></span>
-                    </div>
-                    <div class="pl-56px">
-                        <div class="mt-2">
-                            网站名称: <?php echo $comments->author ?><br>
-                            网址: <a href="<?php echo $comments->url; ?>" target="_blank"><?php echo $comments->url; ?></a>
-                            <?php echo $comments->content ?>
-                        </div>
-                        <div class="mt-2 flex items-center">
-                            <span class="opacity-80 text-sm"><?php $comments->date(); ?></span>
-                            <mdui-button class="h-6 min-w-0 w-3rem ml-2 inline-block matecho-links-application__reply"
-                                data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
-                                回复
-                            </mdui-button>
-                        </div>
-                        <mdui-divider class="mt-2"></mdui-divider>
-                    </div>
+        <div class="text-2xl mt-12 mb-4">友链申请</div>
+        <div class="h-120px items-center justify-center hidden matecho-link-apply__empty">
+            <span class="opacity-60">没有待处理的申请</span>
+        </div>
+        <?php $comments = $this->comments();
+        while ($comments->next()) {
+            if (count($comments->children) > 0) {
+                continue;
+            } ?>
+            <div class="matecho-links-application w-full" id="comment-<?php echo $comments->coid ?>">
+                <div class="flex items-center gap-4">
+                    <mdui-avatar aria-label="<?php $this->author() ?>"
+                        src="<?php Matecho::Gravatar($this->author->mail); ?>"></mdui-avatar>
+                    <span><?php $this->author(); ?></span>
                 </div>
-                <?php
-            }
-            if ($count === 0) { ?>
-            <?php }
+                <div class="pl-56px">
+                    <div class="mt-2">
+                        网站名称: <?php echo $comments->author ?><br>
+                        网址: <a href="<?php echo $comments->url; ?>" target="_blank"><?php echo $comments->url; ?></a>
+                        <?php echo $comments->content ?>
+                    </div>
+                    <div class="mt-2 flex items-center">
+                        <span class="opacity-80 text-sm"><?php $comments->date(); ?></span>
+                        <mdui-button class="h-6 min-w-0 w-3rem ml-2 inline-block matecho-links-application__reply"
+                            data-to-comment="<?php echo $comments->coid ?>" variant="text" class="h-8 min-w-0">
+                            回复
+                        </mdui-button>
+                    </div>
+                    <mdui-divider class="mt-2"></mdui-divider>
+                </div>
+            </div>
+            <?php
         } ?>
     </div>
     <mdui-dialog id="matecho-links-reply-dialog" close-on-esc close-on-overlay-click headline="回复申请">
@@ -106,9 +100,9 @@ $linksCount = count($links);
             <mdui-button variant="tonal" id="matecho-links-reply-submit">回复</mdui-button>
         </div>
     </mdui-dialog>
-</div>
+<?php } ?>
 <?php if ($this->allowComment) { ?>
-    <div id="matecho-links-add__wrapper" class="sticky bottom-2 pr-2 md:pr-6 mt--48px text-right z-2 pointer-events-none">
+    <div id="matecho-links-add__wrapper" class="sticky bottom-2 pr-4 md:pr-6 mt--48px mb--12px text-right z-2 pointer-events-none">
         <mdui-fab class="pointer-events-auto">
             <mdui-icon-person-add-alt-1 slot="icon"></mdui-icon-person-add-alt-1>
             申请友链
