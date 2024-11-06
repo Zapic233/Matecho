@@ -148,6 +148,7 @@ const handleLinkApplication = () => {
   dialog.addEventListener("open", () => {
     form.reset();
     avatarPreview.src = "";
+    avatarPreview.style.display = "none";
     descriptionPreview.textContent = "";
     namePreview.textContent = "";
   });
