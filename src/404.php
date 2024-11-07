@@ -1,13 +1,4 @@
 <?php
-/**
- * 基于 <a target="_blank" href="https://www.mdui.org/">MDUI</a> 的Typecho主题
- * 
- * @package Matecho
- * @author KawaiiZapic
- * @version 0.0.1
- * @link https://github.com/KawaiiZapic/Matecho
- */
-
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 /** @var \Widget\Archive $this */
