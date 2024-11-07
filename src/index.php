@@ -4,7 +4,7 @@
  * 
  * @package Matecho
  * @author KawaiiZapic
- * @version __COMMIT_ID__
+ * @version <%= CommitID %>
  * @link https://github.com/KawaiiZapic/Matecho
  */
 
