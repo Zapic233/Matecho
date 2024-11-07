@@ -210,15 +210,6 @@ export default (config?: MatechoPluginConfig): Plugin => {
         return (await readFile(id.replace("_actual_php.html", ".php")))
           .toString()
           .replaceAll("<%= CommitID %>", config.CommitID ?? "unknown")
-          .replaceAll(
-            "<%= CompatibilityUserAgentRegex %>",
-            JSON.stringify(
-              getUserAgentRegex({
-                ignoreMinor: true,
-                allowHigherVersions: true
-              }).toString()
-            ).slice(1, -1)
-          )
           .replace(/<\?(?:php|).+?(\?>|$)/gis, match => {
             const token = "PHPCode" + hash(match) + Date.now();
             codeTokens[token] = match;
@@ -227,7 +218,16 @@ export default (config?: MatechoPluginConfig): Plugin => {
       }
     },
     transformIndexHtml(html, ctx) {
-      let r = html;
+      let r = html
+      .replaceAll(
+        "<%= CompatibilityUserAgentRegex %>",
+        JSON.stringify(
+          getUserAgentRegex({
+            ignoreMinor: true,
+            allowHigherVersions: true
+          }).toString()
+        ).slice(1, -1)
+      );
       ctx.filename = ctx.filename.replace("_actual_php.html", ".php");
       if (env.command !== "serve") {
         Object.entries(codeTokens).forEach(([token, code]) => {
