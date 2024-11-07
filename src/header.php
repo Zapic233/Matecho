@@ -9,7 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 	<meta charset="<?php $this->options->charset(); ?>">
 	<meta name="matecho-template" content="<?php echo $this->template ? substr($this->template, 0, -4) : $this->getArchiveType(); ?>">
     <meta name="theme-color" content="">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
 	<title><?php $this->archiveTitle(array(
 		'category' => _t('分类 %s 下的文章'),
 		'search' => _t('包含关键字 %s 的文章'),
@@ -41,7 +41,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 		</svg>
 	</div>
     <mdui-top-app-bar scroll-behavior="shrink" variant="large" class="matecho-app-bar__<?php echo $this->archiveType;?>" id="matecho-app-bar">
-        <mdui-button-icon aria-label="导航栏" id="matecho-drawer-btn">
+        <mdui-button-icon id="matecho-drawer-btn">
             <mdui-icon-menu></mdui-icon-menu>
         </mdui-button-icon>
         <mdui-top-app-bar-title id="matecho-app-bar-title" style="display: none;">
